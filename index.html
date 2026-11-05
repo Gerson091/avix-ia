@@ -1,0 +1,635 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#05060f">
+<meta name="description" content="AVIX IA: pesquisa na internet e aprende a cada uso, sem depender de nenhuma IA externa.">
+<title>AVIX IA</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700&family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* AVIX IA — tema escuro da marca: azul-ciano → violeta do logo, superfícies de vidro, navegação inferior */
+:root{
+  --bg:#05060f; --bg-2:#080b1c; --sheet:#0c1124; --raised:#121933; --ink:#eef1ff; --ink-2:#b9c0dc; --muted:#717a9c;
+  --line:#1b2343; --line-2:#28325a;
+  --cyan:#19c2ff; --blue:#2f6bff; --violet:#8b5cf6; --magenta:#c15cff;
+  --copper:#3fb6ff; --brass:#a77bff; --brass-soft:rgba(139,92,246,.10); --bad:#ff6b8a; --good:#35d6a6;
+  --grad:linear-gradient(120deg,#19c2ff 0%,#2f6bff 45%,#8b5cf6 80%,#c15cff 100%);
+  --grad-soft:linear-gradient(120deg,rgba(25,194,255,.16),rgba(139,92,246,.16));
+  --display:"Sora",ui-sans-serif,system-ui,sans-serif;
+  --sans:"Manrope",ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,Menlo,monospace;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.6;-webkit-font-smoothing:antialiased;-webkit-tap-highlight-color:transparent;overflow:hidden}
+body::before{content:"";position:fixed;inset:-20% -30% auto -30%;height:70%;background:radial-gradient(closest-side,rgba(47,107,255,.22),transparent 70%),radial-gradient(closest-side at 80% 40%,rgba(193,92,255,.16),transparent 70%);pointer-events:none;z-index:0}
+.app{position:relative;z-index:1;height:100%;display:flex;flex-direction:column;max-width:760px;margin:0 auto;padding-top:env(safe-area-inset-top,0px)}
+.eyebrow{font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.gtext{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+
+/* topo */
+header{padding:12px max(16px,env(safe-area-inset-left,0px)) 12px max(16px,env(safe-area-inset-right,0px));display:flex;align-items:center;justify-content:space-between;gap:12px}
+.logo{display:flex;align-items:center;gap:10px;min-width:0}
+.logo img{width:34px;height:auto;filter:drop-shadow(0 4px 14px rgba(47,107,255,.45))}
+.logo h1{font-family:var(--display);font-weight:700;font-size:20px;letter-spacing:.06em;margin:0;line-height:1}
+.logo h1 span{color:var(--violet)}
+.lv{display:flex;align-items:center;gap:10px;padding:6px 12px 6px 10px;border:1px solid var(--line-2);border-radius:999px;background:rgba(18,25,51,.6);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
+.ring{--p:0;width:26px;height:26px;border-radius:50%;background:conic-gradient(var(--cyan) 0, var(--violet) calc(var(--p)*1%), var(--line-2) 0);display:grid;place-items:center}
+.ring::after{content:"";width:18px;height:18px;border-radius:50%;background:var(--sheet)}
+.lv .n{font-family:var(--display);font-size:12.5px;font-weight:600;line-height:1.15}
+.lv .n i{display:block;font-style:normal;font-family:var(--sans);font-weight:500;color:var(--muted);font-size:11px}
+.track{display:none}
+.track i{display:block}
+
+.view{flex:1;overflow-y:auto;min-height:0;overscroll-behavior:contain}
+.view[hidden]{display:none}
+
+/* conversa */
+.log{padding:8px max(16px,env(safe-area-inset-left,0px)) 18px max(16px,env(safe-area-inset-right,0px));display:flex;flex-direction:column;gap:22px}
+.turn{display:flex;flex-direction:column;gap:10px;animation:rise .4s cubic-bezier(.2,.7,.2,1) both}
+@keyframes rise{from{opacity:.01;transform:translateY(8px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.turn,.hero img{animation:none!important}}
+.q{align-self:flex-end;max-width:86%;background:var(--grad);color:#fff;font-weight:500;padding:11px 16px;border-radius:20px 20px 6px 20px;overflow-wrap:anywhere;box-shadow:0 10px 30px -12px rgba(47,107,255,.6)}
+.turn > .trail,.turn > .body,.turn > .sources,.turn > .learned,.turn > .acts{max-width:94%}
+.turn > .body{background:linear-gradient(180deg,rgba(18,25,51,.9),rgba(12,17,36,.9));border:1px solid var(--line);border-radius:6px 20px 20px 20px;padding:14px 16px;color:var(--ink-2);overflow-wrap:anywhere;position:relative}
+.turn > .body::before{content:"";position:absolute;left:-1px;top:-1px;width:44px;height:2px;border-radius:2px;background:var(--grad)}
+.body p{margin:0 0 .65em}
+.body p:last-child{margin-bottom:0}
+.body strong{color:var(--ink);font-weight:700}
+.badge{display:inline-flex;align-items:center;gap:6px;font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;padding:3px 9px;border-radius:999px;border:1px solid var(--line-2);color:var(--muted)}
+.badge::before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor}
+.badge.mem{color:var(--brass);border-color:rgba(139,92,246,.45);background:rgba(139,92,246,.08)}
+.badge.web{color:var(--cyan);border-color:rgba(25,194,255,.4);background:rgba(25,194,255,.07)}
+.trail{font-family:var(--mono);font-size:11.5px;color:var(--muted);display:flex;flex-direction:column;gap:3px;padding-left:4px}
+.trail:empty{display:none}
+.trail span::before{content:"› ";color:var(--cyan)}
+.thinking{display:inline-flex;gap:5px;align-items:center;height:20px}
+.thinking::before,.thinking::after{content:""}
+.thinking,.thinking::before,.thinking::after{font-size:0}
+.dots{display:inline-flex;gap:5px}
+.dots i{width:7px;height:7px;border-radius:50%;background:var(--grad);animation:bob 1s infinite ease-in-out}
+.dots i:nth-child(2){animation-delay:.15s}.dots i:nth-child(3){animation-delay:.3s}
+@keyframes bob{0%,100%{transform:translateY(0);opacity:.5}50%{transform:translateY(-4px);opacity:1}}
+.sources{display:flex;flex-wrap:wrap;gap:6px}
+.sources a{font-family:var(--mono);font-size:11px;color:var(--ink-2);text-decoration:none;border:1px solid var(--line-2);background:var(--sheet);border-radius:999px;padding:4px 11px;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sources a::before{content:"↗ ";color:var(--cyan)}
+.learned{border:1px solid rgba(139,92,246,.35);background:var(--grad-soft);border-radius:14px;padding:9px 13px;font-size:13px;color:var(--ink-2)}
+.learned b{font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;font-weight:500;color:var(--brass)}
+.acts{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.fix{display:flex;flex-direction:column;gap:8px;width:100%}
+.fix textarea{min-height:76px}
+.done{font-size:13px;color:var(--muted)}
+.done b{color:var(--brass);font-weight:600}
+
+/* tela inicial */
+.hero{display:flex;flex-direction:column;align-items:center;text-align:center;gap:14px;padding:26px 6px 6px}
+.hero img{width:132px;height:auto;filter:drop-shadow(0 18px 40px rgba(47,107,255,.55));animation:float 6s ease-in-out infinite}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+.hero h2{font-family:var(--display);font-weight:700;font-size:clamp(26px,7vw,34px);line-height:1.12;letter-spacing:-.02em;margin:4px 0 0;text-wrap:balance}
+.hero p{margin:0;color:var(--ink-2);max-width:40ch;font-size:14.5px}
+.examples{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;width:100%;margin-top:10px}
+.examples button{text-align:left;display:flex;flex-direction:column;gap:6px;padding:13px 14px;border-radius:16px;background:linear-gradient(180deg,rgba(18,25,51,.85),rgba(12,17,36,.85));border:1px solid var(--line);color:var(--ink);font-weight:600;font-size:13.5px;line-height:1.35;min-height:84px}
+.examples button small{font-family:var(--mono);font-weight:400;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--cyan)}
+.examples button:nth-child(4) small{color:var(--brass)}
+.examples button:hover{border-color:var(--line-2)}
+.intro .body{display:none}
+
+button{font:inherit;font-size:13.5px;font-weight:600;cursor:pointer;border-radius:12px;border:1px solid var(--line-2);background:rgba(18,25,51,.7);color:var(--ink);padding:8px 14px;touch-action:manipulation;transition:border-color .15s,background .15s,transform .1s}
+button:active{transform:scale(.97)}
+button.ghost{background:transparent;border-color:transparent;color:var(--muted)}
+button.solid{background:var(--grad);border-color:transparent;color:#fff;box-shadow:0 8px 24px -10px rgba(47,107,255,.7)}
+button.danger{color:var(--bad);border-color:rgba(255,107,138,.45);background:rgba(255,107,138,.06)}
+button[disabled]{opacity:.45}
+button:focus-visible,input:focus-visible,textarea:focus-visible{outline:2px solid var(--cyan);outline-offset:2px}
+input,textarea{font:inherit;font-size:16px;color:var(--ink);background:var(--raised);border:1px solid var(--line-2);border-radius:12px;padding:11px 13px;width:100%}
+input::placeholder,textarea::placeholder{color:var(--muted)}
+textarea{resize:none}
+
+/* compositor + navegação inferior */
+.dock{padding:8px max(12px,env(safe-area-inset-left,0px)) 6px max(12px,env(safe-area-inset-right,0px))}
+form.ask{display:flex;align-items:flex-end;gap:8px;padding:6px 6px 6px 16px;background:rgba(18,25,51,.85);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid var(--line-2);border-radius:26px;position:relative}
+form.ask:focus-within{border-color:transparent;box-shadow:0 0 0 1.5px var(--blue),0 12px 40px -16px rgba(47,107,255,.8)}
+form.ask textarea{border:none;background:none;padding:10px 0;min-height:24px;max-height:150px;outline:none;border-radius:0}
+form.ask textarea:focus-visible{outline:none}
+#send{width:42px;height:42px;padding:0;border-radius:50%;flex:none;display:grid;place-items:center;font-size:0}
+#send svg{width:19px;height:19px}
+nav.tabs{display:flex;justify-content:space-around;padding:6px max(10px,env(safe-area-inset-left,0px)) calc(8px + env(safe-area-inset-bottom,0px)) max(10px,env(safe-area-inset-right,0px));border-top:1px solid var(--line);background:rgba(5,6,15,.92);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px)}
+nav.tabs button{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;background:none;border:none;color:var(--muted);font-size:11px;font-weight:600;padding:6px 0;border-radius:12px}
+nav.tabs button svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+nav.tabs button.on{color:var(--ink)}
+nav.tabs button.on svg{stroke:url(#gStroke)}
+nav.tabs button.on::after{content:"";width:18px;height:3px;border-radius:2px;background:var(--grad);margin-top:1px}
+
+/* caderno */
+.pad{padding:8px max(16px,env(safe-area-inset-left,0px)) 24px max(16px,env(safe-area-inset-right,0px));display:flex;flex-direction:column;gap:14px}
+.pagetitle{font-family:var(--display);font-weight:700;font-size:24px;letter-spacing:-.01em;margin:6px 0 0}
+.observ{position:relative;border:1px solid var(--line);border-radius:22px;background:radial-gradient(120% 90% at 62% 40%,rgba(47,107,255,.18),transparent 60%),var(--sheet);height:200px;overflow:hidden}
+#sky{position:absolute;inset:0;width:100%;height:100%}
+.observ .cap{position:absolute;left:16px;right:16px;bottom:14px;display:flex;justify-content:space-between;align-items:flex-end;gap:10px;pointer-events:none}
+.stats{display:flex;gap:22px}
+.stat b{display:block;font-family:var(--display);font-weight:700;font-size:26px;line-height:1;font-variant-numeric:tabular-nums}
+.stat:first-child b{color:var(--cyan)}
+.stat.r b{color:var(--brass)}
+.seg{display:flex;padding:3px;border:1px solid var(--line-2);border-radius:999px;background:var(--sheet);align-self:flex-start;gap:2px}
+.seg button{border:none;border-radius:999px;padding:6px 14px;font-size:12.5px;color:var(--muted);background:none}
+.seg button.on{background:var(--grad);color:#fff}
+.cards{display:flex;flex-direction:column;gap:8px}
+.card{display:grid;grid-template-columns:48px minmax(0,1fr);gap:4px 10px;padding:13px 14px;border:1px solid var(--line);border-radius:16px;background:var(--sheet)}
+.card .no{font-family:var(--mono);font-size:11px;color:var(--cyan);padding-top:2px}
+.card.ensino{border-color:rgba(139,92,246,.4);background:linear-gradient(180deg,rgba(139,92,246,.08),var(--sheet))}
+.card.ensino .no{color:var(--brass)}
+.card .t{font-size:13.5px;color:var(--ink-2);overflow-wrap:anywhere}
+.card.ensino .t{color:var(--ink)}
+.card .foot{grid-column:2;display:flex;justify-content:space-between;gap:8px;align-items:center;font-family:var(--mono);font-size:10.5px;color:var(--muted);min-width:0}
+.card .foot a{color:var(--cyan);text-decoration:none;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
+.card .del{border:none;background:none;padding:2px 4px;font-family:var(--mono);font-size:10.5px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);font-weight:500}
+.card .del.confirm{color:var(--bad)}
+.empty{padding:26px 16px;color:var(--muted);font-size:13.5px;text-align:center;border:1px dashed var(--line-2);border-radius:16px}
+.empty .serif{display:block;font-family:var(--display);font-weight:600;font-size:17px;color:var(--ink);margin-bottom:4px}
+.box{border:1px solid var(--line);border-radius:20px;background:var(--sheet);padding:16px;display:flex;flex-direction:column;gap:10px}
+.box h3{font-family:var(--display);font-weight:600;font-size:17px;margin:0}
+.box p{margin:0;font-size:13.5px;color:var(--ink-2)}
+.row{display:flex;gap:8px;flex-wrap:wrap}
+.toast{position:fixed;left:50%;bottom:calc(150px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--raised);border:1px solid var(--line-2);color:var(--ink);padding:10px 18px;border-radius:999px;font-size:13px;opacity:0;transition:opacity .2s;pointer-events:none;max-width:90vw;z-index:5}
+.toast.on{opacity:1}
+.offline{margin:0 16px 6px;background:rgba(255,107,138,.08);border:1px solid rgba(255,107,138,.35);color:var(--bad);font-size:12.5px;text-align:center;padding:6px 12px;border-radius:12px}
+@media (min-width:600px){.examples{grid-template-columns:repeat(4,minmax(0,1fr))}}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><linearGradient id="gStroke" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#19c2ff"/><stop offset=".55" stop-color="#2f6bff"/><stop offset="1" stop-color="#c15cff"/></linearGradient></defs></svg>
+<div class="app">
+  <header>
+    <div class="logo"><img src="logo-mark.png" alt=""><h1>AVIX <span>IA</span></h1></div>
+    <div class="lv" title="Nível de conhecimento">
+      <div class="ring" id="ring"></div>
+      <div class="n">Nível <span id="lvl">I</span><i id="lvlName">iniciante</i></div>
+      <div class="track"><i id="bar"></i></div>
+    </div>
+  </header>
+  <div class="offline" id="offline" hidden>Sem internet. Respondendo só com o que já aprendi.</div>
+
+  <section class="view" id="vChat">
+    <div class="log" id="log">
+      <div class="turn intro">
+        <div class="hero">
+          <img src="logo-mark.png" alt="AVIX IA">
+          <h2>Olá! Como posso <span class="gtext">ajudar</span> hoje?</h2>
+          <p>Eu pesquiso na internet, respondo com as fontes e aprendo com cada conversa. Se eu errar, me ensine: o que você diz vale mais que qualquer site.</p>
+          <div class="examples" id="examples">
+            <button type="button"><small>Estoque</small>O que é curva ABC?</button>
+            <button type="button"><small>História</small>Quem inventou o código de barras?</button>
+            <button type="button"><small>Logística</small>O que é logística reversa?</button>
+            <button type="button"><small>Ensinar</small>lembre: o caminhão da loja 5 sai às 6h</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="view" id="vMem" hidden>
+    <div class="pad">
+      <h2 class="pagetitle">Memória</h2>
+      <div class="observ"><canvas id="sky"></canvas>
+        <div class="cap">
+          <div class="stats">
+            <div class="stat"><b id="sF">0</b><span class="eyebrow">fatos</span></div>
+            <div class="stat r"><b id="sE">0</b><span class="eyebrow">ensinados</span></div>
+            <div class="stat"><b id="sQ">0</b><span class="eyebrow">perguntas</span></div>
+          </div>
+          <span class="eyebrow" id="sNext"></span>
+        </div>
+      </div>
+      <input id="busca" placeholder="Buscar na memória" aria-label="Buscar na memória">
+      <div class="seg" id="filtro">
+        <button class="on" data-f="todos" type="button">Tudo</button>
+        <button data-f="ensino" type="button">Ensinados</button>
+        <button data-f="fato" type="button">Fatos</button>
+      </div>
+      <div class="cards" id="cards"></div>
+    </div>
+  </section>
+
+  <section class="view" id="vCfg" hidden>
+    <div class="pad">
+      <h2 class="pagetitle">Ajustes</h2>
+      <div class="box">
+        <h3>Backup da memória</h3>
+        <p>Tudo o que a AVIX aprendeu fica salvo só neste celular. Faça um backup para não perder nada ou para passar para outro aparelho.</p>
+        <div class="row"><button id="exp" type="button" class="solid">Salvar backup</button><button id="imp" type="button">Restaurar backup</button><input type="file" id="impFile" accept=".json,application/json" hidden></div>
+      </div>
+      <div class="box">
+        <h3>Fontes de pesquisa</h3>
+        <p>Wikipédia em português, com a em inglês como reserva, e respostas rápidas do DuckDuckGo. Todas gratuitas e sem cadastro.</p>
+        <div class="row"><button id="tEn" type="button"></button></div>
+      </div>
+      <div class="box">
+        <h3>Começar do zero</h3>
+        <p>Apaga tudo o que foi aprendido neste aparelho.</p>
+        <div class="row"><button id="zerar" type="button" class="danger">Apagar memória</button></div>
+      </div>
+      <p class="eyebrow" style="text-align:center">AVIX IA · versão 1.1 · funciona sem IA externa</p>
+    </div>
+  </section>
+
+  <div class="dock" id="dock">
+    <form class="ask" id="ask">
+      <textarea id="q" rows="1" placeholder="Pergunte à AVIX…" aria-label="Pergunta" enterkeyhint="send"></textarea>
+      <button class="solid" id="send" type="submit" aria-label="Enviar"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg></button>
+    </form>
+  </div>
+  <nav class="tabs" aria-label="Seções">
+    <button id="tChat" class="on" type="button"><svg viewBox="0 0 24 24"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12Z"/></svg>Conversa</button>
+    <button id="tMem" type="button"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="2.5"/><circle cx="5" cy="6" r="1.6"/><circle cx="19" cy="7" r="1.6"/><circle cx="6" cy="18" r="1.6"/><circle cx="18" cy="18" r="1.6"/><path d="M6.3 7l4 3.6M17.6 8l-3.7 2.6M7.4 17l2.9-3.3M16.6 17l-2.9-3.3"/></svg>Memória</button>
+    <button id="tCfg" type="button"><svg viewBox="0 0 24 24"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2"/><circle cx="10" cy="17" r="2"/></svg>Ajustes</button>
+  </nav>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+"use strict";
+/* =========================================================
+   APRENDIZ — cérebro local
+   - índice BM25 sobre tudo que aprendeu
+   - pesquisa web: Wikipédia (pt/en) + DuckDuckGo Instant Answer
+   - escolhe frases por relevância + tipo de pergunta
+   - aprende: guarda frases úteis, pesos ajustados por 👍/👎,
+     ensinamentos do usuário têm prioridade máxima
+   ========================================================= */
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const host = u => { try { return new URL(u).hostname.replace(/^www\./,""); } catch { return ""; } };
+const KEY = "aprendiz.v1";
+
+/* ---------- linguagem ---------- */
+const STOP = new Set(("a o e é de da do das dos em no na nos nas um uma uns umas para pra por pelo pela pelos pelas com sem que qual quais quem como onde quando quanto quanta quantos quantas porque por que se ao aos à às os as mais menos muito muita sobre isso isto esse essa este esta aquele aquela ser foi era são está estão tem têm ter há me te lhe nos vos meu minha seu sua você voce eu ele ela eles elas já também ou mas nem tal outro outra the of and to in is are what who how when where why which a an on for by with").split(" "));
+function norm(t){ return String(t).toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,""); }
+function stem(w){
+  if (w.length <= 4) return w;
+  for (const s of ["amente","mente","acoes","icoes","acao","icao","coes","cao","oes","ais","eis","ores","res","ados","idas","idos","ado","ida","ido","ndo","ar","er","ir","as","os","es","is","a","o","e","s"])
+    if (w.endsWith(s) && w.length - s.length >= 4) return w.slice(0, -s.length);
+  return w;
+}
+function toks(t){ return norm(t).split(/[^a-z0-9]+/).filter(w => w.length > 1 && !STOP.has(w)).map(stem); }
+function tipoPergunta(q){
+  const n = norm(q);
+  if (/^(o que|oque|que) (e|sao|significa)|^defin|^significado|\bsignifica\b/.test(n)) return "def";
+  if (/^quem\b/.test(n)) return "quem";
+  if (/^quando\b|\bem que ano\b|\bque dia\b|\bdata\b/.test(n)) return "quando";
+  if (/^onde\b|\bfica onde\b|\blocaliza/.test(n)) return "onde";
+  if (/^quant[oa]s?\b|\bvalor\b|\bpreco\b|\bnumero de\b|\bpopulacao\b/.test(n)) return "quanto";
+  if (/^como\b/.test(n)) return "como";
+  if (/^por que|^porque|^pq\b/.test(n)) return "porque";
+  return "geral";
+}
+function assunto(q){
+  return q.replace(/^\s*(o que|oque|que)\s+(é|e|são|sao|significa|foi|era)\s+/i,"").replace(/^\s*(quem|quando|onde|como|por que|porque|qual|quais|quanto|quantos|quanta|quantas)\s+(é|e|foi|são|sao|era|fica|nasceu|surgiu|inventou|criou|descobriu)?\s*/i,"").replace(/^(o|a|os|as|um|uma)\s+/i,"").replace(/[?!.]+$/,"").trim() || q;
+}
+function frases(texto){
+  return texto.replace(/\s*\n+\s*/g, "\n").split(/\n|(?<=[.!?])\s+(?=[A-ZÁÉÍÓÚÂÊÔÃÕÇ0-9"“(])/)
+    .map(s => s.trim()).filter(s => s.length >= 35 && s.length <= 420 && !/^=+|=+$/.test(s) && !/^(ver também|referências|ligações externas|bibliografia|notas)\b/i.test(s));
+}
+
+/* ---------- memória ---------- */
+let M = carregar();
+function carregar(){
+  try { const m = JSON.parse(localStorage.getItem(KEY)); if (m && Array.isArray(m.k)) return Object.assign({ k:[], q:0, dom:{}, seq:1, en:true }, m); } catch {}
+  return { k: [], q: 0, dom: {}, seq: 1, en: true };
+}
+function gravar(){
+  try { localStorage.setItem(KEY, JSON.stringify(M)); }
+  catch { // cheio: poda os fatos menos úteis
+    M.k.sort((a,b) => valor(a) - valor(b)); M.k.splice(0, Math.ceil(M.k.length * .15));
+    try { localStorage.setItem(KEY, JSON.stringify(M)); } catch {}
+    toast("Memória cheia: esqueci os fatos menos úteis.");
+  }
+}
+const valor = i => (i.tipo === "ensino" ? 100 : 0) + (i.w || 1) + (i.u || 0) * .5 + (i.ts || 0) / 1e13;
+function aprender(tipo, texto, extra = {}){
+  texto = String(texto).trim().replace(/\s+/g, " ").slice(0, 700);
+  if (texto.length < 3) return null;
+  const tk = toks(texto); const set = new Set(tk);
+  const dup = M.k.find(i => { const a = i.tk || toks(i.t); if (!a.length) return false; const inter = a.filter(x => set.has(x)).length; return inter / Math.max(a.length, set.size) > .85; });
+  if (dup) { if (tipo === "ensino" && dup.tipo !== "ensino") { dup.tipo = "ensino"; dup.w = 3; } return null; }
+  const item = { id: M.seq++, tipo, t: texto, tk, w: tipo === "ensino" ? 3 : 1, u: 0, ts: Date.now(), ...extra };
+  M.k.push(item);
+  if (M.k.filter(i => i.tipo === "fato").length > 6000) { const fatos = M.k.filter(i => i.tipo === "fato").sort((a,b) => valor(a) - valor(b)); const fora = new Set(fatos.slice(0, 300).map(i => i.id)); M.k = M.k.filter(i => !fora.has(i.id)); }
+  novos.push(item.id);
+  return item;
+}
+let novos = [];
+
+/* ---------- BM25 ---------- */
+function bm25(qtk, docs, getTk){
+  const N = docs.length || 1, df = new Map(); let soma = 0;
+  const tks = docs.map(d => { const t = getTk(d); soma += t.length; return t; });
+  const avg = soma / N || 1;
+  for (const t of tks) for (const w of new Set(t)) df.set(w, (df.get(w) || 0) + 1);
+  const q = [...new Set(qtk)];
+  return docs.map((d, i) => {
+    const t = tks[i]; if (!t.length) return 0;
+    const tf = new Map(); for (const w of t) tf.set(w, (tf.get(w) || 0) + 1);
+    let s = 0;
+    for (const w of q) { const f = tf.get(w); if (!f) continue; const idf = Math.log(1 + (N - (df.get(w)||0) + .5) / ((df.get(w)||0) + .5)); s += idf * (f * 2.2) / (f + 1.2 * (.25 + .75 * t.length / avg)); }
+    return s;
+  });
+}
+
+/* ---------- pesquisa web ---------- */
+async function getJSON(url, ms = 9000){
+  const c = new AbortController(); const t = setTimeout(() => c.abort(), ms);
+  try { const r = await fetch(url, { signal: c.signal }); if (!r.ok) throw new Error(r.status); return await r.json(); } finally { clearTimeout(t); }
+}
+async function wiki(lang, consulta, passo){
+  const base = `https://${lang}.wikipedia.org/w/api.php?format=json&origin=*&`;
+  passo(`procurando na Wikipédia (${lang}): “${consulta}”`);
+  const s = await getJSON(base + "action=query&list=search&srlimit=3&srsearch=" + encodeURIComponent(consulta));
+  const hits = (s.query?.search || []).slice(0, 3);
+  const pags = await Promise.all(hits.map(async (h, i) => {
+    try {
+      const p = await getJSON(base + "action=query&prop=extracts|info&inprop=url&explaintext=1&exlimit=1&redirects=1&titles=" + encodeURIComponent(h.title));
+      const pg = Object.values(p.query?.pages || {})[0];
+      if (!pg?.extract) return null;
+      if (i === 0) passo("lendo “" + pg.title + "”");
+      return { titulo: pg.title, url: pg.fullurl || `https://${lang}.wikipedia.org/wiki/${encodeURIComponent(pg.title)}`, texto: pg.extract.slice(0, 20000), rank: i };
+    } catch { return null; }
+  }));
+  return pags.filter(Boolean);
+}
+async function ddg(consulta, passo){
+  try {
+    passo("consultando DuckDuckGo");
+    const d = await getJSON("https://api.duckduckgo.com/?format=json&no_html=1&skip_disambig=1&kl=br-pt&q=" + encodeURIComponent(consulta), 6000);
+    const out = [];
+    if (d.AbstractText) out.push({ titulo: d.Heading || consulta, url: d.AbstractURL || "https://duckduckgo.com/?q=" + encodeURIComponent(consulta), texto: d.AbstractText, rank: 0, ddg: true });
+    if (d.Answer && typeof d.Answer === "string") out.push({ titulo: "Resposta rápida", url: "https://duckduckgo.com/?q=" + encodeURIComponent(consulta), texto: d.Answer + ".", rank: 0, ddg: true });
+    if (d.Definition) out.push({ titulo: "Definição", url: d.DefinitionURL || "", texto: d.Definition, rank: 0, ddg: true });
+    return out;
+  } catch { return []; }
+}
+
+/* ---------- escolha das frases ---------- */
+function bonusTipo(tipo, s, pos){
+  const n = norm(s); let b = 0;
+  if (tipo === "def") { if (pos === 0) b += 3; if (/\b(e|sao|foi|era|consiste|refere-se|designa|significa)\b/.test(n.slice(0, 120))) b += 1.2; }
+  if (tipo === "quando" && /\b(1[0-9]{3}|20[0-9]{2})\b|\bseculo\b/.test(n)) b += 2;
+  if (tipo === "quem" && /\b(inventad|criad|fundad|descobert|desenvolvid|por)\b/.test(n)) b += 1.5;
+  if (tipo === "onde" && /\b(localiza|fica|situad|em|regiao|estado|cidade|pais)\b/.test(n)) b += 1;
+  if (tipo === "quanto" && /\d/.test(n)) b += 1.8;
+  if (tipo === "como" && /\b(atraves|por meio|passo|etapa|primeiro|depois|processo|metodo)\b/.test(n)) b += 1;
+  if (tipo === "porque" && /\b(porque|devido|causa|motivo|razao|pois|por isso)\b/.test(n)) b += 1.5;
+  if (pos < 3) b += .6 - pos * .2;
+  return b;
+}
+function escolher(pergunta, pags){
+  const tipo = tipoPergunta(pergunta), qtk = toks(pergunta), atk = toks(assunto(pergunta));
+  const cand = [];
+  for (const p of pags) frases(p.texto).slice(0, 160).forEach((f, pos) => cand.push({ f, pos, p }));
+  if (!cand.length) return [];
+  const sc = bm25(qtk.concat(atk), cand, c => toks(c.f));
+  cand.forEach((c, i) => {
+    const dom = M.dom[host(c.p.url)] || 0;
+    const tituloBate = atk.length && atk.every(w => toks(c.p.titulo).includes(w));
+    c.s = sc[i] + bonusTipo(tipo, c.f, c.pos) - c.p.rank * .8 + dom * .3 + (tituloBate ? 1.5 : 0) + (c.p.ddg ? 1 : 0);
+  });
+  cand.sort((a,b) => b.s - a.s);
+  const best = cand[0]; if (!best || best.s < 1) return [];
+  // completa com frases vizinhas do mesmo artigo, mantendo a ordem do texto
+  const escolhidas = [best];
+  for (const c of cand.slice(1, 25)) {
+    if (escolhidas.length >= (tipo === "def" || tipo === "geral" ? 3 : 2)) break;
+    if (c.s < best.s * .45) break;
+    const parecida = escolhidas.some(e => { const a = new Set(toks(e.f)); const b = toks(c.f); return b.filter(x => a.has(x)).length / Math.max(1, b.length) > .6; });
+    if (!parecida) escolhidas.push(c);
+  }
+  return escolhidas.sort((a,b) => a.p === b.p ? a.pos - b.pos : 0);
+}
+
+/* ---------- cérebro: responder ---------- */
+async function responder(pergunta, passo){
+  const qtk = toks(pergunta), tipo = tipoPergunta(pergunta);
+  // 1) o que o usuário ensinou e o que já aprendi
+  const mem = M.k;
+  let usados = [], fontes = [];
+  if (mem.length) {
+    const sc = bm25(qtk, mem, i => i.tk || (i.tk = toks(i.t)));
+    const ranked = mem.map((i, k) => ({ i, s: sc[k] * (i.tipo === "ensino" ? 1.8 : 1) * (.6 + Math.min(2, i.w || 1) * .4) + (i.q && qtk.filter(w => i.q.includes(w)).length / Math.max(1, qtk.length) > .6 ? 4 : 0) }))
+      .filter(x => x.s > 0).sort((a,b) => b.s - a.s);
+    const top = ranked[0];
+    const cobertura = top ? qtk.filter(w => (top.i.tk || []).includes(w) || (top.i.q || []).includes(w)).length / Math.max(1, qtk.length) : 0;
+    if (top && (top.i.tipo === "ensino" ? cobertura >= .5 : cobertura >= .75 && top.s > 3)) {
+      usados = ranked.slice(0, top.i.tipo === "ensino" ? 1 : 3).filter(x => x.s >= top.s * .55).map(x => x.i);
+      passo("encontrei no caderno");
+      return { origem: "mem", frases: usados.map(i => i.t), usados, fontes: [...new Map(usados.filter(i => i.url).map(i => [i.url, { url: i.url, titulo: i.fonte }])).values()] };
+    }
+  }
+  // 2) internet
+  if (!navigator.onLine) throw { code: "offline" };
+  const consulta = assunto(pergunta);
+  let pags = [];
+  const [w, d] = await Promise.all([wiki("pt", consulta, passo).catch(() => []), ddg(consulta, passo)]);
+  pags = d.concat(w);
+  let sel = escolher(pergunta, pags);
+  if (!sel.length && M.en) { const en = await wiki("en", consulta, passo).catch(() => []); pags = pags.concat(en); sel = escolher(pergunta, pags); }
+  if (!sel.length) return { origem: "nada", frases: [], usados: [], fontes: [] };
+  // 3) aprende o que achou
+  novos = [];
+  const qset = toks(pergunta);
+  for (const e of sel) aprender("fato", e.f, { url: e.p.url, fonte: e.p.titulo, q: qset });
+  const top = sel[0].p;
+  if (top) frases(top.texto).slice(0, 2).forEach(f => aprender("fato", f, { url: top.url, fonte: top.titulo }));
+  usados = novos.map(id => M.k.find(i => i.id === id)).filter(Boolean);
+  fontes = [...new Map(sel.map(e => [e.p.url, { url: e.p.url, titulo: e.p.titulo }])).values()];
+  return { origem: "web", frases: sel.map(e => e.f), usados, fontes, aprendidos: novos.length };
+}
+
+/* ---------- conversa ---------- */
+const log = $("#log"), vChat = $("#vChat");
+const scroll = () => requestAnimationFrame(() => { vChat.scrollTop = vChat.scrollHeight; });
+function turno(pergunta){
+  const t = document.createElement("div"); t.className = "turn";
+  t.innerHTML = `<div class="q"></div><div class="trail"></div><div class="body"><span class="dots"><i></i><i></i><i></i></span></div>`;
+  t.querySelector(".q").textContent = pergunta; log.append(t); scroll(); return t;
+}
+const SOCIAL = [
+  [/^(oi|ola|bom dia|boa tarde|boa noite|e ai|eae|hey)\b/, () => "Olá! Eu sou a AVIX. Pode perguntar o que quiser: eu pesquiso, respondo e aprendo."],
+  [/^(obrigad|valeu|vlw|brigad)/, () => "Por nada! Se a resposta ajudou, toque em 👍 para eu saber que acertei."],
+  [/(o que voce sabe|quanto voce sabe|seu nivel)/, () => `Já guardei ${M.k.length} conhecimentos, sendo ${M.k.filter(i => i.tipo === "ensino").length} ensinados por você, em ${M.q} perguntas. Estou no nível ${ROMAN(nivel().lvl)}.`],
+  [/^(quem e voce|o que e voce|como voce funciona|o que e (a )?avix)/, () => "Sou a AVIX IA: uma assistente que roda só neste aparelho. Pesquiso na Wikipédia e no DuckDuckGo, escolho os trechos que respondem e guardo tudo no meu caderno. Com seus 👍, 👎 e ensinamentos, fico melhor a cada uso."],
+];
+
+async function perguntar(pergunta){
+  const t = turno(pergunta), trail = t.querySelector(".trail"), body = t.querySelector(".body");
+  const passo = s => { const e = document.createElement("span"); e.textContent = s; trail.append(e); scroll(); };
+  const n = norm(pergunta).trim();
+  // "lembre: ..." — ensino direto
+  const lm = pergunta.match(/^\s*(lembre|lembra|anote|anota|aprenda|aprende|guarde|guarda)\s*(-|:|que)?\s*(.+)$/i);
+  if (lm) {
+    const item = aprender("ensino", lm[3], { fonte: "você" });
+    gravar(); render();
+    body.innerHTML = item ? `<p><span class="badge mem">ensinado</span></p><p>Guardado: <strong>${esc(item.t)}</strong></p><p>Quando você perguntar sobre isso, eu respondo com essa informação.</p>` : "<p>Isso eu já sabia. Mantive no caderno.</p>";
+    return;
+  }
+  for (const [re, f] of SOCIAL) if (re.test(n)) { body.innerHTML = `<p>${esc(f())}</p>`; return; }
+
+  $("#send").disabled = true;
+  let r;
+  try { r = await responder(pergunta, passo); }
+  catch (e) {
+    body.innerHTML = e?.code === "offline" ? "<p>Estou sem internet e ainda não aprendi nada sobre isso. Tente de novo quando a conexão voltar.</p>" : "<p>Não consegui pesquisar agora. Verifique a internet e tente de novo.</p>";
+    $("#send").disabled = false; return;
+  }
+  $("#send").disabled = false;
+  M.q++;
+  if (r.origem === "nada") {
+    body.innerHTML = "<p>Não encontrei uma resposta boa para isso. Tente com outras palavras, ou me ensine a resposta.</p>";
+    acoes(t, pergunta, r, true); gravar(); render(); return;
+  }
+  r.usados.forEach(i => i.u = (i.u || 0) + 1);
+  const badge = r.origem === "mem" ? '<span class="badge mem">do caderno</span>' : '<span class="badge web">pesquisado agora</span>';
+  body.innerHTML = `<p>${badge}</p>` + r.frases.map((f, k) => `<p>${k === 0 ? "<strong>" + esc(f) + "</strong>" : esc(f)}</p>`).join("");
+  if (r.fontes.length) { const s = document.createElement("div"); s.className = "sources"; s.innerHTML = r.fontes.slice(0, 5).map(f => `<a href="${esc(f.url)}" target="_blank" rel="noopener">${esc(f.titulo || host(f.url))}</a>`).join(""); t.append(s); }
+  if (r.aprendidos) { const d = document.createElement("div"); d.className = "learned"; d.innerHTML = `<b>+${r.aprendidos} no caderno</b> · da próxima vez respondo sem pesquisar`; t.append(d); }
+  acoes(t, pergunta, r, false);
+  gravar(); render(); scroll();
+}
+
+function acoes(t, pergunta, r, soEnsinar){
+  const a = document.createElement("div"); a.className = "acts"; t.append(a);
+  const doms = [...new Set(r.fontes.map(f => host(f.url)).filter(Boolean))];
+  a.innerHTML = (soEnsinar ? "" : '<button type="button" data-a="bom">👍 Acertou</button><button type="button" data-a="ruim">👎 Errou</button>') + '<button type="button" class="ghost" data-a="ens">Ensinar</button>';
+  a.addEventListener("click", function h(e){
+    const b = e.target.closest("button"); if (!b) return;
+    const op = b.dataset.a;
+    if (op === "bom") {
+      r.usados.forEach(i => i.w = Math.min(5, (i.w || 1) + .6));
+      doms.forEach(d => M.dom[d] = Math.min(5, (M.dom[d] || 0) + .3));
+      gravar(); render(); a.innerHTML = '<span class="done">Anotado. Essa resposta ficou mais forte no caderno.</span>'; a.removeEventListener("click", h);
+    } else if (op === "ruim") {
+      r.usados.forEach(i => i.w = Math.max(.1, (i.w || 1) - .8));
+      doms.forEach(d => M.dom[d] = Math.max(-3, (M.dom[d] || 0) - .3));
+      gravar(); render(); abrirEnsino(a, pergunta, h, "Entendi, vou dar menos peso a isso. Qual é a resposta certa?");
+    } else if (op === "ens") abrirEnsino(a, pergunta, h, "Qual é a resposta certa?");
+  });
+}
+function abrirEnsino(a, pergunta, h, rotulo){
+  a.removeEventListener("click", h);
+  const id = "ens" + Date.now();
+  a.innerHTML = `<div class="fix"><label class="done" for="${id}">${esc(rotulo)}</label><textarea id="${id}" placeholder="Escreva a resposta certa"></textarea><div class="row"><button type="button" class="solid">Ensinar</button><button type="button" class="ghost">Agora não</button></div></div>`;
+  const ta = a.querySelector("textarea"), [ok, no] = a.querySelectorAll("button");
+  ta.focus();
+  no.onclick = () => { a.innerHTML = '<span class="done">Tudo bem.</span>'; };
+  ok.onclick = () => {
+    const v = ta.value.trim(); if (!v) return;
+    const item = aprender("ensino", v, { q: toks(pergunta), pergunta, fonte: "você" });
+    gravar(); render();
+    a.innerHTML = `<span class="done">${item ? "<b>Aprendido.</b> Na próxima vez que perguntarem isso, respondo assim." : "Isso já estava no caderno. Reforcei."}</span>`;
+  };
+}
+
+/* ---------- nível e caderno ---------- */
+const ROMAN = n => { const m=[[10,"X"],[9,"IX"],[5,"V"],[4,"IV"],[1,"I"]]; let s=""; for (const [v,r] of m) while (n>=v){s+=r;n-=v;} return s; };
+const NOMES = ["iniciante","curioso","estudante","pesquisador","analista","especialista","mestre","sábio","erudito","enciclopédia"];
+function nivel(){ const n = M.k.length, lvl = 1 + Math.floor(Math.sqrt(n/4)); return { n, lvl, cur: 4*(lvl-1)**2, next: 4*lvl**2 }; }
+let filtro = "todos";
+function render(){
+  const { n, lvl, cur, next } = nivel();
+  $("#lvl").textContent = ROMAN(Math.min(lvl, 39)); $("#lvlName").textContent = NOMES[Math.min(NOMES.length-1, lvl-1)];
+  const pct = Math.min(100, (n-cur)/Math.max(1,next-cur)*100); $("#bar").style.width = pct + "%"; $("#ring").style.setProperty("--p", pct.toFixed(1));
+  const e = M.k.filter(i => i.tipo === "ensino").length;
+  $("#sF").textContent = n - e; $("#sE").textContent = e; $("#sQ").textContent = M.q;
+  $("#sNext").textContent = (next - n) + " p/ nível " + ROMAN(Math.min(lvl+1, 39));
+  if ($("#vMem").hidden) return;
+  const el = $("#cards");
+  if (!M.k.length) { el.innerHTML = '<div class="empty"><span class="serif">Memória vazia</span>Faça perguntas na Conversa. Tudo o que eu aprender aparece aqui.</div>'; desenhar(); return; }
+  const qb = toks($("#busca").value);
+  let list = M.k.filter(i => filtro === "todos" || i.tipo === filtro);
+  if (qb.length) list = list.filter(i => { const t = i.tk || toks(i.t); return qb.every(w => t.some(x => x.startsWith(w))); });
+  list = list.slice().sort((a,b) => (b.tipo === "ensino") - (a.tipo === "ensino") || b.ts - a.ts).slice(0, 250);
+  el.innerHTML = list.length ? list.map(i => `<div class="card ${i.tipo}">
+      <div class="no">${i.tipo === "ensino" ? "E" : "Nº"}${String(i.id).padStart(3,"0")}</div>
+      <div class="t">${esc(i.t)}</div>
+      <div class="foot">${i.url ? `<a href="${esc(i.url)}" target="_blank" rel="noopener">${esc(i.fonte || host(i.url))}</a>` : `<span>${esc(i.fonte || "")}</span>`}
+        <span style="display:flex;gap:6px;align-items:center;flex:none">${i.u ? i.u + "× · " : ""}força ${(i.w||1).toFixed(1)}<button class="del" type="button" data-del="${i.id}">esquecer</button></span></div>
+    </div>`).join("") : '<div class="empty">Nada encontrado.</div>';
+  desenhar();
+}
+$("#cards").addEventListener("click", e => {
+  const b = e.target.closest("[data-del]"); if (!b) return;
+  if (!b.classList.contains("confirm")) { b.classList.add("confirm"); b.textContent = "confirmar?"; setTimeout(() => { if (b.isConnected) { b.classList.remove("confirm"); b.textContent = "esquecer"; } }, 3000); return; }
+  M.k = M.k.filter(i => i.id !== +b.dataset.del); gravar(); render();
+});
+$("#busca").addEventListener("input", render);
+$("#filtro").addEventListener("click", e => { const b = e.target.closest("button[data-f]"); if (!b) return; filtro = b.dataset.f; document.querySelectorAll("#filtro button").forEach(x => x.classList.toggle("on", x === b)); render(); });
+
+/* mapa de conhecimento */
+const sky = $("#sky"), ctx = sky.getContext("2d");
+const hsh = s => { let h = 2166136261; for (const c of String(s)) { h ^= c.charCodeAt(0); h = Math.imul(h, 16777619); } return (h >>> 0) / 4294967295; };
+const cor = v => getComputedStyle(document.documentElement).getPropertyValue(v).trim();
+function desenhar(){
+  const r = sky.getBoundingClientRect(); if (!r.width) return;
+  const d = devicePixelRatio || 1; sky.width = r.width*d; sky.height = r.height*d; ctx.setTransform(d,0,0,d,0,0);
+  const W = r.width, H = r.height; ctx.clearRect(0,0,W,H);
+  const lvl = nivel().lvl; ctx.strokeStyle = cor("--line-2");
+  for (let k = 1; k <= Math.min(6, lvl + 1); k++) { ctx.globalAlpha = k <= lvl ? .6 : .25; ctx.setLineDash(k <= lvl ? [] : [2,4]); ctx.beginPath(); ctx.ellipse(W*.62, H*.42, W*.08*k, H*.09*k, 0, 0, 7); ctx.stroke(); }
+  ctx.setLineDash([]);
+  const pts = M.k.slice(-500).map(i => { const a = hsh(i.id+"a")*6.283, b = Math.sqrt(hsh(i.id+"b"))*.48; return { x: Math.max(6, Math.min(W-6, W*.62 + Math.cos(a)*b*W*.9)), y: Math.max(6, Math.min(H-6, H*.42 + Math.sin(a)*b*H*.9)), e: i.tipo === "ensino", w: i.w || 1 }; });
+  ctx.strokeStyle = cor("--muted"); ctx.lineWidth = .6;
+  for (let i = 0; i < pts.length; i++) for (let j = i+1; j < Math.min(pts.length, i+30); j++) { const dd = Math.hypot(pts[i].x-pts[j].x, pts[i].y-pts[j].y); if (dd < 55) { ctx.globalAlpha = (1-dd/55)*.4; ctx.beginPath(); ctx.moveTo(pts[i].x,pts[i].y); ctx.lineTo(pts[j].x,pts[j].y); ctx.stroke(); } }
+  for (const p of pts) { ctx.globalAlpha = .9; ctx.fillStyle = p.e ? cor("--brass") : cor("--copper"); ctx.beginPath(); ctx.arc(p.x, p.y, (p.e ? 3.2 : 2) + Math.min(2, p.w*.3), 0, 7); ctx.fill(); }
+  ctx.globalAlpha = 1; ctx.fillStyle = cor("--ink"); ctx.beginPath(); ctx.arc(W*.62, H*.42, 2.4, 0, 7); ctx.fill();
+}
+addEventListener("resize", desenhar);
+
+/* ---------- abas, entrada, ajustes ---------- */
+function aba(v){
+  for (const [b, s] of [["#tChat","#vChat"],["#tMem","#vMem"],["#tCfg","#vCfg"]]) { const on = s === v; $(b).classList.toggle("on", on); $(s).hidden = !on; }
+  $("#dock").hidden = v !== "#vChat"; render();
+}
+$("#tChat").onclick = () => aba("#vChat"); $("#tMem").onclick = () => aba("#vMem"); $("#tCfg").onclick = () => aba("#vCfg");
+const q = $("#q");
+const grow = () => { q.style.height = "auto"; q.style.height = Math.min(150, q.scrollHeight) + "px"; };
+q.addEventListener("input", grow);
+q.addEventListener("keydown", e => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); $("#ask").requestSubmit(); } });
+$("#ask").addEventListener("submit", e => { e.preventDefault(); const v = q.value.trim(); if (!v || $("#send").disabled) return; document.querySelector(".intro")?.remove(); q.value = ""; grow(); perguntar(v); });
+$("#examples").addEventListener("click", e => { const b = e.target.closest("button"); if (!b) return; q.value = b.lastChild.textContent.trim(); $("#ask").requestSubmit(); });
+
+function toast(t){ const el = $("#toast"); el.textContent = t; el.classList.add("on"); clearTimeout(toast.h); toast.h = setTimeout(() => el.classList.remove("on"), 2600); }
+$("#exp").onclick = () => {
+  const blob = new Blob([JSON.stringify({ app: "aprendiz", v: 1, data: new Date().toISOString(), ...M, k: M.k.map(({ tk, ...r }) => r) })], { type: "application/json" });
+  const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = "avix-backup-" + new Date().toISOString().slice(0,10) + ".json"; document.body.append(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(a.href), 4000); toast("Backup salvo nos Downloads.");
+};
+$("#imp").onclick = () => $("#impFile").click();
+$("#impFile").onchange = async e => {
+  const f = e.target.files[0]; if (!f) return;
+  try {
+    const d = JSON.parse(await f.text()); if (!Array.isArray(d.k)) throw 0;
+    const ids = new Set(M.k.map(i => norm(i.t))); let n = 0;
+    for (const i of d.k) if (i && i.t && !ids.has(norm(i.t))) { M.k.push({ ...i, id: M.seq++, tk: toks(i.t) }); n++; }
+    M.q += d.q || 0; Object.entries(d.dom || {}).forEach(([k,v]) => M.dom[k] = v);
+    gravar(); render(); toast(n + " conhecimentos restaurados.");
+  } catch { toast("Esse arquivo não é um backup da AVIX."); }
+  e.target.value = "";
+};
+const enTxt = () => $("#tEn").textContent = M.en ? "Wikipédia em inglês: ligada" : "Wikipédia em inglês: desligada";
+$("#tEn").onclick = () => { M.en = !M.en; gravar(); enTxt(); }; enTxt();
+$("#zerar").onclick = function(){
+  if (this.dataset.c !== "1") { this.dataset.c = "1"; this.textContent = "Toque de novo para apagar tudo"; setTimeout(() => { this.dataset.c = ""; this.textContent = "Apagar memória"; }, 4000); return; }
+  M = { k: [], q: 0, dom: {}, seq: 1, en: M.en }; gravar(); render(); this.dataset.c = ""; this.textContent = "Apagar memória"; toast("Memória apagada.");
+};
+const net = () => $("#offline").hidden = navigator.onLine;
+addEventListener("online", net); addEventListener("offline", net); net();
+M.k.forEach(i => i.tk = i.tk || toks(i.t));
+render();
+if ("serviceWorker" in navigator) addEventListener("load", () => navigator.serviceWorker.register("sw.js").catch(() => {}));
+</script>
+</body>
+</html>

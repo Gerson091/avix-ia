@@ -1,0 +1,35 @@
+AVIX IA — como instalar no Android
+====================================
+
+O app é um site leve (HTML + JavaScript). Para o Android instalar ele como
+aplicativo, ele precisa estar num endereço https. Os jeitos abaixo são grátis.
+
+JEITO MAIS FÁCIL (pelo computador, 2 minutos) — Netlify Drop
+ 1. Descompacte o arquivo avix-ia.zip. Vai aparecer a pasta "avix-ia".
+ 2. No computador, abra  https://app.netlify.com/drop
+ 3. Entre com sua conta do Google (é grátis) e arraste a PASTA "avix-ia"
+    para dentro da página.
+ 4. Ele mostra um endereço tipo  https://nome-aleatorio.netlify.app
+    (dá para trocar o nome em "Site configuration > Change site name").
+ 5. No celular, abra esse endereço no Chrome.
+ 6. Toque em ⋮ (três pontinhos) > "Instalar app" (ou "Adicionar à tela inicial").
+ Pronto: o ícone da AVIX IA aparece junto com os seus outros aplicativos.
+
+OUTRO JEITO — GitHub Pages (dá para fazer pelo celular)
+ 1. Crie uma conta em github.com e um repositório novo, público, chamado "avix-ia".
+ 2. "Add file" > "Upload files" e envie os 6 arquivos:
+    index.html, manifest.webmanifest, sw.js, icon-192.png, icon-512.png, logo-mark.png
+ 3. Settings > Pages > Branch: main > Save.
+ 4. Em 1 ou 2 minutos o app fica em  https://SEU-USUARIO.github.io/avix-ia/
+ 5. Abra no Chrome do celular > ⋮ > "Instalar app".
+
+COMO ELE FUNCIONA
+ - Não usa Claude, ChatGPT nem nenhuma IA paga. O "cérebro" roda no celular.
+ - Pesquisa na Wikipédia e no DuckDuckGo, escolhe os trechos que respondem
+   e guarda no Caderno. Na próxima vez responde sem precisar pesquisar.
+ - 👍 deixa a resposta mais forte; 👎 enfraquece e pede a resposta certa.
+ - "Ensinar" ou começar a frase com "lembre:" grava algo que você sabe.
+   O que você ensina tem prioridade sobre qualquer site.
+ - Tudo fica salvo só no celular. Em Ajustes > "Salvar backup" você guarda
+   uma cópia do cérebro (arquivo .json) e pode restaurar em outro aparelho.
+ - Sem internet ele abre normalmente e responde com o que já aprendeu.
