@@ -49,7 +49,7 @@ header{padding:12px max(16px,env(safe-area-inset-left,0px)) 12px max(16px,env(sa
 .track i{display:block}
 
 .view{flex:1;overflow-y:auto;min-height:0;overscroll-behavior:contain}
-.view[hidden]{display:none}
+.view[hidden],[hidden]{display:none!important}
 
 /* conversa */
 .log{padding:8px max(16px,env(safe-area-inset-left,0px)) 18px max(16px,env(safe-area-inset-right,0px));display:flex;flex-direction:column;gap:22px}
@@ -160,6 +160,12 @@ nav.tabs button.on::after{content:"";width:18px;height:3px;border-radius:2px;bac
 .toast{position:fixed;left:50%;bottom:calc(150px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--raised);border:1px solid var(--line-2);color:var(--ink);padding:10px 18px;border-radius:999px;font-size:13px;opacity:0;transition:opacity .2s;pointer-events:none;max-width:90vw;z-index:5}
 .toast.on{opacity:1}
 .offline{margin:0 16px 6px;background:rgba(255,107,138,.08);border:1px solid rgba(255,107,138,.35);color:var(--bad);font-size:12.5px;text-align:center;padding:6px 12px;border-radius:12px}
+.inst{margin:0 16px 8px;display:flex;align-items:center;gap:10px;padding:8px 8px 8px 14px;border:1px solid rgba(139,92,246,.4);border-radius:14px;background:linear-gradient(90deg,rgba(25,194,255,.08),rgba(139,92,246,.1));font-size:13px;color:var(--ink-2)}
+.inst span{flex:1;min-width:0}
+.inst button{padding:7px 14px;font-size:13px}
+.inst .x{background:none;border:0;box-shadow:none;padding:6px 8px;color:var(--muted)}
+.passos{margin:10px 0 0;padding-left:20px;font-size:13.5px;color:var(--ink-2);line-height:1.55}
+.passos b{color:var(--ink)}
 @media (min-width:600px){.examples{grid-template-columns:repeat(4,minmax(0,1fr))}}
 </style>
 </head>
@@ -175,6 +181,7 @@ nav.tabs button.on::after{content:"";width:18px;height:3px;border-radius:2px;bac
     </div>
   </header>
   <div class="offline" id="offline" hidden>Sem internet. Respondendo só com o que já aprendi.</div>
+  <div class="inst" id="instBar" hidden><span>Instale a AVIX como app no celular.</span><button type="button" class="solid instBtn">Instalar</button><button type="button" class="x" id="instX" aria-label="Fechar">✕</button></div>
 
   <section class="view" id="vChat">
     <div class="log" id="log">
@@ -221,6 +228,12 @@ nav.tabs button.on::after{content:"";width:18px;height:3px;border-radius:2px;bac
     <div class="pad">
       <h2 class="pagetitle">Ajustes</h2>
       <div class="box">
+        <h3>Instalar app</h3>
+        <p id="instTxt">Coloque a AVIX na tela inicial para abrir como um app, até sem internet.</p>
+        <div class="row" id="instRow"><button type="button" class="solid instBtn">Instalar app</button></div>
+        <div id="instAjuda" hidden></div>
+      </div>
+      <div class="box">
         <h3>Backup da memória</h3>
         <p>Tudo o que a AVIX aprendeu fica salvo só neste celular. Faça um backup para não perder nada ou para passar para outro aparelho.</p>
         <div class="row"><button id="exp" type="button" class="solid">Salvar backup</button><button id="imp" type="button">Restaurar backup</button><input type="file" id="impFile" accept=".json,application/json" hidden></div>
@@ -235,7 +248,7 @@ nav.tabs button.on::after{content:"";width:18px;height:3px;border-radius:2px;bac
         <p>Apaga tudo o que foi aprendido neste aparelho.</p>
         <div class="row"><button id="zerar" type="button" class="danger">Apagar memória</button></div>
       </div>
-      <p class="eyebrow" style="text-align:center">AVIX IA · versão 1.1 · funciona sem IA externa</p>
+      <p class="eyebrow" style="text-align:center">AVIX IA · versão 1.2 · funciona sem IA externa</p>
     </div>
   </section>
 
@@ -630,6 +643,49 @@ addEventListener("online", net); addEventListener("offline", net); net();
 M.k.forEach(i => i.tk = i.tk || toks(i.t));
 render();
 if ("serviceWorker" in navigator) addEventListener("load", () => navigator.serviceWorker.register("sw.js").catch(() => {}));
+
+// ---- Instalar como app ----
+let pedido = null;
+const instalado = () => matchMedia("(display-mode: standalone)").matches || navigator.standalone === true;
+const ocultouBarra = () => { try { return localStorage.getItem("avix.instX") === "1"; } catch { return false; } };
+function estadoInstalar() {
+  const ok = instalado();
+  $("#instBar").hidden = ok || ocultouBarra();
+  $("#instRow").hidden = ok;
+  $("#instTxt").textContent = ok ? "A AVIX já está instalada e aberta como app. ✔" : "Coloque a AVIX na tela inicial para abrir como um app, até sem internet.";
+  if (ok) $("#instAjuda").hidden = true;
+}
+function ajudaInstalar() {
+  const ua = navigator.userAgent;
+  let html;
+  if (/FBAN|FBAV|Instagram|WhatsApp|Line\/|GitHub|; wv\)/i.test(ua)) {
+    html = "<p>Você abriu a AVIX dentro de outro aplicativo, e por ali não dá para instalar.</p><ol class='passos'><li>Toque nos <b>⋮</b> ou em <b>Abrir no navegador</b>.</li><li>Escolha o <b>Chrome</b>.</li><li>No Chrome, volte aqui e toque em <b>Instalar app</b>.</li></ol>";
+  } else if (/SamsungBrowser/i.test(ua)) {
+    html = "<ol class='passos'><li>Toque no menu <b>☰</b> embaixo.</li><li>Toque em <b>Adicionar página a</b> → <b>Tela inicial</b>.</li></ol><p>Se não aparecer, abra o site no <b>Chrome</b>.</p>";
+  } else if (/iPhone|iPad/i.test(ua)) {
+    html = "<ol class='passos'><li>Abra no <b>Safari</b>.</li><li>Toque em <b>Compartilhar</b> ⬆️.</li><li>Toque em <b>Adicionar à Tela de Início</b>.</li></ol>";
+  } else {
+    html = "<ol class='passos'><li>Toque nos <b>⋮</b> no canto de cima do Chrome.</li><li>Toque em <b>Instalar app</b> ou <b>Adicionar à tela inicial</b> → <b>Instalar</b>.</li><li>Se só aparecer \"Criar atalho\", feche o Chrome, abra de novo este site, espere uns segundos e tente outra vez.</li><li>Se já tinha um atalho antigo da AVIX, apague ele antes.</li></ol>";
+  }
+  $("#instAjuda").innerHTML = html;
+  $("#instAjuda").hidden = false;
+}
+addEventListener("beforeinstallprompt", e => { e.preventDefault(); pedido = e; estadoInstalar(); });
+addEventListener("appinstalled", () => { pedido = null; toast("AVIX instalada! Procure o ícone na tela inicial."); estadoInstalar(); });
+document.querySelectorAll(".instBtn").forEach(b => b.onclick = async () => {
+  if (pedido) {
+    pedido.prompt();
+    const r = await pedido.userChoice.catch(() => null);
+    pedido = null;
+    if (r && r.outcome === "accepted") return;
+    toast("Tudo bem. Você pode instalar depois em Ajustes.");
+    return;
+  }
+  $("#tCfg").click();
+  ajudaInstalar();
+});
+$("#instX").onclick = () => { try { localStorage.setItem("avix.instX", "1"); } catch {} $("#instBar").hidden = true; };
+estadoInstalar();
 </script>
 </body>
 </html>
