@@ -11,7 +11,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="format-detection" content="telephone=no">
 <!-- Segurança: o app só pode falar com a Wikipédia, o DuckDuckGo e as fontes do Google. Nenhum outro site. -->
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://www.gstatic.com https://apis.google.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob: https://lh3.googleusercontent.com; connect-src 'self' https://pt.wikipedia.org https://en.wikipedia.org https://api.duckduckgo.com https://firestore.googleapis.com https://identitytoolkit.googleapis.com https://securetoken.googleapis.com https://www.googleapis.com https://apis.google.com https://www.gstatic.com; frame-src https://avix-ia-cf.firebaseapp.com https://accounts.google.com; manifest-src 'self'; worker-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://www.gstatic.com https://apis.google.com https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob: https://lh3.googleusercontent.com; connect-src 'self' https://pt.wikipedia.org https://en.wikipedia.org https://api.duckduckgo.com https://firestore.googleapis.com https://identitytoolkit.googleapis.com https://securetoken.googleapis.com https://www.googleapis.com https://apis.google.com https://www.gstatic.com https://southamerica-east1-avix-ia-cf.cloudfunctions.net; frame-src https://avix-ia-cf.firebaseapp.com https://accounts.google.com; manifest-src 'self'; worker-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="no-referrer">
 <title>AVIX IA</title>
 <link rel="manifest" href="manifest.webmanifest">
@@ -20,6 +20,9 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700&family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/marked/12.0.2/marked.min.js" integrity="sha384-/TQbtLCAerC3jgaim+N78RZSDYV7ryeoBCVqTuzRrFec2akfBkHS7ACQ3PQhvMVi" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.1.6/purify.min.js" integrity="sha384-+VfUPEb0PdtChMwmBcBmykRMDd+v6D/oFmB3rZM/puCMDYcIvF968OimRh4KQY9a" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js" integrity="sha384-F/bZzf7p3Joyp5psL90p/p89AZJsndkSoGwRpXcZhleCWhd8SnRuoYo4d0yirjJp" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <style>
 /* AVIX IA — tema escuro da marca: azul-ciano → violeta do logo */
 :root{
@@ -241,6 +244,42 @@ form.ask textarea:focus-visible{outline:none}
 .passos b{color:var(--ink)}
 .nota{font-size:12.5px!important;color:var(--muted)!important;border-left:2px solid var(--violet);padding-left:10px}
 @media (min-width:600px){.examples{grid-template-columns:repeat(4,minmax(0,1fr))}}
+
+/* respostas da IA em Markdown */
+.body.md{color:var(--ink-2)}
+.body.md>*:first-child{margin-top:0}
+.body.md p{margin:0 0 .8em;color:var(--ink-2)}
+.body.md h1,.body.md h2,.body.md h3,.body.md h4{font-family:var(--display);color:var(--ink);line-height:1.3;margin:1.1em 0 .5em}
+.body.md h1{font-size:20px}.body.md h2{font-size:18px}.body.md h3,.body.md h4{font-size:16px}
+.body.md strong{color:var(--ink)}
+.body.md a{color:var(--cyan);text-decoration:underline;text-underline-offset:2px}
+.body.md ul,.body.md ol{margin:0 0 .8em;padding-left:1.3em}
+.body.md li{margin:.2em 0}
+.body.md blockquote{margin:0 0 .8em;padding:.2em 0 .2em 14px;border-left:3px solid var(--violet);color:var(--ink-2)}
+.body.md hr{border:none;border-top:1px solid var(--line-2);margin:1.2em 0}
+.body.md code{font-family:var(--mono);font-size:.88em;background:var(--raised);border:1px solid var(--line);border-radius:6px;padding:.1em .35em}
+.body.md pre{position:relative;margin:0 0 .9em;background:#0a0e1f;border:1px solid var(--line-2);border-radius:14px;padding:14px;overflow-x:auto;font-size:13px;line-height:1.55}
+.body.md pre code{background:none;border:none;padding:0;font-size:inherit;white-space:pre}
+.body.md pre .cp{position:absolute;top:6px;right:6px;padding:3px 9px;font-size:11px;font-weight:600;border-radius:8px;background:var(--raised);color:var(--ink-2)}
+.body.md table{border-collapse:collapse;margin:0 0 .9em;display:block;overflow-x:auto;max-width:100%;font-size:13.5px}
+.body.md th,.body.md td{border:1px solid var(--line-2);padding:6px 10px;text-align:left;vertical-align:top}
+.body.md th{background:var(--raised);color:var(--ink)}
+.body.md .cursor-ia{display:inline-block;width:8px;height:8px;margin-left:4px;border-radius:50%;background:var(--grad);vertical-align:middle;animation:pulse .8s infinite}
+.hljs-keyword,.hljs-selector-tag,.hljs-built_in{color:#c792ea}.hljs-string,.hljs-attr{color:#a5e075}.hljs-number,.hljs-literal{color:#f78c6c}.hljs-comment{color:#6b7394;font-style:italic}.hljs-title,.hljs-function{color:#82aaff}.hljs-variable,.hljs-params{color:#eef1ff}.hljs-type,.hljs-class{color:#ffcb6b}
+.sources.ia{gap:4px}
+.sources.ia::before{content:"Fontes";font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);align-self:center;margin-right:4px}
+.sources.ia a{font-size:10.5px;padding:3px 9px}
+.aviso-ia{font-size:12.5px;color:var(--muted);border-left:2px solid var(--violet);padding-left:10px}
+.erro-ia{font-size:13.5px;color:var(--bad);background:rgba(255,107,138,.07);border:1px solid rgba(255,107,138,.3);border-radius:12px;padding:10px 12px;display:flex;flex-direction:column;gap:8px}
+.sug{display:flex;flex-direction:column;gap:8px;border:1px solid rgba(139,92,246,.4);background:var(--grad-soft);border-radius:14px;padding:10px 12px;font-size:13px;color:var(--ink-2)}
+.sug b{color:var(--ink)}
+.chatItem .ren{flex:none;width:30px;height:30px;padding:0;border:none;background:none;color:var(--muted);border-radius:8px;font-size:13px;display:grid;place-items:center}
+.memU{display:flex;flex-direction:column;gap:6px}
+.memU .it{display:flex;gap:8px;align-items:flex-start;border:1px solid var(--line);border-radius:12px;padding:9px 10px;background:var(--bg-2);font-size:13.5px;color:var(--ink)}
+.memU .it span{flex:1;min-width:0;overflow-wrap:anywhere}
+.memU .it button{flex:none;border:none;background:none;padding:2px 6px;color:var(--muted);font-size:12px}
+.memU .it textarea{min-height:60px;font-size:15px}
+.memU .vazio{color:var(--muted);font-size:13px}
 </style>
 </head>
 <body>
@@ -282,6 +321,12 @@ form.ask textarea:focus-visible{outline:none}
 
   <section class="view" id="vMem" hidden>
     <div class="pad">
+      <div class="box" id="memUserBox">
+        <h3>O que a AVIX sabe sobre você</h3>
+        <p id="memUserTxt">Preferências e informações que você autorizou guardar. A IA usa isso nas conversas, em qualquer aparelho.</p>
+        <div class="memU" id="memUser"></div>
+        <div class="row" id="memAddRow"><input id="memNova" maxlength="500" placeholder="Ex.: Prefiro respostas curtas e diretas" aria-label="Nova memória"><button type="button" class="solid" id="memAdd">Guardar</button></div>
+      </div>
       <div class="observ"><canvas id="sky"></canvas>
         <div class="cap">
           <div class="stats">
@@ -310,6 +355,10 @@ form.ask textarea:focus-visible{outline:none}
         <div class="row" id="instRow"><button type="button" class="solid instBtn">Instalar app</button></div>
       </div>
       <div class="box">
+        <h3>✦ Inteligência artificial</h3>
+        <p id="iaTxt">Entre com o Google para conversar com a IA. Sem login ou sem internet, a AVIX responde com a memória do aparelho.</p>
+      </div>
+      <div class="box">
         <h3>☁ Memória na nuvem</h3>
         <p id="nvTxt">Entre com a sua conta Google para a AVIX usar a mesma memória em todos os seus aparelhos. O que ela aprender em um, aprende em todos.</p>
         <div class="row"><button type="button" class="solid" id="nvBtn">Entrar com Google</button><button type="button" id="nvSync" hidden>Sincronizar agora</button></div>
@@ -334,7 +383,7 @@ form.ask textarea:focus-visible{outline:none}
         <p>Apaga tudo o que foi aprendido. Se a memória na nuvem estiver ligada, apaga em todos os aparelhos.</p>
         <div class="row"><button id="zerar" type="button" class="danger">Apagar memória</button></div>
       </div>
-      <p class="eyebrow" style="text-align:center">AVIX IA · versão 3.1 · funciona sem IA externa</p>
+      <p class="eyebrow" style="text-align:center">AVIX IA · versão 4.0 · funciona sem IA externa</p>
     </div>
   </section>
 
@@ -609,10 +658,15 @@ let C = carregarChats();   // { list: [ {id, t, ts, ctx, m:[{p, a}]} ] }
 let atual = null;          // conversa aberta
 let ger = null;            // geração em andamento { stop, abort }
 function carregarChats(){ try { const c = JSON.parse(localStorage.getItem(CKEY)); if (c && Array.isArray(c.list)) return c; } catch {} return { list: [] }; }
-function salvarChats(){
+function salvarChats(){ // só as conversas do aparelho; as da IA ficam na nuvem
+  C.list = C.list.filter(c => !c.nuvem);
   C.list.sort((a,b) => b.ts - a.ts); C.list = C.list.slice(0, 80);
-  for (let i = 0; i < 4; i++) { try { localStorage.setItem(CKEY, JSON.stringify(C)); return; } catch { C.list = C.list.slice(0, Math.floor(C.list.length / 2)); } }
+  const { nuvem, ...resto } = C;
+  for (let i = 0; i < 4; i++) { try { localStorage.setItem(CKEY, JSON.stringify(resto)); return; } catch { C.list = C.list.slice(0, Math.floor(C.list.length / 2)); resto.list = C.list; } }
 }
+C.nuvem = [];
+const todosChats = () => [...C.nuvem, ...C.list];
+const acharChat = id => todosChats().find(c => c.id === id) || null;
 
 const log = $("#log"), vChat = $("#vChat");
 const pertoDoFim = () => vChat.scrollHeight - vChat.scrollTop - vChat.clientHeight < 140;
@@ -636,7 +690,7 @@ function hero(){
   log.innerHTML = `<div class="hero" id="hero">
     <img src="logo-mark.png" alt="AVIX IA">
     <h2>${saudacao()}! Como posso <span class="gtext">ajudar</span>?</h2>
-    <p>Eu pesquiso na internet, respondo com as fontes e aprendo com cada conversa. Se eu errar, me ensine: o que você diz vale mais que qualquer site.</p>
+    <p>Pergunte, peça um texto, uma conta, um resumo ou ajuda com código. Eu converso, pesquiso na internet quando precisa e lembro do que você me autorizar.</p>
     <div class="examples" id="examples">
       <button type="button"><small>Estoque</small>O que é curva ABC?</button>
       <button type="button"><small>História</small>Quem inventou o código de barras?</button>
@@ -660,8 +714,10 @@ function msgEl(m, novo){
   return el;
 }
 function preencher(el, a){
+  if (a.k === "ia") return preencherIA(el, a);
   const ans = el.querySelector(".ans");
-  ans.querySelectorAll(".sources,.learned,.acts,.fix").forEach(x => x.remove());
+  ans.querySelectorAll(".sources,.learned,.acts,.fix,.sug,.erro-ia,.aviso-ia").forEach(x => x.remove());
+  el.querySelector(".body").classList.remove("md");
   el.querySelector(".who img").classList.remove("pensa");
   el.querySelector(".bdg").innerHTML = a.k === "web" ? '<span class="badge web">pesquisado agora</span>' : a.k === "mem" ? '<span class="badge mem">da memória</span>' : a.k === "ensino" ? '<span class="badge mem">ensinado</span>' : "";
   const st = el.querySelector(".status");
@@ -675,7 +731,9 @@ function preencher(el, a){
   acoes(el, a);
 }
 function corpoFixo(el, a){
-  const b = el.querySelector(".body"); b.innerHTML = "";
+  const b = el.querySelector(".body");
+  if (a.k === "ia") { b.classList.add("md"); b.innerHTML = md(a.md); enfeitarCodigo(b); return; }
+  b.classList.remove("md"); b.innerHTML = "";
   paragrafos(a).forEach((t, i) => { const p = document.createElement("p"); if (i === 0) p.className = "lead"; p.textContent = t; b.append(p); });
 }
 // efeito de digitação, palavra por palavra
@@ -816,6 +874,14 @@ async function gerar(el, m, op = {}){
   if (ger === g) { ger = null; sinal = null; ocupado(false); }
 }
 function perguntar(texto){
+  const lembre = /^\s*(lembre|lembra|anote|anota|aprenda|aprende|guarde|guarda)\s*(-|:|que)?\s*(.+)$/is.exec(texto);
+  if (lembre && nv.user && M.sync.ligado) salvarMemoria(lembre[3], "usuario");
+  // Com login e internet, a IA responde. Sem isso, o cérebro do aparelho (como antes).
+  if (!lembre && iaPronta() && (!atual || atual.nuvem)) return perguntarIA(texto);
+  if (atual?.nuvem) { // "lembre:" no meio de uma conversa da IA: mostra aqui, sem mandar para o servidor
+    const m = { p: texto, a: null }; atual.m.push(m);
+    const el = msgEl(m, true); log.append(el); rolar(true); gerar(el, m); return;
+  }
   if (!atual) {
     atual = { id: "c" + Date.now().toString(36), t: texto.replace(/\s+/g, " ").slice(0, 48), ts: Date.now(), ctx: "", m: [] };
     C.list.unshift(atual);
@@ -830,10 +896,270 @@ function perguntar(texto){
 }
 function pararTudo(){ if (ger) { ger.stop = true; ger.ctrl.abort(); } }
 
+/* =========================================================
+   IA DE VERDADE (backend seguro no Firebase)
+   - o app manda a pergunta + o login; o servidor guarda a chave da IA,
+     monta o contexto (histórico, resumo, memórias), chama o modelo e
+     devolve a resposta aos pedaços (streaming)
+   - se o servidor não estiver disponível, a AVIX usa o cérebro do aparelho
+   ========================================================= */
+const API_IA = (/^(localhost|127\.0\.0\.1)$/.test(location.hostname) && (() => { try { return localStorage.getItem("avix.api"); } catch { return null; } })()) || "https://southamerica-east1-avix-ia-cf.cloudfunctions.net/chat"; // no computador (testes) dá para apontar para um servidor local
+const ia = { foraAte: 0, motivo: "", hoje: null };
+const iaPronta = () => !!(fb && nv.user && M.sync.ligado && nv.unsub && navigator.onLine && Date.now() > ia.foraAte);
+
+// Markdown seguro: o texto da IA vira HTML, e o DOMPurify tira qualquer coisa perigosa
+let purifyOk = false;
+function md(texto){
+  const t = String(texto || "").replace(/<lembrar>[\s\S]*?(<\/lembrar>|$)/gi, "").replace(/<l(e(m(b(r(a(r)?)?)?)?)?)?$/i, "");
+  if (window.marked && window.DOMPurify) {
+    if (!purifyOk) {
+      purifyOk = true;
+      DOMPurify.addHook("afterSanitizeAttributes", n => {
+        if (n.tagName === "A") { const h = linkSeguro(n.getAttribute("href") || ""); if (h) { n.setAttribute("href", h); n.setAttribute("target", "_blank"); n.setAttribute("rel", "noopener noreferrer"); } else n.removeAttribute("href"); }
+      });
+    }
+    return DOMPurify.sanitize(marked.parse(t, { gfm: true, breaks: false }), { FORBID_TAGS: ["img", "style", "form", "input", "iframe"], FORBID_ATTR: ["style"] });
+  }
+  return t.split(/\n{2,}/).map(p => "<p>" + esc(p).replace(/\n/g, "<br>") + "</p>").join("");
+}
+function enfeitarCodigo(b){
+  b.querySelectorAll("pre > code").forEach(c => {
+    if (window.hljs && !c.dataset.hl) { try { hljs.highlightElement(c); } catch {} c.dataset.hl = "1"; }
+    const pre = c.parentElement;
+    if (!pre.querySelector(".cp")) { const bt = document.createElement("button"); bt.type = "button"; bt.className = "cp"; bt.textContent = "Copiar"; bt.onclick = () => copiar(c.textContent); pre.append(bt); }
+  });
+}
+const ROTULO = { pensando: "Pensando…", buscando: "Pesquisando na internet…", lendo: "Lendo as fontes…", organizando: "Organizando a conversa…" };
+
+function preencherIA(el, a){
+  const ans = el.querySelector(".ans");
+  ans.querySelectorAll(".sources,.learned,.acts,.fix,.sug,.erro-ia,.aviso-ia").forEach(x => x.remove());
+  el.querySelector(".who img").classList.remove("pensa");
+  el.querySelector(".bdg").innerHTML = "";
+  el.querySelector(".status").innerHTML = a.fontes?.length ? `<div>Pesquisou em ${a.fontes.length} fonte${a.fontes.length > 1 ? "s" : ""}</div>` : "";
+  if (a.parou) ans.insertAdjacentHTML("beforeend", '<div class="aviso-ia">Você parou a resposta aqui.</div>');
+  if (a.fim === "limite") ans.insertAdjacentHTML("beforeend", '<div class="aviso-ia">A resposta ficou grande demais e foi cortada. Peça "continue" para seguir.</div>');
+  if (a.fim === "recusa") ans.insertAdjacentHTML("beforeend", '<div class="aviso-ia">A IA preferiu não responder a esse pedido.</div>');
+  if (a.erro) {
+    const d = document.createElement("div"); d.className = "erro-ia";
+    d.innerHTML = `<span></span><div class="row"><button type="button" data-x="local">Responder com a memória do aparelho</button></div>`;
+    d.querySelector("span").textContent = a.erro;
+    d.querySelector("button").onclick = () => { if (!ger) usarCerebroLocal(el, el._m); };
+    ans.append(d);
+  }
+  if (a.fontes?.length) { const s = document.createElement("div"); s.className = "sources ia"; s.innerHTML = a.fontes.slice(0, 6).filter(f => linkSeguro(f.url)).map(f => `<a href="${esc(linkSeguro(f.url))}" target="_blank" rel="noopener noreferrer" title="${esc(f.titulo || "")}">${esc(host(f.url) || f.titulo)}</a>`).join(""); ans.append(s); }
+  if (a.sugestao && !a.sugFeita) {
+    const s = document.createElement("div"); s.className = "sug";
+    s.innerHTML = `<span>💾 Quer que eu guarde isto na memória? <b></b></span><div class="row"><button type="button" class="solid">Guardar</button><button type="button" class="ghost">Agora não</button></div>`;
+    s.querySelector("b").textContent = "“" + a.sugestao + "”";
+    const [ok, no] = s.querySelectorAll("button");
+    ok.onclick = () => { salvarMemoria(a.sugestao, "sugerida"); a.sugFeita = true; s.innerHTML = '<span class="done"><b>Guardado.</b> Vou lembrar disso nas próximas conversas.</span>'; };
+    no.onclick = () => { a.sugFeita = true; s.remove(); };
+    ans.append(s);
+  }
+  const box = document.createElement("div"); box.className = "acts"; ans.append(box);
+  const ultima = el === [...log.querySelectorAll(".msg")].pop();
+  box.innerHTML = (a.md ? `<button class="ic" type="button" data-a="copy" aria-label="Copiar">${ICON.copy}</button>` : "") +
+    (ultima && atual?.nuvem && atual.id ? `<button class="ic" type="button" data-a="retry" aria-label="Gerar outra resposta">${ICON.retry}</button>` : "");
+  box.onclick = e => {
+    const b = e.target.closest("button"); if (!b) return;
+    if (b.dataset.a === "copy") copiar(md2txt(a.md) + (a.fontes?.length ? "\n\nFontes:\n" + a.fontes.map(f => f.url).join("\n") : ""));
+    if (b.dataset.a === "retry" && !ger) perguntarIA(null, { regenerar: true, el, m: el._m });
+  };
+}
+const md2txt = t => String(t || "").replace(/<lembrar>[\s\S]*?(<\/lembrar>|$)/gi, "").trim();
+
+// lê o streaming do servidor (linhas "data: {...}")
+async function lerEventos(resp, aoEvento){
+  const leitor = resp.body.getReader(), dec = new TextDecoder();
+  let buf = "";
+  for (;;) {
+    const { value, done } = await leitor.read();
+    if (done) break;
+    buf += dec.decode(value, { stream: true });
+    let i;
+    while ((i = buf.indexOf("\n\n")) >= 0) {
+      const bloco = buf.slice(0, i); buf = buf.slice(i + 2);
+      for (const linha of bloco.split("\n")) if (linha.startsWith("data: ")) { let o; try { o = JSON.parse(linha.slice(6)); } catch { continue; } aoEvento(o); }
+    }
+  }
+}
+
+async function perguntarIA(texto, op = {}){
+  let el = op.el, m = op.m;
+  if (!op.regenerar) {
+    if (!atual) { atual = { id: null, t: texto.replace(/\s+/g, " ").slice(0, 60), ts: Date.now(), nuvem: true, m: [], temp: true }; log.innerHTML = ""; titulo(); }
+    m = { p: texto, a: null }; atual.m.push(m);
+    el = msgEl(m, true); log.append(el); rolar(true);
+    log.querySelectorAll(".msg .acts [data-a=retry]").forEach(b => b.remove()); // só a última pode ser refeita
+  }
+  const chat = atual;
+  const a = { k: "ia", md: "" }; m.a = a;
+  const g = ger = { stop: false, ctrl: new AbortController() };
+  ocupado(true);
+  const ans = el.querySelector(".ans"), st = el.querySelector(".status"), body = el.querySelector(".body");
+  ans.querySelectorAll(".sources,.learned,.acts,.fix,.sug,.erro-ia,.aviso-ia").forEach(x => x.remove());
+  el.querySelector(".bdg").innerHTML = ""; body.innerHTML = ""; body.classList.add("md");
+  el.querySelector(".who img").classList.add("pensa");
+  st.innerHTML = `<div class="live">${ROTULO.pensando}</div>`;
+
+  let agendado = 0;
+  const desenhar = () => { agendado = 0; body.innerHTML = md(a.md) + '<span class="cursor-ia"></span>'; rolar(); };
+  let falhaRede = false;
+  try {
+    const token = await nv.user.getIdToken();
+    const resp = await fetch(API_IA, { method: "POST", headers: { "Content-Type": "application/json", Authorization: "Bearer " + token }, body: JSON.stringify({ chatId: chat.id, texto: op.regenerar ? undefined : texto, regenerar: !!op.regenerar }), signal: g.ctrl.signal });
+    const tipo = resp.headers.get("content-type") || "";
+    if (!resp.ok || !tipo.includes("event-stream")) {
+      const j = tipo.includes("json") ? await resp.json().catch(() => ({})) : {};
+      if (resp.status === 404 || (!j.erro && resp.status >= 500)) { ia.foraAte = Date.now() + 10 * 60000; ia.motivo = "A IA ainda não está instalada no servidor."; falhaRede = true; }
+      else a.erro = j.erro || `A IA não respondeu (erro ${resp.status}).`;
+      if (resp.status === 503) { ia.foraAte = Date.now() + 5 * 60000; ia.motivo = j.erro || "IA indisponível."; }
+    } else {
+      await lerEventos(resp, ev => {
+        if (ev.t === "status") st.innerHTML = `<div class="live">${esc(ROTULO[ev.s] || "Pensando…")}</div>`;
+        else if (ev.t === "chat" && !chat.id) { chat.id = ev.id; chat.t = ev.titulo || chat.t; chat.temp = false; if (!C.nuvem.includes(chat)) C.nuvem.unshift(chat); listaChats(); titulo(); }
+        else if (ev.t === "d") { if (!a.md) st.innerHTML = ""; a.md += ev.d; if (!agendado) agendado = setTimeout(desenhar, 50); }
+        else if (ev.t === "fim") { a.fontes = (ev.fontes || []).filter(f => f && linkSeguro(f.url)); a.sugestao = ev.sugestao || ""; a.id = ev.msgId; a.fim = ev.fim; if (ev.uso) ia.ultimoUso = ev.uso; }
+        else if (ev.t === "erro") a.erro = ev.msg || "A IA teve um problema.";
+      });
+    }
+  } catch (e) {
+    if (g.stop || e?.name === "AbortError") a.parou = true;
+    else if (!a.md) { falhaRede = true; if (navigator.onLine) { ia.foraAte = Date.now() + 3 * 60000; ia.motivo = ia.motivo || "Não consegui falar com a IA agora."; } }
+    else a.erro = "A conexão caiu no meio da resposta.";
+  }
+  clearTimeout(agendado);
+  if (ger === g) { ger = null; ocupado(false); }
+  if (falhaRede && !a.md && !g.stop) return usarCerebroLocal(el, m, ia.motivo || "Não consegui falar com a IA agora.");
+  chat.ts = Date.now(); listaChats();
+  if (!el.isConnected) return;
+  st.innerHTML = "";
+  corpoFixo(el, a); preencherIA(el, a); rolar();
+  atualizarIA();
+}
+
+// Sem IA: responde com o cérebro antigo do aparelho e guarda como conversa local
+function usarCerebroLocal(el, m, aviso){
+  if (atual?.nuvem && (atual.temp || !atual.id)) { atual.nuvem = false; atual.temp = false; atual.id = "c" + Date.now().toString(36); C.list.unshift(atual); }
+  if (aviso) toast(aviso + " Respondi com a memória do aparelho.");
+  el.querySelector(".body").classList.remove("md");
+  m.a = null;
+  gerar(el, m);
+}
+
+/* --- conversas da IA na nuvem: abrir, renomear, apagar --- */
+async function abrirChatNuvem(c){
+  pararTudo();
+  atual = c; aba("chat"); titulo(); listaChats();
+  log.innerHTML = '<div class="hero"><p>Carregando a conversa…</p></div>';
+  try {
+    const { fs, D } = fb;
+    const s = await fs.getDocs(fs.query(fs.collection(D, "users", nv.user.uid, "chats", c.id, "msgs"), fs.orderBy("ts")));
+    if (atual !== c) return;
+    c.m = [];
+    for (const d of s.docs) {
+      const x = d.data();
+      if (x.papel === "user") c.m.push({ p: x.texto, a: null });
+      else if (c.m.length) c.m[c.m.length - 1].a = { k: "ia", md: x.texto || "", fontes: x.fontes || [], id: d.id, parou: !!x.parou, fim: x.fim || "ok", sugestao: x.sugestao || "", sugFeita: true };
+    }
+  } catch { log.innerHTML = '<div class="hero"><p>Não consegui abrir essa conversa agora. Verifique a internet.</p></div>'; return; }
+  log.innerHTML = "";
+  for (const m of c.m) {
+    const el = msgEl(m, false); log.append(el);
+    if (!m.a) m.a = { k: "ia", md: "", erro: "Essa pergunta ficou sem resposta." };
+  }
+  [...log.querySelectorAll(".msg")].forEach(el => { corpoFixo(el, el._m.a); preencher(el, el._m.a); });
+  rolar(true);
+}
+function renomearChat(c){
+  const novo = prompt("Novo nome da conversa:", c.t);
+  if (!novo || !novo.trim()) return;
+  c.t = novo.trim().slice(0, 100);
+  if (c.nuvem && fb && nv.user) fb.fs.updateDoc(fb.fs.doc(fb.D, "users", nv.user.uid, "chats", c.id), { titulo: c.t }).catch(() => toast("Não consegui renomear agora."));
+  else salvarChats();
+  listaChats(); titulo();
+}
+async function apagarChatNuvem(id){
+  C.nuvem = C.nuvem.filter(c => c.id !== id);
+  if (!fb || !nv.user) return;
+  const { fs, D } = fb, uid = nv.user.uid;
+  try {
+    const msgs = await fs.getDocs(fs.collection(D, "users", uid, "chats", id, "msgs"));
+    for (let i = 0; i < msgs.docs.length; i += 400) { const b = fs.writeBatch(D); msgs.docs.slice(i, i + 400).forEach(d => b.delete(d.ref)); await b.commit(); }
+    await fs.deleteDoc(fs.doc(D, "users", uid, "chats", id));
+  } catch { toast("Não consegui apagar a conversa na nuvem agora."); }
+}
+
+/* --- memória do usuário (preferências autorizadas) --- */
+let memUser = [];
+function salvarMemoria(texto, origem){
+  texto = String(texto).trim().replace(/\s+/g, " ").slice(0, 500);
+  if (!texto || !fb || !nv.user) return;
+  const agora = Date.now();
+  fb.fs.setDoc(fb.fs.doc(fb.fs.collection(fb.D, "users", nv.user.uid, "memorias")), { texto, criado: agora, atualizado: agora, origem }).catch(() => toast("Não consegui guardar na memória agora."));
+}
+function desenharMemUser(){
+  const on = !!(nv.user && M.sync.ligado);
+  $("#memAddRow").hidden = !on;
+  $("#memUserTxt").textContent = on ? "Preferências e informações que você autorizou guardar. A IA usa isso nas conversas, em qualquer aparelho." : "Entre com o Google para a AVIX guardar suas preferências e usar em qualquer aparelho.";
+  const el = $("#memUser");
+  if (!on) { el.innerHTML = ""; return; }
+  el.innerHTML = memUser.length ? memUser.map(m => `<div class="it" data-mid="${esc(m.id)}"><span></span><button type="button" data-op="ed" aria-label="Editar">✎</button><button type="button" data-op="rm" aria-label="Apagar">✕</button></div>`).join("") : '<div class="vazio">Nada guardado ainda. Diga "lembre: …" na conversa ou escreva abaixo.</div>';
+  el.querySelectorAll(".it").forEach((d, i) => d.querySelector("span").textContent = memUser[i].texto);
+}
+$("#memUser").addEventListener("click", e => {
+  const b = e.target.closest("button[data-op]"); if (!b) return;
+  const it = b.closest(".it"), id = it.dataset.mid, m = memUser.find(x => x.id === id); if (!m) return;
+  const ref = fb.fs.doc(fb.D, "users", nv.user.uid, "memorias", id);
+  if (b.dataset.op === "rm") {
+    if (b.dataset.c !== "1") { b.dataset.c = "1"; b.textContent = "apagar?"; setTimeout(() => { if (b.isConnected) { b.dataset.c = ""; b.textContent = "✕"; } }, 3000); return; }
+    fb.fs.deleteDoc(ref).catch(() => toast("Não consegui apagar agora."));
+  } else {
+    it.innerHTML = '<textarea maxlength="500"></textarea><button type="button" data-ok>Salvar</button>';
+    const ta = it.querySelector("textarea"); ta.value = m.texto; ta.focus();
+    it.querySelector("[data-ok]").onclick = () => { const v = ta.value.trim().slice(0, 500); if (!v) return; fb.fs.updateDoc(ref, { texto: v, atualizado: Date.now() }).catch(() => toast("Não consegui salvar agora.")); };
+  }
+});
+$("#memAdd").onclick = () => { const v = $("#memNova").value.trim(); if (!v) return; salvarMemoria(v, "usuario"); $("#memNova").value = ""; toast("Guardado na memória."); };
+
+/* --- ouvir a nuvem: lista de conversas e memórias --- */
+const nvIA = { unsubChats: null, unsubMem: null };
+function ouvirIA(){
+  if (!fb || !nv.user || nvIA.unsubChats) return;
+  const { fs, D } = fb, uid = nv.user.uid;
+  nvIA.unsubChats = fs.onSnapshot(fs.query(fs.collection(D, "users", uid, "chats"), fs.orderBy("atualizado", "desc"), fs.limit(100)), s => {
+    const antes = new Map(C.nuvem.map(c => [c.id, c]));
+    C.nuvem = s.docs.map(d => { const x = d.data(); const c = antes.get(d.id) || (atual?.id === d.id ? atual : { nuvem: true, m: [] }); return Object.assign(c, { id: d.id, t: x.titulo || "Conversa", ts: x.atualizado || 0, nuvem: true }); });
+    if (atual?.nuvem && atual.id && !C.nuvem.includes(atual) && !s.metadata.hasPendingWrites && !ger) { /* apagada em outro aparelho */ }
+    listaChats(); titulo();
+  }, () => {});
+  nvIA.unsubMem = fs.onSnapshot(fs.query(fs.collection(D, "users", uid, "memorias"), fs.orderBy("atualizado", "desc"), fs.limit(300)), s => {
+    memUser = s.docs.map(d => ({ id: d.id, ...d.data() })); desenharMemUser();
+  }, () => {});
+}
+function pararOuvirIA(){ nvIA.unsubChats?.(); nvIA.unsubMem?.(); nvIA.unsubChats = nvIA.unsubMem = null; C.nuvem = []; memUser = []; listaChats(); desenharMemUser(); }
+
+// status da IA e consumo do dia (em Ajustes)
+async function atualizarIA(){
+  const el = $("#iaTxt");
+  if (!(nv.user && M.sync.ligado)) { el.textContent = "Entre com o Google para conversar com a IA. Sem login ou sem internet, a AVIX responde com a memória do aparelho."; return; }
+  if (Date.now() < ia.foraAte) { el.textContent = (ia.motivo || "A IA está indisponível agora.") + " Enquanto isso, respondo com a memória do aparelho."; return; }
+  let txt = "Conectada. As perguntas vão para a IA, que pesquisa na internet quando precisa.";
+  try {
+    const dia = new Date().toLocaleDateString("sv-SE", { timeZone: "America/Sao_Paulo" });
+    const s = await fb.fs.getDoc(fb.fs.doc(fb.D, "users", nv.user.uid, "uso", dia));
+    if (s.exists()) { const u = s.data(); txt += ` Hoje: ${u.pedidos || 0} pergunta(s), custo estimado US$ ${(u.custo || 0).toFixed(3).replace(".", ",")}.`; }
+  } catch {}
+  el.textContent = txt;
+}
+
 /* --- abrir, criar e listar conversas --- */
 function abrirChat(id){
   pararTudo();
-  atual = C.list.find(c => c.id === id) || null;
+  const c = acharChat(id);
+  if (c?.nuvem) return abrirChatNuvem(c);
+  atual = c;
   if (!atual) return novaConversa();
   log.innerHTML = "";
   for (const m of atual.m) {
@@ -857,21 +1183,26 @@ function grupo(ts){
 }
 function listaChats(){
   const el = $("#chats");
-  if (!C.list.length) { el.innerHTML = '<div class="none">Suas conversas vão aparecer aqui.</div>'; return; }
+  const lista = todosChats().filter(c => c.id);
+  if (!lista.length) { el.innerHTML = '<div class="none">Suas conversas vão aparecer aqui.</div>'; return; }
   let g0 = "", html = "";
-  for (const c of C.list.slice().sort((a,b) => b.ts - a.ts)) {
+  for (const c of lista.sort((a,b) => b.ts - a.ts)) {
     const g = grupo(c.ts);
     if (g !== g0) { html += `<div class="eyebrow dsec">${g}</div>`; g0 = g; }
-    html += `<div class="chatItem${atual && atual.id === c.id && view === "chat" ? " on" : ""}" role="button" tabindex="0" data-id="${esc(c.id)}"><span class="nm">${esc(c.t)}</span><button class="rm" type="button" data-rm="${esc(c.id)}" aria-label="Apagar conversa">✕</button></div>`;
+    html += `<div class="chatItem${atual && atual.id === c.id && view === "chat" ? " on" : ""}" role="button" tabindex="0" data-id="${esc(c.id)}"><span class="nm">${c.nuvem ? "" : "📱 "}${esc(c.t)}</span><button class="ren" type="button" data-ren="${esc(c.id)}" aria-label="Renomear conversa">✎</button><button class="rm" type="button" data-rm="${esc(c.id)}" aria-label="Apagar conversa">✕</button></div>`;
   }
   el.innerHTML = html;
 }
 $("#chats").addEventListener("click", e => {
+  const ren = e.target.closest("[data-ren]");
+  if (ren) { e.stopPropagation(); const c = acharChat(ren.dataset.ren); if (c) renomearChat(c); return; }
   const rm = e.target.closest("[data-rm]");
   if (rm) {
     e.stopPropagation();
     if (!rm.classList.contains("confirm")) { rm.classList.add("confirm"); rm.textContent = "apagar?"; setTimeout(() => { if (rm.isConnected) { rm.classList.remove("confirm"); rm.textContent = "✕"; } }, 3000); return; }
-    const id = rm.dataset.rm; C.list = C.list.filter(c => c.id !== id); salvarChats();
+    const id = rm.dataset.rm, c = acharChat(id);
+    if (c?.nuvem) apagarChatNuvem(id);
+    else { C.list = C.list.filter(c => c.id !== id); salvarChats(); }
     if (atual && atual.id === id) novaConversa(); else listaChats();
     return;
   }
@@ -983,7 +1314,8 @@ function aba(v, semHist){
   for (const [k, s] of Object.entries(mapa)) $(s).hidden = k !== v;
   document.querySelectorAll(".dnav button").forEach(b => b.classList.toggle("on", b.dataset.v === v));
   $("#dock").hidden = v !== "chat";
-  if (v === "cfg") carregarFB().catch(() => {}); // deixa o login pronto para abrir na hora
+  if (v === "cfg") { carregarFB().catch(() => {}); atualizarIA(); } // deixa o login pronto para abrir na hora
+  if (v === "mem") desenharMemUser();
   if (!semHist && v === "chat" && history.state?.v) voltar();
   titulo(); render(); listaChats();
 }
@@ -1198,9 +1530,10 @@ function conectar(){
   const qy = fs.query(fs.collection(D, "users", uid, "k"), fs.where("sv", ">", fs.Timestamp.fromMillis(M.sync.lastSv || 0)), fs.orderBy("sv"));
   nv.unsub = fs.onSnapshot(qy, receber, erroNuvem);
   nv.unsubMeta = fs.onSnapshot(fs.doc(D, "users", uid), receberMeta, erroNuvem);
-  enviarLogo(500); estadoNuvem();
+  ouvirIA();
+  enviarLogo(500); estadoNuvem(); desenharMemUser(); atualizarIA();
 }
-function desconectar(){ nv.unsub?.(); nv.unsubMeta?.(); nv.unsub = nv.unsubMeta = null; }
+function desconectar(){ nv.unsub?.(); nv.unsubMeta?.(); nv.unsub = nv.unsubMeta = null; if (typeof pararOuvirIA === "function" && nvIA.unsubChats) pararOuvirIA(); }
 
 // chegou novidade da nuvem (de outro aparelho)
 let renderT = 0;
@@ -1320,7 +1653,7 @@ addEventListener("online", () => { if (M.sync.ligado) { nv.erro = ""; enviarLogo
 document.addEventListener("visibilitychange", () => { if (document.visibilityState === "hidden" && M.sync.ligado) enviar(); });
 
 /* ---------- início ---------- */
-hero(); render(); listaChats(); titulo(); estadoInstalar(); estadoNuvem();
+hero(); render(); listaChats(); titulo(); estadoInstalar(); estadoNuvem(); desenharMemUser();
 if (M.sync.ligado) carregarFB().catch(() => { nv.erro = "Sem internet agora. Guardo aqui e envio quando a conexão voltar."; estadoNuvem(); });
 else if (!semConta()) mostrarLogin(); // primeira vez: painel de boas-vindas com login
 salvarLocal(); // grava os códigos de sincronização (gid) nos conhecimentos antigos
