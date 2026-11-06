@@ -2,104 +2,144 @@
 <html lang="pt-BR">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,interactive-widget=resizes-content">
 <meta name="theme-color" content="#05060f">
 <meta name="description" content="AVIX IA: pesquisa na internet e aprende a cada uso, sem depender de nenhuma IA externa.">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="AVIX IA">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="format-detection" content="telephone=no">
 <title>AVIX IA</title>
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="icon-192.png">
-<link rel="apple-touch-icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700&family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
 <style>
-/* AVIX IA — tema escuro da marca: azul-ciano → violeta do logo, superfícies de vidro, navegação inferior */
+/* AVIX IA — tema escuro da marca: azul-ciano → violeta do logo */
 :root{
   --bg:#05060f; --bg-2:#080b1c; --sheet:#0c1124; --raised:#121933; --ink:#eef1ff; --ink-2:#b9c0dc; --muted:#717a9c;
   --line:#1b2343; --line-2:#28325a;
   --cyan:#19c2ff; --blue:#2f6bff; --violet:#8b5cf6; --magenta:#c15cff;
-  --copper:#3fb6ff; --brass:#a77bff; --brass-soft:rgba(139,92,246,.10); --bad:#ff6b8a; --good:#35d6a6;
+  --copper:#3fb6ff; --brass:#a77bff; --bad:#ff6b8a; --good:#35d6a6;
   --grad:linear-gradient(120deg,#19c2ff 0%,#2f6bff 45%,#8b5cf6 80%,#c15cff 100%);
   --grad-soft:linear-gradient(120deg,rgba(25,194,255,.16),rgba(139,92,246,.16));
   --display:"Sora",ui-sans-serif,system-ui,sans-serif;
   --sans:"Manrope",ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
   --mono:"JetBrains Mono",ui-monospace,Menlo,monospace;
+  --sl:max(16px,env(safe-area-inset-left,0px)); --sr:max(16px,env(safe-area-inset-right,0px));
   color-scheme:dark;
 }
 *{box-sizing:border-box}
 html,body{height:100%;margin:0}
-body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.6;-webkit-font-smoothing:antialiased;-webkit-tap-highlight-color:transparent;overflow:hidden}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.6;-webkit-font-smoothing:antialiased;-webkit-tap-highlight-color:transparent;-webkit-text-size-adjust:100%;overflow:hidden;overscroll-behavior:none}
 body::before{content:"";position:fixed;inset:-20% -30% auto -30%;height:70%;background:radial-gradient(closest-side,rgba(47,107,255,.22),transparent 70%),radial-gradient(closest-side at 80% 40%,rgba(193,92,255,.16),transparent 70%);pointer-events:none;z-index:0}
-.app{position:relative;z-index:1;height:100%;display:flex;flex-direction:column;max-width:760px;margin:0 auto;padding-top:env(safe-area-inset-top,0px)}
+.app{position:relative;z-index:1;height:100%;height:100dvh;display:flex;flex-direction:column;max-width:760px;margin:0 auto;padding-top:env(safe-area-inset-top,0px)}
 .eyebrow{font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
 .gtext{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+[hidden]{display:none!important}
 
 /* topo */
-header{padding:12px max(16px,env(safe-area-inset-left,0px)) 12px max(16px,env(safe-area-inset-right,0px));display:flex;align-items:center;justify-content:space-between;gap:12px}
-.logo{display:flex;align-items:center;gap:10px;min-width:0}
-.logo img{width:34px;height:auto;filter:drop-shadow(0 4px 14px rgba(47,107,255,.45))}
-.logo h1{font-family:var(--display);font-weight:700;font-size:20px;letter-spacing:.06em;margin:0;line-height:1}
-.logo h1 span{color:var(--violet)}
-.lv{display:flex;align-items:center;gap:10px;padding:6px 12px 6px 10px;border:1px solid var(--line-2);border-radius:999px;background:rgba(18,25,51,.6);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
-.ring{--p:0;width:26px;height:26px;border-radius:50%;background:conic-gradient(var(--cyan) 0, var(--violet) calc(var(--p)*1%), var(--line-2) 0);display:grid;place-items:center}
-.ring::after{content:"";width:18px;height:18px;border-radius:50%;background:var(--sheet)}
-.lv .n{font-family:var(--display);font-size:12.5px;font-weight:600;line-height:1.15}
-.lv .n i{display:block;font-style:normal;font-family:var(--sans);font-weight:500;color:var(--muted);font-size:11px}
-.track{display:none}
-.track i{display:block}
+header.top{display:flex;align-items:center;gap:6px;padding:8px calc(var(--sr) - 8px) 8px calc(var(--sl) - 8px);min-height:56px}
+.ic{width:42px;height:42px;padding:0;border:none;background:none;border-radius:12px;display:grid;place-items:center;color:var(--ink-2);flex:none}
+.ic svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.ic:active{background:var(--raised)}
+.ttl{flex:1;min-width:0;display:flex;align-items:center;justify-content:center;gap:8px}
+.ttl img{width:24px;height:auto;filter:drop-shadow(0 3px 10px rgba(47,107,255,.45))}
+.ttl span{font-family:var(--display);font-weight:600;font-size:15.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 
-.view{flex:1;overflow-y:auto;min-height:0;overscroll-behavior:contain}
-.view[hidden],[hidden]{display:none!important}
+.view{flex:1;overflow-y:auto;min-height:0;overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
+
+/* menu lateral */
+.scrim{position:fixed;inset:0;background:rgba(2,3,10,.6);backdrop-filter:blur(2px);-webkit-backdrop-filter:blur(2px);z-index:20;opacity:0;transition:opacity .25s}
+.scrim.on{opacity:1}
+.drawer{position:fixed;top:0;bottom:0;left:0;width:min(86vw,330px);z-index:21;background:var(--bg-2);border-right:1px solid var(--line);display:flex;flex-direction:column;padding:calc(12px + env(safe-area-inset-top,0px)) 12px calc(12px + env(safe-area-inset-bottom,0px)) max(12px,env(safe-area-inset-left,0px));transform:translateX(-102%);transition:transform .28s cubic-bezier(.2,.8,.2,1);visibility:hidden}
+.drawer.open{transform:none;visibility:visible}
+.logo{display:flex;align-items:center;gap:10px;min-width:0;padding:4px 6px 12px}
+.logo img{width:32px;height:auto;filter:drop-shadow(0 4px 14px rgba(47,107,255,.45))}
+.logo h1{font-family:var(--display);font-weight:700;font-size:19px;letter-spacing:.06em;margin:0;line-height:1}
+.logo h1 span{color:var(--violet)}
+.newchat{display:flex;align-items:center;gap:10px;justify-content:center;padding:11px 14px;border-radius:14px;font-size:14px}
+.newchat svg{width:18px;height:18px;stroke:#fff;fill:none;stroke-width:2.2;stroke-linecap:round}
+.dnav{display:flex;flex-direction:column;gap:2px;margin:12px 0 6px}
+.dnav button,.chatItem{display:flex;align-items:center;gap:12px;width:100%;text-align:left;border:none;background:none;padding:10px 10px;border-radius:12px;color:var(--ink-2);font-weight:600;font-size:14px}
+.dnav button svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.dnav button.on,.chatItem.on{background:var(--raised);color:var(--ink)}
+.dnav button.on svg{stroke:url(#gStroke)}
+.dsec{padding:12px 10px 4px}
+.chats{flex:1;min-height:0;overflow-y:auto;margin:0 -4px;padding:0 4px;overscroll-behavior:contain}
+.chatItem{font-weight:500;font-size:13.5px;padding:9px 6px 9px 10px;gap:4px}
+.chatItem .nm{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.chatItem .rm{flex:none;width:30px;height:30px;padding:0;border:none;background:none;color:var(--muted);border-radius:8px;font-size:13px;display:grid;place-items:center}
+.chatItem .rm.confirm{color:var(--bad);width:auto;padding:0 8px;font-size:11.5px}
+.chats .none{padding:8px 10px;color:var(--muted);font-size:13px}
+.dfoot{border-top:1px solid var(--line);padding-top:10px;margin-top:8px;display:flex;flex-direction:column;gap:8px}
+.lv{display:flex;align-items:center;gap:10px;padding:8px 10px}
+.ring{--p:0;width:28px;height:28px;border-radius:50%;background:conic-gradient(var(--cyan) 0, var(--violet) calc(var(--p)*1%), var(--line-2) 0);display:grid;place-items:center;flex:none}
+.ring::after{content:"";width:20px;height:20px;border-radius:50%;background:var(--bg-2)}
+.lv .n{font-family:var(--display);font-size:13px;font-weight:600;line-height:1.2}
+.lv .n i{display:block;font-style:normal;font-family:var(--sans);font-weight:500;color:var(--muted);font-size:11.5px}
+.track{display:none}
 
 /* conversa */
-.log{padding:8px max(16px,env(safe-area-inset-left,0px)) 18px max(16px,env(safe-area-inset-right,0px));display:flex;flex-direction:column;gap:22px}
-.turn{display:flex;flex-direction:column;gap:10px;animation:rise .4s cubic-bezier(.2,.7,.2,1) both}
+.log{padding:6px var(--sr) 24px var(--sl);display:flex;flex-direction:column;gap:26px}
+.msg{display:flex;flex-direction:column;gap:12px}
+.msg.novo{animation:rise .35s cubic-bezier(.2,.7,.2,1) both}
 @keyframes rise{from{opacity:.01;transform:translateY(8px)}to{opacity:1;transform:none}}
-@media (prefers-reduced-motion:reduce){.turn,.hero img{animation:none!important}}
-.q{align-self:flex-end;max-width:86%;background:var(--grad);color:#fff;font-weight:500;padding:11px 16px;border-radius:20px 20px 6px 20px;overflow-wrap:anywhere;box-shadow:0 10px 30px -12px rgba(47,107,255,.6)}
-.turn > .trail,.turn > .body,.turn > .sources,.turn > .learned,.turn > .acts{max-width:94%}
-.turn > .body{background:linear-gradient(180deg,rgba(18,25,51,.9),rgba(12,17,36,.9));border:1px solid var(--line);border-radius:6px 20px 20px 20px;padding:14px 16px;color:var(--ink-2);overflow-wrap:anywhere;position:relative}
-.turn > .body::before{content:"";position:absolute;left:-1px;top:-1px;width:44px;height:2px;border-radius:2px;background:var(--grad)}
-.body p{margin:0 0 .65em}
-.body p:last-child{margin-bottom:0}
-.body strong{color:var(--ink);font-weight:700}
+.q{align-self:flex-end;max-width:86%;background:var(--grad);color:#fff;font-weight:500;padding:10px 16px;border-radius:20px 20px 6px 20px;overflow-wrap:anywhere;white-space:pre-wrap;box-shadow:0 10px 30px -12px rgba(47,107,255,.6)}
+.ans{display:flex;flex-direction:column;gap:10px;min-width:0}
+.who{display:flex;align-items:center;gap:8px;min-height:22px}
+.who img{width:22px;height:auto;filter:drop-shadow(0 3px 10px rgba(47,107,255,.45))}
+.who img.pensa{animation:pulse 1.2s ease-in-out infinite}
+@keyframes pulse{0%,100%{transform:scale(1);opacity:.75}50%{transform:scale(1.12);opacity:1}}
 .badge{display:inline-flex;align-items:center;gap:6px;font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;padding:3px 9px;border-radius:999px;border:1px solid var(--line-2);color:var(--muted)}
 .badge::before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor}
 .badge.mem{color:var(--brass);border-color:rgba(139,92,246,.45);background:rgba(139,92,246,.08)}
 .badge.web{color:var(--cyan);border-color:rgba(25,194,255,.4);background:rgba(25,194,255,.07)}
-.trail{font-family:var(--mono);font-size:11.5px;color:var(--muted);display:flex;flex-direction:column;gap:3px;padding-left:4px}
-.trail:empty{display:none}
-.trail span::before{content:"› ";color:var(--cyan)}
-.thinking{display:inline-flex;gap:5px;align-items:center;height:20px}
-.thinking::before,.thinking::after{content:""}
-.thinking,.thinking::before,.thinking::after{font-size:0}
-.dots{display:inline-flex;gap:5px}
-.dots i{width:7px;height:7px;border-radius:50%;background:var(--grad);animation:bob 1s infinite ease-in-out}
-.dots i:nth-child(2){animation-delay:.15s}.dots i:nth-child(3){animation-delay:.3s}
-@keyframes bob{0%,100%{transform:translateY(0);opacity:.5}50%{transform:translateY(-4px);opacity:1}}
+.status{font-family:var(--mono);font-size:12px;color:var(--muted)}
+.status .live{display:flex;align-items:center;gap:8px}
+.status .live::before{content:"";width:12px;height:12px;border-radius:50%;border:2px solid var(--line-2);border-top-color:var(--cyan);animation:spin .8s linear infinite;flex:none}
+@keyframes spin{to{transform:rotate(360deg)}}
+.status details summary{cursor:pointer;list-style:none;display:inline-flex;align-items:center;gap:6px;padding:2px 0}
+.status details summary::-webkit-details-marker{display:none}
+.status details summary::after{content:"›";transition:transform .2s;font-size:14px}
+.status details[open] summary::after{transform:rotate(90deg)}
+.status ol{margin:6px 0 0;padding-left:18px;display:flex;flex-direction:column;gap:2px}
+.body{color:var(--ink);font-size:15.5px;line-height:1.7;overflow-wrap:anywhere}
+.body p{margin:0 0 .8em}
+.body p:last-child{margin-bottom:0}
+.body p.lead{color:var(--ink)}
+.body p+p{color:var(--ink-2)}
+.cursor::after{content:"";display:inline-block;width:8px;height:8px;margin-left:4px;border-radius:50%;background:var(--grad);vertical-align:middle;animation:pulse .8s infinite}
 .sources{display:flex;flex-wrap:wrap;gap:6px}
 .sources a{font-family:var(--mono);font-size:11px;color:var(--ink-2);text-decoration:none;border:1px solid var(--line-2);background:var(--sheet);border-radius:999px;padding:4px 11px;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .sources a::before{content:"↗ ";color:var(--cyan)}
-.learned{border:1px solid rgba(139,92,246,.35);background:var(--grad-soft);border-radius:14px;padding:9px 13px;font-size:13px;color:var(--ink-2)}
-.learned b{font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;font-weight:500;color:var(--brass)}
-.acts{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
-.fix{display:flex;flex-direction:column;gap:8px;width:100%}
-.fix textarea{min-height:76px}
+.learned{font-size:12.5px;color:var(--muted)}
+.learned b{font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;font-weight:500;color:var(--brass)}
+.acts{display:flex;gap:2px;align-items:center;flex-wrap:wrap;margin-left:-8px}
+.acts .ic{width:36px;height:36px;color:var(--muted)}
+.acts .ic svg{width:18px;height:18px}
+.acts .ic.on{color:var(--cyan)}
+.acts .ic.on.down{color:var(--bad)}
+.acts .txt{border:none;background:none;color:var(--muted);font-size:12.5px;font-weight:600;padding:8px 10px}
 .done{font-size:13px;color:var(--muted)}
 .done b{color:var(--brass);font-weight:600}
+.fix{display:flex;flex-direction:column;gap:8px;width:100%;border:1px solid var(--line-2);background:var(--sheet);border-radius:16px;padding:12px}
+.fix textarea{min-height:76px}
 
 /* tela inicial */
-.hero{display:flex;flex-direction:column;align-items:center;text-align:center;gap:14px;padding:26px 6px 6px}
-.hero img{width:132px;height:auto;filter:drop-shadow(0 18px 40px rgba(47,107,255,.55));animation:float 6s ease-in-out infinite}
+.hero{display:flex;flex-direction:column;align-items:center;text-align:center;gap:14px;padding:clamp(20px,8vh,70px) 4px 6px}
+.hero img{width:110px;height:auto;filter:drop-shadow(0 18px 40px rgba(47,107,255,.55));animation:float 6s ease-in-out infinite}
 @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
-.hero h2{font-family:var(--display);font-weight:700;font-size:clamp(26px,7vw,34px);line-height:1.12;letter-spacing:-.02em;margin:4px 0 0;text-wrap:balance}
+.hero h2{font-family:var(--display);font-weight:700;font-size:clamp(25px,7vw,32px);line-height:1.15;letter-spacing:-.02em;margin:4px 0 0;text-wrap:balance}
 .hero p{margin:0;color:var(--ink-2);max-width:40ch;font-size:14.5px}
 .examples{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;width:100%;margin-top:10px}
 .examples button{text-align:left;display:flex;flex-direction:column;gap:6px;padding:13px 14px;border-radius:16px;background:linear-gradient(180deg,rgba(18,25,51,.85),rgba(12,17,36,.85));border:1px solid var(--line);color:var(--ink);font-weight:600;font-size:13.5px;line-height:1.35;min-height:84px}
 .examples button small{font-family:var(--mono);font-weight:400;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--cyan)}
 .examples button:nth-child(4) small{color:var(--brass)}
-.examples button:hover{border-color:var(--line-2)}
-.intro .body{display:none}
+@media (prefers-reduced-motion:reduce){.msg.novo,.hero img,.who img.pensa{animation:none!important}}
 
 button{font:inherit;font-size:13.5px;font-weight:600;cursor:pointer;border-radius:12px;border:1px solid var(--line-2);background:rgba(18,25,51,.7);color:var(--ink);padding:8px 14px;touch-action:manipulation;transition:border-color .15s,background .15s,transform .1s}
 button:active{transform:scale(.97)}
@@ -107,29 +147,24 @@ button.ghost{background:transparent;border-color:transparent;color:var(--muted)}
 button.solid{background:var(--grad);border-color:transparent;color:#fff;box-shadow:0 8px 24px -10px rgba(47,107,255,.7)}
 button.danger{color:var(--bad);border-color:rgba(255,107,138,.45);background:rgba(255,107,138,.06)}
 button[disabled]{opacity:.45}
-button:focus-visible,input:focus-visible,textarea:focus-visible{outline:2px solid var(--cyan);outline-offset:2px}
+button:focus-visible,input:focus-visible,textarea:focus-visible,summary:focus-visible{outline:2px solid var(--cyan);outline-offset:2px}
 input,textarea{font:inherit;font-size:16px;color:var(--ink);background:var(--raised);border:1px solid var(--line-2);border-radius:12px;padding:11px 13px;width:100%}
 input::placeholder,textarea::placeholder{color:var(--muted)}
 textarea{resize:none}
 
-/* compositor + navegação inferior */
-.dock{padding:8px max(12px,env(safe-area-inset-left,0px)) 6px max(12px,env(safe-area-inset-right,0px))}
-form.ask{display:flex;align-items:flex-end;gap:8px;padding:6px 6px 6px 16px;background:rgba(18,25,51,.85);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid var(--line-2);border-radius:26px;position:relative}
+/* caixa de mensagem */
+.dock{padding:6px var(--sr) calc(6px + env(safe-area-inset-bottom,0px)) var(--sl)}
+form.ask{display:flex;align-items:flex-end;gap:8px;padding:6px 6px 6px 16px;background:rgba(18,25,51,.88);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid var(--line-2);border-radius:26px}
 form.ask:focus-within{border-color:transparent;box-shadow:0 0 0 1.5px var(--blue),0 12px 40px -16px rgba(47,107,255,.8)}
 form.ask textarea{border:none;background:none;padding:10px 0;min-height:24px;max-height:150px;outline:none;border-radius:0}
 form.ask textarea:focus-visible{outline:none}
-#send{width:42px;height:42px;padding:0;border-radius:50%;flex:none;display:grid;place-items:center;font-size:0}
+#send{width:42px;height:42px;padding:0;border-radius:50%;flex:none;display:grid;place-items:center}
 #send svg{width:19px;height:19px}
-nav.tabs{display:flex;justify-content:space-around;padding:6px max(10px,env(safe-area-inset-left,0px)) calc(8px + env(safe-area-inset-bottom,0px)) max(10px,env(safe-area-inset-right,0px));border-top:1px solid var(--line);background:rgba(5,6,15,.92);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px)}
-nav.tabs button{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;background:none;border:none;color:var(--muted);font-size:11px;font-weight:600;padding:6px 0;border-radius:12px}
-nav.tabs button svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
-nav.tabs button.on{color:var(--ink)}
-nav.tabs button.on svg{stroke:url(#gStroke)}
-nav.tabs button.on::after{content:"";width:18px;height:3px;border-radius:2px;background:var(--grad);margin-top:1px}
+#send.stop{background:var(--raised);border:1px solid var(--line-2);box-shadow:none}
+.aviso{text-align:center;font-size:11px;color:var(--muted);margin:6px 0 0}
 
-/* caderno */
-.pad{padding:8px max(16px,env(safe-area-inset-left,0px)) 24px max(16px,env(safe-area-inset-right,0px));display:flex;flex-direction:column;gap:14px}
-.pagetitle{font-family:var(--display);font-weight:700;font-size:24px;letter-spacing:-.01em;margin:6px 0 0}
+/* memória e ajustes */
+.pad{padding:4px var(--sr) 24px var(--sl);display:flex;flex-direction:column;gap:14px}
 .observ{position:relative;border:1px solid var(--line);border-radius:22px;background:radial-gradient(120% 90% at 62% 40%,rgba(47,107,255,.18),transparent 60%),var(--sheet);height:200px;overflow:hidden}
 #sky{position:absolute;inset:0;width:100%;height:100%}
 .observ .cap{position:absolute;left:16px;right:16px;bottom:14px;display:flex;justify-content:space-between;align-items:flex-end;gap:10px;pointer-events:none}
@@ -157,53 +192,66 @@ nav.tabs button.on::after{content:"";width:18px;height:3px;border-radius:2px;bac
 .box h3{font-family:var(--display);font-weight:600;font-size:17px;margin:0}
 .box p{margin:0;font-size:13.5px;color:var(--ink-2)}
 .row{display:flex;gap:8px;flex-wrap:wrap}
-.toast{position:fixed;left:50%;bottom:calc(150px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--raised);border:1px solid var(--line-2);color:var(--ink);padding:10px 18px;border-radius:999px;font-size:13px;opacity:0;transition:opacity .2s;pointer-events:none;max-width:90vw;z-index:5}
+
+.toast{position:fixed;left:50%;bottom:calc(120px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--raised);border:1px solid var(--line-2);color:var(--ink);padding:10px 18px;border-radius:999px;font-size:13px;opacity:0;transition:opacity .2s;pointer-events:none;max-width:90vw;z-index:40;text-align:center}
 .toast.on{opacity:1}
 .offline{margin:0 16px 6px;background:rgba(255,107,138,.08);border:1px solid rgba(255,107,138,.35);color:var(--bad);font-size:12.5px;text-align:center;padding:6px 12px;border-radius:12px}
 .inst{margin:0 16px 8px;display:flex;align-items:center;gap:10px;padding:8px 8px 8px 14px;border:1px solid rgba(139,92,246,.4);border-radius:14px;background:linear-gradient(90deg,rgba(25,194,255,.08),rgba(139,92,246,.1));font-size:13px;color:var(--ink-2)}
 .inst span{flex:1;min-width:0}
 .inst button{padding:7px 14px;font-size:13px}
 .inst .x{background:none;border:0;box-shadow:none;padding:6px 8px;color:var(--muted)}
-.passos{margin:10px 0 0;padding-left:20px;font-size:13.5px;color:var(--ink-2);line-height:1.55}
+
+/* janela de instruções */
+.sheet{position:fixed;inset:0;z-index:30;display:flex;align-items:flex-end;justify-content:center;background:rgba(2,3,10,.65)}
+.sheetBox{width:100%;max-width:520px;background:var(--bg-2);border:1px solid var(--line-2);border-bottom:none;border-radius:24px 24px 0 0;padding:20px 20px calc(20px + env(safe-area-inset-bottom,0px));display:flex;flex-direction:column;gap:12px;animation:up .28s cubic-bezier(.2,.8,.2,1)}
+@keyframes up{from{transform:translateY(40px);opacity:0}to{transform:none;opacity:1}}
+.sheetBox h3{font-family:var(--display);font-size:19px;margin:0;display:flex;align-items:center;gap:10px}
+.sheetBox h3 img{width:28px;height:auto}
+.sheetBox p{margin:0;font-size:13.5px;color:var(--ink-2)}
+.passos{margin:0;padding-left:22px;font-size:14.5px;color:var(--ink-2);line-height:1.6;display:flex;flex-direction:column;gap:6px}
 .passos b{color:var(--ink)}
+.nota{font-size:12.5px!important;color:var(--muted)!important;border-left:2px solid var(--violet);padding-left:10px}
 @media (min-width:600px){.examples{grid-template-columns:repeat(4,minmax(0,1fr))}}
 </style>
 </head>
 <body>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><linearGradient id="gStroke" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#19c2ff"/><stop offset=".55" stop-color="#2f6bff"/><stop offset="1" stop-color="#c15cff"/></linearGradient></defs></svg>
-<div class="app">
-  <header>
-    <div class="logo"><img src="logo-mark.png" alt=""><h1>AVIX <span>IA</span></h1></div>
+
+<div class="scrim" id="scrim" hidden></div>
+<aside class="drawer" id="drawer" aria-label="Menu">
+  <div class="logo"><img src="logo-mark.png" alt=""><h1>AVIX <span>IA</span></h1></div>
+  <button class="newchat solid" id="dNew" type="button"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>Nova conversa</button>
+  <nav class="dnav">
+    <button type="button" data-v="chat" class="on"><svg viewBox="0 0 24 24"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12Z"/></svg>Conversa</button>
+    <button type="button" data-v="mem"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="2.5"/><circle cx="5" cy="6" r="1.6"/><circle cx="19" cy="7" r="1.6"/><circle cx="6" cy="18" r="1.6"/><circle cx="18" cy="18" r="1.6"/><path d="M6.3 7l4 3.6M17.6 8l-3.7 2.6M7.4 17l2.9-3.3M16.6 17l-2.9-3.3"/></svg>Memória</button>
+    <button type="button" data-v="cfg"><svg viewBox="0 0 24 24"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2"/><circle cx="10" cy="17" r="2"/></svg>Ajustes</button>
+  </nav>
+  <div class="chats" id="chats"></div>
+  <div class="dfoot">
+    <button type="button" class="instBtn" id="dInst">⬇ Instalar app</button>
     <div class="lv" title="Nível de conhecimento">
       <div class="ring" id="ring"></div>
       <div class="n">Nível <span id="lvl">I</span><i id="lvlName">iniciante</i></div>
       <div class="track"><i id="bar"></i></div>
     </div>
+  </div>
+</aside>
+
+<div class="app">
+  <header class="top">
+    <button class="ic" id="bMenu" type="button" aria-label="Abrir menu"><svg viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h10"/></svg></button>
+    <div class="ttl"><img src="logo-mark.png" alt=""><span id="ttlTxt">AVIX IA</span></div>
+    <button class="ic" id="bNew" type="button" aria-label="Nova conversa"><svg viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg></button>
   </header>
   <div class="offline" id="offline" hidden>Sem internet. Respondendo só com o que já aprendi.</div>
   <div class="inst" id="instBar" hidden><span>Instale a AVIX como app no celular.</span><button type="button" class="solid instBtn">Instalar</button><button type="button" class="x" id="instX" aria-label="Fechar">✕</button></div>
 
   <section class="view" id="vChat">
-    <div class="log" id="log">
-      <div class="turn intro">
-        <div class="hero">
-          <img src="logo-mark.png" alt="AVIX IA">
-          <h2>Olá! Como posso <span class="gtext">ajudar</span> hoje?</h2>
-          <p>Eu pesquiso na internet, respondo com as fontes e aprendo com cada conversa. Se eu errar, me ensine: o que você diz vale mais que qualquer site.</p>
-          <div class="examples" id="examples">
-            <button type="button"><small>Estoque</small>O que é curva ABC?</button>
-            <button type="button"><small>História</small>Quem inventou o código de barras?</button>
-            <button type="button"><small>Logística</small>O que é logística reversa?</button>
-            <button type="button"><small>Ensinar</small>lembre: o caminhão da loja 5 sai às 6h</button>
-          </div>
-        </div>
-      </div>
-    </div>
+    <div class="log" id="log"></div>
   </section>
 
   <section class="view" id="vMem" hidden>
     <div class="pad">
-      <h2 class="pagetitle">Memória</h2>
       <div class="observ"><canvas id="sky"></canvas>
         <div class="cap">
           <div class="stats">
@@ -226,16 +274,14 @@ nav.tabs button.on::after{content:"";width:18px;height:3px;border-radius:2px;bac
 
   <section class="view" id="vCfg" hidden>
     <div class="pad">
-      <h2 class="pagetitle">Ajustes</h2>
       <div class="box">
         <h3>Instalar app</h3>
-        <p id="instTxt">Coloque a AVIX na tela inicial para abrir como um app, até sem internet.</p>
+        <p id="instTxt">Coloque a AVIX na tela inicial para abrir como um app, até sem internet. Funciona no Android e no iPhone.</p>
         <div class="row" id="instRow"><button type="button" class="solid instBtn">Instalar app</button></div>
-        <div id="instAjuda" hidden></div>
       </div>
       <div class="box">
         <h3>Backup da memória</h3>
-        <p>Tudo o que a AVIX aprendeu fica salvo só neste celular. Faça um backup para não perder nada ou para passar para outro aparelho.</p>
+        <p>Tudo o que a AVIX aprendeu fica salvo só neste aparelho. Faça um backup para não perder nada ou para passar para outro celular.</p>
         <div class="row"><button id="exp" type="button" class="solid">Salvar backup</button><button id="imp" type="button">Restaurar backup</button><input type="file" id="impFile" accept=".json,application/json" hidden></div>
       </div>
       <div class="box">
@@ -244,32 +290,41 @@ nav.tabs button.on::after{content:"";width:18px;height:3px;border-radius:2px;bac
         <div class="row"><button id="tEn" type="button"></button></div>
       </div>
       <div class="box">
+        <h3>Conversas</h3>
+        <p>Apaga o histórico de conversas. O que a AVIX aprendeu continua na memória.</p>
+        <div class="row"><button id="zChats" type="button" class="danger">Apagar conversas</button></div>
+      </div>
+      <div class="box">
         <h3>Começar do zero</h3>
         <p>Apaga tudo o que foi aprendido neste aparelho.</p>
         <div class="row"><button id="zerar" type="button" class="danger">Apagar memória</button></div>
       </div>
-      <p class="eyebrow" style="text-align:center">AVIX IA · versão 1.2 · funciona sem IA externa</p>
+      <p class="eyebrow" style="text-align:center">AVIX IA · versão 2.0 · funciona sem IA externa</p>
     </div>
   </section>
 
   <div class="dock" id="dock">
     <form class="ask" id="ask">
       <textarea id="q" rows="1" placeholder="Pergunte à AVIX…" aria-label="Pergunta" enterkeyhint="send"></textarea>
-      <button class="solid" id="send" type="submit" aria-label="Enviar"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg></button>
+      <button class="solid" id="send" type="submit" aria-label="Enviar"></button>
     </form>
+    <p class="aviso">A AVIX pode errar. Confira as fontes.</p>
   </div>
-  <nav class="tabs" aria-label="Seções">
-    <button id="tChat" class="on" type="button"><svg viewBox="0 0 24 24"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12Z"/></svg>Conversa</button>
-    <button id="tMem" type="button"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="2.5"/><circle cx="5" cy="6" r="1.6"/><circle cx="19" cy="7" r="1.6"/><circle cx="6" cy="18" r="1.6"/><circle cx="18" cy="18" r="1.6"/><path d="M6.3 7l4 3.6M17.6 8l-3.7 2.6M7.4 17l2.9-3.3M16.6 17l-2.9-3.3"/></svg>Memória</button>
-    <button id="tCfg" type="button"><svg viewBox="0 0 24 24"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2"/><circle cx="10" cy="17" r="2"/></svg>Ajustes</button>
-  </nav>
 </div>
-<div class="toast" id="toast"></div>
+
+<div class="sheet" id="sheet" hidden>
+  <div class="sheetBox" role="dialog" aria-modal="true" aria-labelledby="sheetT">
+    <h3 id="sheetT"><img src="logo-mark.png" alt="">Instalar a AVIX</h3>
+    <div id="sheetBody"></div>
+    <button type="button" class="solid" id="sheetOk">Entendi</button>
+  </div>
+</div>
+<div class="toast" id="toast" role="status"></div>
 
 <script>
 "use strict";
 /* =========================================================
-   APRENDIZ — cérebro local
+   AVIX IA — cérebro local
    - índice BM25 sobre tudo que aprendeu
    - pesquisa web: Wikipédia (pt/en) + DuckDuckGo Instant Answer
    - escolhe frases por relevância + tipo de pergunta
@@ -279,7 +334,8 @@ nav.tabs button.on::after{content:"";width:18px;height:3px;border-radius:2px;bac
 const $ = s => document.querySelector(s);
 const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const host = u => { try { return new URL(u).hostname.replace(/^www\./,""); } catch { return ""; } };
-const KEY = "aprendiz.v1";
+const KEY = "aprendiz.v1";      // memória — NÃO renomear
+const CKEY = "avix.chats";      // histórico de conversas
 
 /* ---------- linguagem ---------- */
 const STOP = new Set(("a o e é de da do das dos em no na nos nas um uma uns umas para pra por pelo pela pelos pelas com sem que qual quais quem como onde quando quanto quanta quantos quantas porque por que se ao aos à às os as mais menos muito muita sobre isso isto esse essa este esta aquele aquela ser foi era são está estão tem têm ter há me te lhe nos vos meu minha seu sua você voce eu ele ela eles elas já também ou mas nem tal outro outra the of and to in is are what who how when where why which a an on for by with").split(" "));
@@ -303,11 +359,32 @@ function tipoPergunta(q){
   return "geral";
 }
 function assunto(q){
-  return q.replace(/^\s*(o que|oque|que)\s+(é|e|são|sao|significa|foi|era)\s+/i,"").replace(/^\s*(quem|quando|onde|como|por que|porque|qual|quais|quanto|quantos|quanta|quantas)\s+(é|e|foi|são|sao|era|fica|nasceu|surgiu|inventou|criou|descobriu)?\s*/i,"").replace(/^(o|a|os|as|um|uma)\s+/i,"").replace(/[?!.]+$/,"").trim() || q;
+  return q.replace(/^\s*(o que|oque|que)\s+(é|e|são|sao|significa|foi|era)\s+/i,"").replace(/^\s*(quem|quando|onde|como|por que|porque|qual|quais|quanto|quantos|quanta|quantas)\s+(é|e|foi|são|sao|era|fica|nasceu|surgiu|inventou|criou|descobriu)?\s*/i,"").replace(/^(o|a|os|as|um|uma)\s+/i,"").replace(/[?!.]+$/,"").replace(/\s+(nasceu|morreu|faleceu|surgiu|começou|comecou|acabou|terminou|foi (criad|inventad|fundad|descobert)[oa])$/i,"").trim() || q;
 }
 function frases(texto){
   return texto.replace(/\s*\n+\s*/g, "\n").split(/\n|(?<=[.!?])\s+(?=[A-ZÁÉÍÓÚÂÊÔÃÕÇ0-9"“(])/)
     .map(s => s.trim()).filter(s => s.length >= 35 && s.length <= 420 && !/^=+|=+$/.test(s) && !/^(ver também|referências|ligações externas|bibliografia|notas)\b/i.test(s));
+}
+// pergunta de continuação: "e quando ele nasceu?" → usa o assunto da conversa
+function resolver(p, ctx){
+  if (!ctx) return p;
+  const comE = /^\s*e\s+/i.test(p);
+  let s = p.replace(/^\s*e\s+/i, "");
+  const pron = /\b(dele|dela|deles|delas|nele|nela|ele|ela|eles|elas|disso|nisso|isso|isto)\b/i;
+  if (pron.test(s)) {
+    return s.replace(pron, m => { m = m.toLowerCase(); return (/^d/.test(m) ? "de " : /^n/.test(m) ? "em " : "") + ctx; });
+  }
+  const curta = toks(s).length === 0 || (toks(s).length === 1 && /^\s*(onde|quando|quanto|quantos|quantas|como|por que|porque|qual|quais)\s+[^\s?]+\s*\??\s*$/i.test(s));
+  if (comE || curta) return s.replace(/[?!.]+$/, "") + " " + ctx;
+  return p;
+}
+
+// acha um nome de pessoa na resposta ("... inventado por Santos Dumont")
+function pessoa(fr){
+  const N = "[A-ZÁÉÍÓÚÂÊÔÃÕÇ][\\wÀ-ÿ'.-]+", NOME = `${N}(?:\\s+(?:de |da |do |dos |das )?${N}){0,4}`;
+  for (const s of fr || []) { const m = s.match(new RegExp(`\\b(?:por|pelo|pela)\\s+(?:o |a )?(${NOME})`)); if (m && m[1].split(/\s+/).length >= 2) return m[1]; }
+  for (const s of fr || []) { const m = s.slice(1).match(new RegExp(`\\b(${N}(?:\\s+(?:de |da |do |dos |das )?${N}){1,4})`)); if (m) return m[1]; }
+  return "";
 }
 
 /* ---------- memória ---------- */
@@ -356,13 +433,16 @@ function bm25(qtk, docs, getTk){
 }
 
 /* ---------- pesquisa web ---------- */
+let sinal = null; // permite parar a pesquisa
 async function getJSON(url, ms = 9000){
   const c = new AbortController(); const t = setTimeout(() => c.abort(), ms);
-  try { const r = await fetch(url, { signal: c.signal }); if (!r.ok) throw new Error(r.status); return await r.json(); } finally { clearTimeout(t); }
+  const s = sinal; const parar = () => c.abort(); s?.addEventListener("abort", parar);
+  try { const r = await fetch(url, { signal: c.signal }); if (!r.ok) throw new Error(r.status); return await r.json(); }
+  finally { clearTimeout(t); s?.removeEventListener("abort", parar); }
 }
 async function wiki(lang, consulta, passo){
   const base = `https://${lang}.wikipedia.org/w/api.php?format=json&origin=*&`;
-  passo(`procurando na Wikipédia (${lang}): “${consulta}”`);
+  passo(`Procurando na Wikipédia (${lang}): “${consulta}”`);
   const s = await getJSON(base + "action=query&list=search&srlimit=3&srsearch=" + encodeURIComponent(consulta));
   const hits = (s.query?.search || []).slice(0, 3);
   const pags = await Promise.all(hits.map(async (h, i) => {
@@ -370,7 +450,7 @@ async function wiki(lang, consulta, passo){
       const p = await getJSON(base + "action=query&prop=extracts|info&inprop=url&explaintext=1&exlimit=1&redirects=1&titles=" + encodeURIComponent(h.title));
       const pg = Object.values(p.query?.pages || {})[0];
       if (!pg?.extract) return null;
-      if (i === 0) passo("lendo “" + pg.title + "”");
+      if (i === 0) passo("Lendo “" + pg.title + "”");
       return { titulo: pg.title, url: pg.fullurl || `https://${lang}.wikipedia.org/wiki/${encodeURIComponent(pg.title)}`, texto: pg.extract.slice(0, 20000), rank: i };
     } catch { return null; }
   }));
@@ -378,7 +458,7 @@ async function wiki(lang, consulta, passo){
 }
 async function ddg(consulta, passo){
   try {
-    passo("consultando DuckDuckGo");
+    passo("Consultando o DuckDuckGo");
     const d = await getJSON("https://api.duckduckgo.com/?format=json&no_html=1&skip_disambig=1&kl=br-pt&q=" + encodeURIComponent(consulta), 6000);
     const out = [];
     if (d.AbstractText) out.push({ titulo: d.Heading || consulta, url: d.AbstractURL || "https://duckduckgo.com/?q=" + encodeURIComponent(consulta), texto: d.AbstractText, rank: 0, ddg: true });
@@ -393,7 +473,10 @@ function bonusTipo(tipo, s, pos){
   const n = norm(s); let b = 0;
   if (tipo === "def") { if (pos === 0) b += 3; if (/\b(e|sao|foi|era|consiste|refere-se|designa|significa)\b/.test(n.slice(0, 120))) b += 1.2; }
   if (tipo === "quando" && /\b(1[0-9]{3}|20[0-9]{2})\b|\bseculo\b/.test(n)) b += 2;
-  if (tipo === "quem" && /\b(inventad|criad|fundad|descobert|desenvolvid|por)\b/.test(n)) b += 1.5;
+  if (tipo === "quem") {
+    if (/\b(inventad|criad|fundad|descobert|desenvolvid|por)\b/.test(n)) b += 1.5;
+    if (/(invent|criad|criou|cria(c|ç)|fund(ou|ad)|descobri|desenvolv|idealiz|patente)/.test(n) && pessoa([s])) b += 4;
+  }
   if (tipo === "onde" && /\b(localiza|fica|situad|em|regiao|estado|cidade|pais)\b/.test(n)) b += 1;
   if (tipo === "quanto" && /\d/.test(n)) b += 1.8;
   if (tipo === "como" && /\b(atraves|por meio|passo|etapa|primeiro|depois|processo|metodo)\b/.test(n)) b += 1;
@@ -401,10 +484,10 @@ function bonusTipo(tipo, s, pos){
   if (pos < 3) b += .6 - pos * .2;
   return b;
 }
-function escolher(pergunta, pags){
+function escolher(pergunta, pags, excluir){
   const tipo = tipoPergunta(pergunta), qtk = toks(pergunta), atk = toks(assunto(pergunta));
   const cand = [];
-  for (const p of pags) frases(p.texto).slice(0, 160).forEach((f, pos) => cand.push({ f, pos, p }));
+  for (const p of pags) frases(p.texto).slice(0, 160).forEach((f, pos) => { if (!excluir || !excluir.has(f)) cand.push({ f, pos, p }); });
   if (!cand.length) return [];
   const sc = bm25(qtk.concat(atk), cand, c => toks(c.f));
   cand.forEach((c, i) => {
@@ -414,7 +497,6 @@ function escolher(pergunta, pags){
   });
   cand.sort((a,b) => b.s - a.s);
   const best = cand[0]; if (!best || best.s < 1) return [];
-  // completa com frases vizinhas do mesmo artigo, mantendo a ordem do texto
   const escolhidas = [best];
   for (const c of cand.slice(1, 25)) {
     if (escolhidas.length >= (tipo === "def" || tipo === "geral" ? 3 : 2)) break;
@@ -426,31 +508,31 @@ function escolher(pergunta, pags){
 }
 
 /* ---------- cérebro: responder ---------- */
-async function responder(pergunta, passo){
-  const qtk = toks(pergunta), tipo = tipoPergunta(pergunta);
+async function responder(pergunta, passo, op = {}){
+  const qtk = toks(pergunta);
   // 1) o que o usuário ensinou e o que já aprendi
   const mem = M.k;
-  let usados = [], fontes = [];
-  if (mem.length) {
+  if (mem.length && !op.forceWeb) {
     const sc = bm25(qtk, mem, i => i.tk || (i.tk = toks(i.t)));
     const ranked = mem.map((i, k) => ({ i, s: sc[k] * (i.tipo === "ensino" ? 1.8 : 1) * (.6 + Math.min(2, i.w || 1) * .4) + (i.q && qtk.filter(w => i.q.includes(w)).length / Math.max(1, qtk.length) > .6 ? 4 : 0) }))
       .filter(x => x.s > 0).sort((a,b) => b.s - a.s);
     const top = ranked[0];
     const cobertura = top ? qtk.filter(w => (top.i.tk || []).includes(w) || (top.i.q || []).includes(w)).length / Math.max(1, qtk.length) : 0;
     if (top && (top.i.tipo === "ensino" ? cobertura >= .5 : cobertura >= .75 && top.s > 3)) {
-      usados = ranked.slice(0, top.i.tipo === "ensino" ? 1 : 3).filter(x => x.s >= top.s * .55).map(x => x.i);
-      passo("encontrei no caderno");
-      return { origem: "mem", frases: usados.map(i => i.t), usados, fontes: [...new Map(usados.filter(i => i.url).map(i => [i.url, { url: i.url, titulo: i.fonte }])).values()] };
+      const usados = ranked.slice(0, top.i.tipo === "ensino" ? 1 : 3).filter(x => x.s >= top.s * .55).map(x => x.i);
+      passo("Encontrei na memória");
+      const f0 = usados.find(i => i.fonte && i.fonte !== "você");
+      return { origem: "mem", frases: usados.map(i => i.t), usados, ctx: f0 ? f0.fonte : assunto(pergunta), fontes: [...new Map(usados.filter(i => i.url).map(i => [i.url, { url: i.url, titulo: i.fonte }])).values()] };
     }
   }
   // 2) internet
   if (!navigator.onLine) throw { code: "offline" };
   const consulta = assunto(pergunta);
-  let pags = [];
-  const [w, d] = await Promise.all([wiki("pt", consulta, passo).catch(() => []), ddg(consulta, passo)]);
-  pags = d.concat(w);
-  let sel = escolher(pergunta, pags);
-  if (!sel.length && M.en) { const en = await wiki("en", consulta, passo).catch(() => []); pags = pags.concat(en); sel = escolher(pergunta, pags); }
+  const [w, d] = await Promise.all([wiki("pt", consulta, passo).catch(e => { if (sinal?.aborted) throw e; return []; }), ddg(consulta, passo)]);
+  let pags = d.concat(w);
+  let sel = escolher(pergunta, pags, op.excluir);
+  if (!sel.length && M.en) { const en = await wiki("en", consulta, passo).catch(e => { if (sinal?.aborted) throw e; return []; }); pags = pags.concat(en); sel = escolher(pergunta, pags, op.excluir); }
+  if (sinal?.aborted) throw { code: "parado" };
   if (!sel.length) return { origem: "nada", frases: [], usados: [], fontes: [] };
   // 3) aprende o que achou
   novos = [];
@@ -458,103 +540,338 @@ async function responder(pergunta, passo){
   for (const e of sel) aprender("fato", e.f, { url: e.p.url, fonte: e.p.titulo, q: qset });
   const top = sel[0].p;
   if (top) frases(top.texto).slice(0, 2).forEach(f => aprender("fato", f, { url: top.url, fonte: top.titulo }));
-  usados = novos.map(id => M.k.find(i => i.id === id)).filter(Boolean);
-  fontes = [...new Map(sel.map(e => [e.p.url, { url: e.p.url, titulo: e.p.titulo }])).values()];
-  return { origem: "web", frases: sel.map(e => e.f), usados, fontes, aprendidos: novos.length };
+  const usados = novos.map(id => M.k.find(i => i.id === id)).filter(Boolean);
+  const fontes = [...new Map(sel.map(e => [e.p.url, { url: e.p.url, titulo: e.p.titulo }])).values()];
+  return { origem: "web", frases: sel.map(e => e.f), usados, fontes, aprendidos: novos.length, ctx: top.ddg && top.titulo === "Resposta rápida" ? consulta : top.titulo };
 }
 
-/* ---------- conversa ---------- */
+/* =========================================================
+   CONVERSAS — histórico, menu lateral, respostas "digitadas"
+   ========================================================= */
+let C = carregarChats();   // { list: [ {id, t, ts, ctx, m:[{p, a}]} ] }
+let atual = null;          // conversa aberta
+let ger = null;            // geração em andamento { stop, abort }
+function carregarChats(){ try { const c = JSON.parse(localStorage.getItem(CKEY)); if (c && Array.isArray(c.list)) return c; } catch {} return { list: [] }; }
+function salvarChats(){
+  C.list.sort((a,b) => b.ts - a.ts); C.list = C.list.slice(0, 80);
+  for (let i = 0; i < 4; i++) { try { localStorage.setItem(CKEY, JSON.stringify(C)); return; } catch { C.list = C.list.slice(0, Math.floor(C.list.length / 2)); } }
+}
+
 const log = $("#log"), vChat = $("#vChat");
-const scroll = () => requestAnimationFrame(() => { vChat.scrollTop = vChat.scrollHeight; });
-function turno(pergunta){
-  const t = document.createElement("div"); t.className = "turn";
-  t.innerHTML = `<div class="q"></div><div class="trail"></div><div class="body"><span class="dots"><i></i><i></i><i></i></span></div>`;
-  t.querySelector(".q").textContent = pergunta; log.append(t); scroll(); return t;
-}
-const SOCIAL = [
-  [/^(oi|ola|bom dia|boa tarde|boa noite|e ai|eae|hey)\b/, () => "Olá! Eu sou a AVIX. Pode perguntar o que quiser: eu pesquiso, respondo e aprendo."],
-  [/^(obrigad|valeu|vlw|brigad)/, () => "Por nada! Se a resposta ajudou, toque em 👍 para eu saber que acertei."],
-  [/(o que voce sabe|quanto voce sabe|seu nivel)/, () => `Já guardei ${M.k.length} conhecimentos, sendo ${M.k.filter(i => i.tipo === "ensino").length} ensinados por você, em ${M.q} perguntas. Estou no nível ${ROMAN(nivel().lvl)}.`],
-  [/^(quem e voce|o que e voce|como voce funciona|o que e (a )?avix)/, () => "Sou a AVIX IA: uma assistente que roda só neste aparelho. Pesquiso na Wikipédia e no DuckDuckGo, escolho os trechos que respondem e guardo tudo no meu caderno. Com seus 👍, 👎 e ensinamentos, fico melhor a cada uso."],
-];
+const pertoDoFim = () => vChat.scrollHeight - vChat.scrollTop - vChat.clientHeight < 140;
+const rolar = (forca) => requestAnimationFrame(() => { if (forca || pertoDoFim()) vChat.scrollTop = vChat.scrollHeight; });
+const SEM_ANIM = matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-async function perguntar(pergunta){
-  const t = turno(pergunta), trail = t.querySelector(".trail"), body = t.querySelector(".body");
-  const passo = s => { const e = document.createElement("span"); e.textContent = s; trail.append(e); scroll(); };
-  const n = norm(pergunta).trim();
-  // "lembre: ..." — ensino direto
-  const lm = pergunta.match(/^\s*(lembre|lembra|anote|anota|aprenda|aprende|guarde|guarda)\s*(-|:|que)?\s*(.+)$/i);
-  if (lm) {
-    const item = aprender("ensino", lm[3], { fonte: "você" });
-    gravar(); render();
-    body.innerHTML = item ? `<p><span class="badge mem">ensinado</span></p><p>Guardado: <strong>${esc(item.t)}</strong></p><p>Quando você perguntar sobre isso, eu respondo com essa informação.</p>` : "<p>Isso eu já sabia. Mantive no caderno.</p>";
-    return;
-  }
-  for (const [re, f] of SOCIAL) if (re.test(n)) { body.innerHTML = `<p>${esc(f())}</p>`; return; }
+const ICON = {
+  send: '<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg>',
+  stop: '<svg viewBox="0 0 24 24"><rect x="7" y="7" width="10" height="10" rx="2" fill="#eef1ff"/></svg>',
+  copy: '<svg viewBox="0 0 24 24"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V6a2 2 0 0 1 2-2h8"/></svg>',
+  up: '<svg viewBox="0 0 24 24"><path d="M7 11v9H4v-9zM7 11l4-7a2 2 0 0 1 3 2l-1 4h5.5a2 2 0 0 1 2 2.3l-1.2 6A2 2 0 0 1 17.3 20H7"/></svg>',
+  down: '<svg viewBox="0 0 24 24"><path d="M17 13V4h3v9zM17 13l-4 7a2 2 0 0 1-3-2l1-4H5.5a2 2 0 0 1-2-2.3l1.2-6A2 2 0 0 1 6.7 4H17"/></svg>',
+  retry: '<svg viewBox="0 0 24 24"><path d="M20 11a8 8 0 1 0-2.3 5.7"/><path d="M20 5v6h-6"/></svg>',
+};
+const send = $("#send");
+function ocupado(on){ send.classList.toggle("stop", on); send.classList.toggle("solid", !on); send.innerHTML = on ? ICON.stop : ICON.send; send.setAttribute("aria-label", on ? "Parar" : "Enviar"); }
+ocupado(false);
 
-  $("#send").disabled = true;
-  let r;
-  try { r = await responder(pergunta, passo); }
-  catch (e) {
-    body.innerHTML = e?.code === "offline" ? "<p>Estou sem internet e ainda não aprendi nada sobre isso. Tente de novo quando a conexão voltar.</p>" : "<p>Não consegui pesquisar agora. Verifique a internet e tente de novo.</p>";
-    $("#send").disabled = false; return;
-  }
-  $("#send").disabled = false;
-  M.q++;
-  if (r.origem === "nada") {
-    body.innerHTML = "<p>Não encontrei uma resposta boa para isso. Tente com outras palavras, ou me ensine a resposta.</p>";
-    acoes(t, pergunta, r, true); gravar(); render(); return;
-  }
-  r.usados.forEach(i => i.u = (i.u || 0) + 1);
-  const badge = r.origem === "mem" ? '<span class="badge mem">do caderno</span>' : '<span class="badge web">pesquisado agora</span>';
-  body.innerHTML = `<p>${badge}</p>` + r.frases.map((f, k) => `<p>${k === 0 ? "<strong>" + esc(f) + "</strong>" : esc(f)}</p>`).join("");
-  if (r.fontes.length) { const s = document.createElement("div"); s.className = "sources"; s.innerHTML = r.fontes.slice(0, 5).map(f => `<a href="${esc(f.url)}" target="_blank" rel="noopener">${esc(f.titulo || host(f.url))}</a>`).join(""); t.append(s); }
-  if (r.aprendidos) { const d = document.createElement("div"); d.className = "learned"; d.innerHTML = `<b>+${r.aprendidos} no caderno</b> · da próxima vez respondo sem pesquisar`; t.append(d); }
-  acoes(t, pergunta, r, false);
-  gravar(); render(); scroll();
+function saudacao(){ const h = new Date().getHours(); return h < 5 ? "Boa noite" : h < 12 ? "Bom dia" : h < 18 ? "Boa tarde" : "Boa noite"; }
+function hero(){
+  log.innerHTML = `<div class="hero" id="hero">
+    <img src="logo-mark.png" alt="AVIX IA">
+    <h2>${saudacao()}! Como posso <span class="gtext">ajudar</span>?</h2>
+    <p>Eu pesquiso na internet, respondo com as fontes e aprendo com cada conversa. Se eu errar, me ensine: o que você diz vale mais que qualquer site.</p>
+    <div class="examples" id="examples">
+      <button type="button"><small>Estoque</small>O que é curva ABC?</button>
+      <button type="button"><small>História</small>Quem inventou o código de barras?</button>
+      <button type="button"><small>Logística</small>O que é logística reversa?</button>
+      <button type="button"><small>Ensinar</small>lembre: o caminhão da loja 5 sai às 6h</button>
+    </div></div>`;
+  $("#examples").onclick = e => { const b = e.target.closest("button"); if (!b) return; q.value = b.lastChild.textContent.trim(); $("#ask").requestSubmit(); };
 }
 
-function acoes(t, pergunta, r, soEnsinar){
-  const a = document.createElement("div"); a.className = "acts"; t.append(a);
-  const doms = [...new Set(r.fontes.map(f => host(f.url)).filter(Boolean))];
-  a.innerHTML = (soEnsinar ? "" : '<button type="button" data-a="bom">👍 Acertou</button><button type="button" data-a="ruim">👎 Errou</button>') + '<button type="button" class="ghost" data-a="ens">Ensinar</button>';
-  a.addEventListener("click", function h(e){
-    const b = e.target.closest("button"); if (!b) return;
-    const op = b.dataset.a;
-    if (op === "bom") {
-      r.usados.forEach(i => i.w = Math.min(5, (i.w || 1) + .6));
-      doms.forEach(d => M.dom[d] = Math.min(5, (M.dom[d] || 0) + .3));
-      gravar(); render(); a.innerHTML = '<span class="done">Anotado. Essa resposta ficou mais forte no caderno.</span>'; a.removeEventListener("click", h);
-    } else if (op === "ruim") {
-      r.usados.forEach(i => i.w = Math.max(.1, (i.w || 1) - .8));
-      doms.forEach(d => M.dom[d] = Math.max(-3, (M.dom[d] || 0) - .3));
-      gravar(); render(); abrirEnsino(a, pergunta, h, "Entendi, vou dar menos peso a isso. Qual é a resposta certa?");
-    } else if (op === "ens") abrirEnsino(a, pergunta, h, "Qual é a resposta certa?");
+/* --- desenha uma mensagem --- */
+function paragrafos(a){
+  if (a.par) return a.par;
+  const f = a.frases || [];
+  return [f[0], f.slice(1).join(" ")].filter(Boolean);
+}
+function msgEl(m, novo){
+  const el = document.createElement("div"); el.className = "msg" + (novo ? " novo" : "");
+  el.innerHTML = `<div class="q"></div><div class="ans"><div class="who"><img src="logo-mark.png" alt=""><span class="bdg"></span></div><div class="status"></div><div class="body"></div></div>`;
+  el.querySelector(".q").textContent = m.p;
+  el._m = m;
+  return el;
+}
+function preencher(el, a){
+  const ans = el.querySelector(".ans");
+  ans.querySelectorAll(".sources,.learned,.acts,.fix").forEach(x => x.remove());
+  el.querySelector(".who img").classList.remove("pensa");
+  el.querySelector(".bdg").innerHTML = a.k === "web" ? '<span class="badge web">pesquisado agora</span>' : a.k === "mem" ? '<span class="badge mem">da memória</span>' : a.k === "ensino" ? '<span class="badge mem">ensinado</span>' : "";
+  const st = el.querySelector(".status");
+  if (a.passos?.length) {
+    const resumo = a.k === "mem" ? "Lembrei da memória" : a.fontes?.length ? `Pesquisei em ${a.fontes.length} fonte${a.fontes.length > 1 ? "s" : ""}` : "Pesquisa";
+    st.innerHTML = `<details><summary>${esc(resumo)}</summary><ol>${a.passos.map(p => `<li>${esc(p)}</li>`).join("")}</ol></details>`;
+  } else st.innerHTML = "";
+  if (a.entendi) st.insertAdjacentHTML("afterbegin", `<div>Entendi como: “${esc(a.entendi)}”</div>`);
+  if (a.fontes?.length) { const s = document.createElement("div"); s.className = "sources"; s.innerHTML = a.fontes.slice(0, 5).map(f => `<a href="${esc(f.url)}" target="_blank" rel="noopener">${esc(f.titulo || host(f.url))}</a>`).join(""); ans.append(s); }
+  if (a.aprendidos) { const d = document.createElement("div"); d.className = "learned"; d.innerHTML = `<b>+${a.aprendidos} na memória</b> · da próxima vez respondo sem pesquisar`; ans.append(d); }
+  acoes(el, a);
+}
+function corpoFixo(el, a){
+  const b = el.querySelector(".body"); b.innerHTML = "";
+  paragrafos(a).forEach((t, i) => { const p = document.createElement("p"); if (i === 0) p.className = "lead"; p.textContent = t; b.append(p); });
+}
+// efeito de digitação, palavra por palavra
+function digitar(el, a, g){
+  const b = el.querySelector(".body"); b.innerHTML = "";
+  const ps = paragrafos(a);
+  if (SEM_ANIM) { corpoFixo(el, a); return Promise.resolve(); }
+  return new Promise(res => {
+    let i = 0, k = 0, p = null, w = [];
+    const passo = () => {
+      if (g.stop) { corpoFixo(el, a); return res(); }
+      for (let n = 0; n < 3 && i < ps.length; n++) {
+        if (!p) { p = document.createElement("p"); if (i === 0) p.className = "lead"; p.classList.add("cursor"); b.append(p); w = ps[i].split(/(\s+)/); k = 0; }
+        p.textContent += w[k++] || "";
+        if (k >= w.length) { p.classList.remove("cursor"); p = null; i++; }
+      }
+      rolar();
+      if (i < ps.length) setTimeout(passo, 24); else res();
+    };
+    passo();
   });
 }
-function abrirEnsino(a, pergunta, h, rotulo){
-  a.removeEventListener("click", h);
+
+/* --- botões embaixo da resposta --- */
+function acoes(el, a){
+  const ans = el.querySelector(".ans");
+  const box = document.createElement("div"); box.className = "acts"; ans.append(box);
+  const pode = { copy: !["erro","parado","nada"].includes(a.k), fb: a.k === "web" || a.k === "mem", retry: !["social","ensino"].includes(a.k), ens: !["social","ensino"].includes(a.k) };
+  box.innerHTML =
+    (pode.copy ? `<button class="ic" type="button" data-a="copy" aria-label="Copiar">${ICON.copy}</button>` : "") +
+    (pode.fb ? `<button class="ic${a.fb === "bom" ? " on" : ""}" type="button" data-a="bom" aria-label="Acertou">${ICON.up}</button><button class="ic down${a.fb === "ruim" ? " on" : ""}" type="button" data-a="ruim" aria-label="Errou">${ICON.down}</button>` : "") +
+    (pode.retry ? `<button class="ic" type="button" data-a="retry" aria-label="Tentar de novo">${ICON.retry}</button>` : "") +
+    (pode.ens ? `<button class="txt" type="button" data-a="ens">Ensinar</button>` : "");
+  box.onclick = e => {
+    const b = e.target.closest("button"); if (!b) return;
+    const op = b.dataset.a, m = el._m;
+    const usados = (a.usados || []).map(id => M.k.find(i => i.id === id)).filter(Boolean);
+    const doms = [...new Set((a.fontes || []).map(f => host(f.url)).filter(Boolean))];
+    if (op === "copy") {
+      copiar(paragrafos(a).join("\n\n") + (a.fontes?.length ? "\n\nFontes:\n" + a.fontes.map(f => f.url).join("\n") : ""));
+    } else if (op === "bom" && a.fb !== "bom") {
+      usados.forEach(i => i.w = Math.min(5, (i.w || 1) + .6));
+      doms.forEach(d => M.dom[d] = Math.min(5, (M.dom[d] || 0) + .3));
+      a.fb = "bom"; gravar(); salvarChats(); render(); preencher(el, a); toast("Anotado. Essa resposta ficou mais forte na memória.");
+    } else if (op === "ruim" && a.fb !== "ruim") {
+      usados.forEach(i => i.w = Math.max(.1, (i.w || 1) - .8));
+      doms.forEach(d => M.dom[d] = Math.max(-3, (M.dom[d] || 0) - .3));
+      a.fb = "ruim"; gravar(); salvarChats(); render(); preencher(el, a);
+      abrirEnsino(el, m.p, "Entendi, vou dar menos peso a isso. Qual é a resposta certa?");
+    } else if (op === "retry") {
+      if (ger) return;
+      const ex = new Set(a.frases || []);
+      gerar(el, m, { forceWeb: a.k === "web" || a.k === "mem", excluir: a.k === "web" ? ex : null });
+    } else if (op === "ens") abrirEnsino(el, m.p, "Qual é a resposta certa?");
+  };
+}
+function abrirEnsino(el, pergunta, rotulo){
+  const ans = el.querySelector(".ans");
+  ans.querySelector(".fix")?.remove();
   const id = "ens" + Date.now();
-  a.innerHTML = `<div class="fix"><label class="done" for="${id}">${esc(rotulo)}</label><textarea id="${id}" placeholder="Escreva a resposta certa"></textarea><div class="row"><button type="button" class="solid">Ensinar</button><button type="button" class="ghost">Agora não</button></div></div>`;
-  const ta = a.querySelector("textarea"), [ok, no] = a.querySelectorAll("button");
-  ta.focus();
-  no.onclick = () => { a.innerHTML = '<span class="done">Tudo bem.</span>'; };
+  const f = document.createElement("div"); f.className = "fix";
+  f.innerHTML = `<label class="done" for="${id}">${esc(rotulo)}</label><textarea id="${id}" placeholder="Escreva a resposta certa"></textarea><div class="row"><button type="button" class="solid">Ensinar</button><button type="button" class="ghost">Agora não</button></div>`;
+  ans.append(f);
+  const ta = f.querySelector("textarea"), [ok, no] = f.querySelectorAll("button");
+  ta.focus(); rolar(true);
+  no.onclick = () => f.remove();
   ok.onclick = () => {
     const v = ta.value.trim(); if (!v) return;
     const item = aprender("ensino", v, { q: toks(pergunta), pergunta, fonte: "você" });
     gravar(); render();
-    a.innerHTML = `<span class="done">${item ? "<b>Aprendido.</b> Na próxima vez que perguntarem isso, respondo assim." : "Isso já estava no caderno. Reforcei."}</span>`;
+    f.innerHTML = `<span class="done">${item ? "<b>Aprendido.</b> Na próxima vez que perguntarem isso, respondo assim." : "Isso já estava na memória. Reforcei."}</span>`;
   };
 }
+function copiar(t){
+  const ok = () => toast("Copiado.");
+  if (navigator.clipboard?.writeText) navigator.clipboard.writeText(t).then(ok, () => velho());
+  else velho();
+  function velho(){ const ta = document.createElement("textarea"); ta.value = t; ta.setAttribute("readonly", ""); ta.style.cssText = "position:fixed;opacity:0"; document.body.append(ta); ta.select(); try { document.execCommand("copy"); ok(); } catch { toast("Não consegui copiar."); } ta.remove(); }
+}
 
-/* ---------- nível e caderno ---------- */
+/* --- respostas rápidas --- */
+const SOCIAL = [
+  [/^(oi|ola|bom dia|boa tarde|boa noite|e ai|eae|hey)\b/, () => "Olá! Eu sou a AVIX. Pode perguntar o que quiser: eu pesquiso, respondo e aprendo."],
+  [/^(obrigad|valeu|vlw|brigad)/, () => "Por nada! Se a resposta ajudou, toque no 👍 para eu saber que acertei."],
+  [/(o que voce sabe|quanto voce sabe|seu nivel)/, () => `Já guardei ${M.k.length} conhecimentos, sendo ${M.k.filter(i => i.tipo === "ensino").length} ensinados por você, em ${M.q} perguntas. Estou no nível ${ROMAN(nivel().lvl)}.`],
+  [/^(quem e voce|o que e voce|como voce funciona|o que e (a )?avix)/, () => "Sou a AVIX IA: uma assistente que roda só neste aparelho. Pesquiso na Wikipédia e no DuckDuckGo, escolho os trechos que respondem e guardo tudo na minha memória. Com seus 👍, 👎 e ensinamentos, fico melhor a cada uso."],
+];
+
+/* --- fluxo de uma pergunta --- */
+async function gerar(el, m, op = {}){
+  const chat = atual;
+  const g = ger = { stop: false, ctrl: new AbortController() };
+  sinal = g.ctrl.signal;
+  ocupado(true);
+  const st = el.querySelector(".status"), body = el.querySelector(".body");
+  el.querySelector(".ans").querySelectorAll(".sources,.learned,.acts,.fix").forEach(x => x.remove());
+  el.querySelector(".bdg").innerHTML = ""; body.innerHTML = "";
+  el.querySelector(".who img").classList.add("pensa");
+  const passos = [];
+  const passo = s => { passos.push(s); st.innerHTML = `<div class="live">${esc(s)}</div>`; rolar(); };
+  st.innerHTML = '<div class="live">Pensando…</div>';
+
+  const pergunta = m.p, n = norm(pergunta).trim();
+  let a;
+  const lm = pergunta.match(/^\s*(lembre|lembra|anote|anota|aprenda|aprende|guarde|guarda)\s*(-|:|que)?\s*(.+)$/is);
+  const soc = SOCIAL.find(([re]) => re.test(n));
+  if (lm) {
+    const item = aprender("ensino", lm[3], { fonte: "você" });
+    gravar(); render();
+    a = { k: "ensino", par: item ? [`Guardado: “${item.t}”.`, "Quando você perguntar sobre isso, eu respondo com essa informação."] : ["Isso eu já sabia. Mantive na memória."] };
+  } else if (soc) {
+    a = { k: "social", par: [soc[1]()] };
+  } else {
+    const efetiva = resolver(pergunta, chat?.ctx);
+    try {
+      const r = await responder(efetiva, passo, op);
+      M.q++;
+      r.usados.forEach(i => i.u = (i.u || 0) + 1);
+      if (r.origem === "nada") a = { k: "nada", par: ["Não encontrei uma resposta boa para isso. Tente com outras palavras, ou me ensine a resposta."], passos };
+      else {
+        a = { k: r.origem, frases: r.frases, fontes: r.fontes.slice(0, 5), usados: r.usados.map(i => i.id), aprendidos: r.aprendidos || 0, passos };
+        if (chat) chat.ctx = (tipoPergunta(efetiva) === "quem" && pessoa(r.frases)) || r.ctx || chat.ctx;
+      }
+      if (efetiva !== pergunta) a.entendi = efetiva;
+      gravar(); render();
+    } catch (e) {
+      if (g.stop || e?.code === "parado" || e?.name === "AbortError") a = { k: "parado", par: ["Você parou a pesquisa."] };
+      else if (e?.code === "offline") a = { k: "erro", par: ["Estou sem internet e ainda não aprendi nada sobre isso. Tente de novo quando a conexão voltar."] };
+      else a = { k: "erro", par: ["Não consegui pesquisar agora. Verifique a internet e tente de novo."] };
+    }
+  }
+  m.a = a;
+  if (chat) { chat.ts = Date.now(); salvarChats(); listaChats(); }
+  st.innerHTML = "";
+  el.querySelector(".who img").classList.remove("pensa");
+  await digitar(el, a, g);
+  if (el.isConnected) { preencher(el, a); rolar(); }
+  if (ger === g) { ger = null; sinal = null; ocupado(false); }
+}
+function perguntar(texto){
+  if (!atual) {
+    atual = { id: "c" + Date.now().toString(36), t: texto.replace(/\s+/g, " ").slice(0, 48), ts: Date.now(), ctx: "", m: [] };
+    C.list.unshift(atual);
+    log.innerHTML = "";
+    titulo();
+  }
+  const m = { p: texto, a: null };
+  atual.m.push(m);
+  salvarChats(); listaChats();
+  const el = msgEl(m, true); log.append(el); rolar(true);
+  gerar(el, m);
+}
+function pararTudo(){ if (ger) { ger.stop = true; ger.ctrl.abort(); } }
+
+/* --- abrir, criar e listar conversas --- */
+function abrirChat(id){
+  pararTudo();
+  atual = C.list.find(c => c.id === id) || null;
+  if (!atual) return novaConversa();
+  log.innerHTML = "";
+  for (const m of atual.m) {
+    const el = msgEl(m, false); log.append(el);
+    if (m.a) { corpoFixo(el, m.a); preencher(el, m.a); }
+    else { m.a = { k: "parado", par: ["Resposta interrompida."] }; corpoFixo(el, m.a); preencher(el, m.a); }
+  }
+  aba("chat"); titulo(); listaChats(); rolar(true);
+}
+function novaConversa(){
+  pararTudo();
+  atual = null; hero(); aba("chat"); titulo(); listaChats();
+  q.value = ""; grow();
+}
+function titulo(){
+  $("#ttlTxt").textContent = view === "mem" ? "Memória" : view === "cfg" ? "Ajustes" : atual ? atual.t : "AVIX IA";
+}
+function grupo(ts){
+  const d0 = new Date(); d0.setHours(0,0,0,0); const t = d0.getTime(), dia = 864e5;
+  return ts >= t ? "Hoje" : ts >= t - dia ? "Ontem" : ts >= t - 7*dia ? "Últimos 7 dias" : ts >= t - 30*dia ? "Últimos 30 dias" : "Mais antigas";
+}
+function listaChats(){
+  const el = $("#chats");
+  if (!C.list.length) { el.innerHTML = '<div class="none">Suas conversas vão aparecer aqui.</div>'; return; }
+  let g0 = "", html = "";
+  for (const c of C.list.slice().sort((a,b) => b.ts - a.ts)) {
+    const g = grupo(c.ts);
+    if (g !== g0) { html += `<div class="eyebrow dsec">${g}</div>`; g0 = g; }
+    html += `<div class="chatItem${atual && atual.id === c.id && view === "chat" ? " on" : ""}" role="button" tabindex="0" data-id="${esc(c.id)}"><span class="nm">${esc(c.t)}</span><button class="rm" type="button" data-rm="${esc(c.id)}" aria-label="Apagar conversa">✕</button></div>`;
+  }
+  el.innerHTML = html;
+}
+$("#chats").addEventListener("click", e => {
+  const rm = e.target.closest("[data-rm]");
+  if (rm) {
+    e.stopPropagation();
+    if (!rm.classList.contains("confirm")) { rm.classList.add("confirm"); rm.textContent = "apagar?"; setTimeout(() => { if (rm.isConnected) { rm.classList.remove("confirm"); rm.textContent = "✕"; } }, 3000); return; }
+    const id = rm.dataset.rm; C.list = C.list.filter(c => c.id !== id); salvarChats();
+    if (atual && atual.id === id) novaConversa(); else listaChats();
+    return;
+  }
+  const it = e.target.closest("[data-id]"); if (!it) return;
+  fecharMenu(); abrirChat(it.dataset.id);
+});
+
+/* --- menu lateral (abre no ☰ ou arrastando da borda) --- */
+const drawer = $("#drawer"), scrim = $("#scrim");
+function abrirMenu(){
+  listaChats();
+  scrim.hidden = false; requestAnimationFrame(() => scrim.classList.add("on"));
+  drawer.classList.add("open");
+  if (!history.state?.menu) history.pushState({ menu: 1 }, "");
+  document.activeElement?.blur();
+}
+function fecharMenu(semHist){
+  if (!drawer.classList.contains("open")) return;
+  drawer.classList.remove("open"); scrim.classList.remove("on");
+  setTimeout(() => { if (!drawer.classList.contains("open")) scrim.hidden = true; }, 260);
+  if (!semHist && history.state?.menu) voltar();
+}
+let ignorarPop = false;
+function voltar(){ ignorarPop = true; history.back(); }
+$("#bMenu").onclick = abrirMenu;
+scrim.onclick = () => fecharMenu();
+addEventListener("popstate", () => {
+  if (ignorarPop) { ignorarPop = false; return; }
+  if (!$("#sheet").hidden) { $("#sheet").hidden = true; return; }
+  if (drawer.classList.contains("open")) { fecharMenu(true); return; }
+  if (view !== "chat") aba("chat", true);
+});
+let tx = null, ty = 0;
+addEventListener("touchstart", e => { const t = e.touches[0]; tx = (t.clientX < 24 || drawer.classList.contains("open")) ? t.clientX : null; ty = t.clientY; }, { passive: true });
+addEventListener("touchend", e => {
+  if (tx === null) return; const t = e.changedTouches[0], dx = t.clientX - tx, dy = Math.abs(t.clientY - ty);
+  if (dy < 60) { if (dx > 60 && !drawer.classList.contains("open")) abrirMenu(); else if (dx < -60 && drawer.classList.contains("open")) fecharMenu(); }
+  tx = null;
+}, { passive: true });
+$("#bNew").onclick = () => novaConversa();
+$("#dNew").onclick = () => { fecharMenu(); novaConversa(); setTimeout(() => q.focus(), 300); };
+document.querySelectorAll(".dnav button").forEach(b => b.onclick = () => {
+  const v = b.dataset.v;
+  if (v === "chat") { fecharMenu(); aba("chat"); return; }
+  drawer.classList.remove("open"); scrim.classList.remove("on"); setTimeout(() => scrim.hidden = true, 260);
+  if (history.state?.menu) history.replaceState({ v: 1 }, ""); else history.pushState({ v: 1 }, "");
+  aba(v, true);
+});
+
+/* ---------- nível e memória ---------- */
 const ROMAN = n => { const m=[[10,"X"],[9,"IX"],[5,"V"],[4,"IV"],[1,"I"]]; let s=""; for (const [v,r] of m) while (n>=v){s+=r;n-=v;} return s; };
 const NOMES = ["iniciante","curioso","estudante","pesquisador","analista","especialista","mestre","sábio","erudito","enciclopédia"];
 function nivel(){ const n = M.k.length, lvl = 1 + Math.floor(Math.sqrt(n/4)); return { n, lvl, cur: 4*(lvl-1)**2, next: 4*lvl**2 }; }
 let filtro = "todos";
 function render(){
   const { n, lvl, cur, next } = nivel();
-  $("#lvl").textContent = ROMAN(Math.min(lvl, 39)); $("#lvlName").textContent = NOMES[Math.min(NOMES.length-1, lvl-1)];
+  $("#lvl").textContent = ROMAN(Math.min(lvl, 39)); $("#lvlName").textContent = NOMES[Math.min(NOMES.length-1, lvl-1)] + " · " + n + " conhecimentos";
   const pct = Math.min(100, (n-cur)/Math.max(1,next-cur)*100); $("#bar").style.width = pct + "%"; $("#ring").style.setProperty("--p", pct.toFixed(1));
   const e = M.k.filter(i => i.tipo === "ensino").length;
   $("#sF").textContent = n - e; $("#sE").textContent = e; $("#sQ").textContent = M.q;
@@ -601,23 +918,39 @@ function desenhar(){
 }
 addEventListener("resize", desenhar);
 
-/* ---------- abas, entrada, ajustes ---------- */
-function aba(v){
-  for (const [b, s] of [["#tChat","#vChat"],["#tMem","#vMem"],["#tCfg","#vCfg"]]) { const on = s === v; $(b).classList.toggle("on", on); $(s).hidden = !on; }
-  $("#dock").hidden = v !== "#vChat"; render();
+/* ---------- telas, caixa de mensagem, ajustes ---------- */
+let view = "chat";
+function aba(v, semHist){
+  view = v;
+  const mapa = { chat: "#vChat", mem: "#vMem", cfg: "#vCfg" };
+  for (const [k, s] of Object.entries(mapa)) $(s).hidden = k !== v;
+  document.querySelectorAll(".dnav button").forEach(b => b.classList.toggle("on", b.dataset.v === v));
+  $("#dock").hidden = v !== "chat";
+  if (!semHist && v === "chat" && history.state?.v) voltar();
+  titulo(); render(); listaChats();
 }
-$("#tChat").onclick = () => aba("#vChat"); $("#tMem").onclick = () => aba("#vMem"); $("#tCfg").onclick = () => aba("#vCfg");
 const q = $("#q");
 const grow = () => { q.style.height = "auto"; q.style.height = Math.min(150, q.scrollHeight) + "px"; };
 q.addEventListener("input", grow);
-q.addEventListener("keydown", e => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); $("#ask").requestSubmit(); } });
-$("#ask").addEventListener("submit", e => { e.preventDefault(); const v = q.value.trim(); if (!v || $("#send").disabled) return; document.querySelector(".intro")?.remove(); q.value = ""; grow(); perguntar(v); });
-$("#examples").addEventListener("click", e => { const b = e.target.closest("button"); if (!b) return; q.value = b.lastChild.textContent.trim(); $("#ask").requestSubmit(); });
+const toqueTela = matchMedia("(pointer: coarse)").matches;
+if (toqueTela) q.enterKeyHint = "enter"; // no celular, Enter pula linha e a seta envia (igual ao Claude)
+q.addEventListener("keydown", e => { if (e.key === "Enter" && !e.shiftKey && !toqueTela && !e.isComposing) { e.preventDefault(); $("#ask").requestSubmit(); } });
+q.addEventListener("focus", () => setTimeout(() => rolar(true), 300));
+$("#ask").addEventListener("submit", e => {
+  e.preventDefault();
+  if (ger) { pararTudo(); return; }
+  const v = q.value.trim(); if (!v) return;
+  q.value = ""; grow(); perguntar(v);
+});
 
 function toast(t){ const el = $("#toast"); el.textContent = t; el.classList.add("on"); clearTimeout(toast.h); toast.h = setTimeout(() => el.classList.remove("on"), 2600); }
 $("#exp").onclick = () => {
   const blob = new Blob([JSON.stringify({ app: "aprendiz", v: 1, data: new Date().toISOString(), ...M, k: M.k.map(({ tk, ...r }) => r) })], { type: "application/json" });
-  const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = "avix-backup-" + new Date().toISOString().slice(0,10) + ".json"; document.body.append(a); a.click(); a.remove();
+  const nome = "avix-backup-" + new Date().toISOString().slice(0,10) + ".json";
+  const arq = typeof File === "function" ? new File([blob], nome, { type: "application/json" }) : null;
+  // no iPhone, o jeito mais seguro de salvar é pelo "Compartilhar" → Salvar em Arquivos
+  if (IOS && arq && navigator.canShare?.({ files: [arq] })) { navigator.share({ files: [arq], title: "Backup da AVIX" }).catch(() => {}); return; }
+  const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = nome; document.body.append(a); a.click(); a.remove();
   setTimeout(() => URL.revokeObjectURL(a.href), 4000); toast("Backup salvo nos Downloads.");
 };
 $("#imp").onclick = () => $("#impFile").click();
@@ -634,58 +967,74 @@ $("#impFile").onchange = async e => {
 };
 const enTxt = () => $("#tEn").textContent = M.en ? "Wikipédia em inglês: ligada" : "Wikipédia em inglês: desligada";
 $("#tEn").onclick = () => { M.en = !M.en; gravar(); enTxt(); }; enTxt();
-$("#zerar").onclick = function(){
-  if (this.dataset.c !== "1") { this.dataset.c = "1"; this.textContent = "Toque de novo para apagar tudo"; setTimeout(() => { this.dataset.c = ""; this.textContent = "Apagar memória"; }, 4000); return; }
-  M = { k: [], q: 0, dom: {}, seq: 1, en: M.en }; gravar(); render(); this.dataset.c = ""; this.textContent = "Apagar memória"; toast("Memória apagada.");
-};
+function confirmar2(btn, textoOrig, fazer){
+  if (btn.dataset.c !== "1") { btn.dataset.c = "1"; btn.textContent = "Toque de novo para confirmar"; setTimeout(() => { btn.dataset.c = ""; btn.textContent = textoOrig; }, 4000); return; }
+  btn.dataset.c = ""; btn.textContent = textoOrig; fazer();
+}
+$("#zerar").onclick = function(){ confirmar2(this, "Apagar memória", () => { M = { k: [], q: 0, dom: {}, seq: 1, en: M.en }; gravar(); render(); toast("Memória apagada."); }); };
+$("#zChats").onclick = function(){ confirmar2(this, "Apagar conversas", () => { C = { list: [] }; salvarChats(); atual = null; hero(); listaChats(); toast("Conversas apagadas."); }); };
+
 const net = () => $("#offline").hidden = navigator.onLine;
 addEventListener("online", net); addEventListener("offline", net); net();
 M.k.forEach(i => i.tk = i.tk || toks(i.t));
-render();
-if ("serviceWorker" in navigator) addEventListener("load", () => navigator.serviceWorker.register("sw.js").catch(() => {}));
 
-// ---- Instalar como app ----
+/* ---------- instalar como app (Android e iPhone) ---------- */
+const UA = navigator.userAgent;
+const IOS = /iPhone|iPad|iPod/i.test(UA) || (/Macintosh/.test(UA) && navigator.maxTouchPoints > 1);
 let pedido = null;
-const instalado = () => matchMedia("(display-mode: standalone)").matches || navigator.standalone === true;
+const instalado = () => matchMedia("(display-mode: standalone)").matches || matchMedia("(display-mode: fullscreen)").matches || navigator.standalone === true;
 const ocultouBarra = () => { try { return localStorage.getItem("avix.instX") === "1"; } catch { return false; } };
-function estadoInstalar() {
+function estadoInstalar(){
   const ok = instalado();
   $("#instBar").hidden = ok || ocultouBarra();
   $("#instRow").hidden = ok;
-  $("#instTxt").textContent = ok ? "A AVIX já está instalada e aberta como app. ✔" : "Coloque a AVIX na tela inicial para abrir como um app, até sem internet.";
-  if (ok) $("#instAjuda").hidden = true;
+  $("#dInst").hidden = ok;
+  $("#instTxt").textContent = ok ? "A AVIX já está instalada e aberta como app. ✔" : "Coloque a AVIX na tela inicial para abrir como um app, até sem internet. Funciona no Android e no iPhone.";
 }
-function ajudaInstalar() {
-  const ua = navigator.userAgent;
-  let html;
-  if (/FBAN|FBAV|Instagram|WhatsApp|Line\/|GitHub|; wv\)/i.test(ua)) {
-    html = "<p>Você abriu a AVIX dentro de outro aplicativo, e por ali não dá para instalar.</p><ol class='passos'><li>Toque nos <b>⋮</b> ou em <b>Abrir no navegador</b>.</li><li>Escolha o <b>Chrome</b>.</li><li>No Chrome, volte aqui e toque em <b>Instalar app</b>.</li></ol>";
-  } else if (/SamsungBrowser/i.test(ua)) {
-    html = "<ol class='passos'><li>Toque no menu <b>☰</b> embaixo.</li><li>Toque em <b>Adicionar página a</b> → <b>Tela inicial</b>.</li></ol><p>Se não aparecer, abra o site no <b>Chrome</b>.</p>";
-  } else if (/iPhone|iPad/i.test(ua)) {
-    html = "<ol class='passos'><li>Abra no <b>Safari</b>.</li><li>Toque em <b>Compartilhar</b> ⬆️.</li><li>Toque em <b>Adicionar à Tela de Início</b>.</li></ol>";
+function instrucoes(){
+  const dentroDeApp = /FBAN|FBAV|FB_IAB|Instagram|WhatsApp|Line\/|GitHub|; wv\)/i.test(UA);
+  let h;
+  if (IOS) {
+    const safari = /Safari/i.test(UA) && !/CriOS|FxiOS|EdgiOS|OPiOS/i.test(UA) && !dentroDeApp;
+    if (dentroDeApp) h = "<p>Você abriu a AVIX dentro de outro aplicativo. Por ali não dá para instalar.</p><ol class='passos'><li>Toque em <b>⋯</b> ou no ícone de bússola e escolha <b>Abrir no Safari</b>.</li><li>No Safari, toque em <b>Instalar</b> de novo.</li></ol>";
+    else if (safari) h = "<ol class='passos'><li>Toque no botão <b>Compartilhar</b> (o quadrado com a seta para cima ⬆️). No iPhone ele fica embaixo; em versões novas, toque antes em <b>⋯</b>.</li><li>Role a lista e toque em <b>Adicionar à Tela de Início</b>.</li><li>Se aparecer <b>Abrir como App Web</b>, deixe ligado. Depois toque em <b>Adicionar</b>.</li></ol>";
+    else h = "<ol class='passos'><li>Toque no botão <b>Compartilhar</b> ⬆️ ao lado do endereço do site.</li><li>Toque em <b>Adicionar à Tela de Início</b> → <b>Adicionar</b>.</li><li>Se não aparecer essa opção, abra o site no <b>Safari</b>.</li></ol>";
+    h += "<p class='nota'>No iPhone, o app instalado tem uma memória separada da do Safari. Para levar o que a AVIX já aprendeu: Ajustes → Salvar backup no Safari, e depois Restaurar backup no app.</p>";
+  } else if (dentroDeApp) {
+    h = "<p>Você abriu a AVIX dentro de outro aplicativo. Por ali não dá para instalar.</p><ol class='passos'><li>Toque nos <b>⋮</b> e escolha <b>Abrir no navegador</b> ou <b>Abrir no Chrome</b>.</li><li>No Chrome, toque em <b>Instalar</b> de novo.</li></ol>";
+  } else if (/SamsungBrowser/i.test(UA)) {
+    h = "<ol class='passos'><li>Toque no menu <b>☰</b> embaixo.</li><li>Toque em <b>Adicionar página a</b> → <b>Tela inicial</b>.</li></ol><p class='nota'>Se não aparecer, abra o site no Chrome.</p>";
   } else {
-    html = "<ol class='passos'><li>Toque nos <b>⋮</b> no canto de cima do Chrome.</li><li>Toque em <b>Instalar app</b> ou <b>Adicionar à tela inicial</b> → <b>Instalar</b>.</li><li>Se só aparecer \"Criar atalho\", feche o Chrome, abra de novo este site, espere uns segundos e tente outra vez.</li><li>Se já tinha um atalho antigo da AVIX, apague ele antes.</li></ol>";
+    h = "<ol class='passos'><li>Toque nos <b>⋮</b> no canto de cima do Chrome.</li><li>Toque em <b>Instalar app</b> ou <b>Adicionar à tela inicial</b> → <b>Instalar</b>.</li><li>Se só aparecer \"Criar atalho\", feche o Chrome, abra o site de novo, espere uns segundos e tente outra vez.</li></ol><p class='nota'>Se você já tinha um atalho antigo da AVIX, apague ele antes.</p>";
   }
-  $("#instAjuda").innerHTML = html;
-  $("#instAjuda").hidden = false;
+  $("#sheetBody").innerHTML = h;
+  $("#sheet").hidden = false;
+  history.pushState({ sheet: 1 }, "");
 }
+const fecharSheet = () => { if ($("#sheet").hidden) return; $("#sheet").hidden = true; if (history.state?.sheet) voltar(); };
+$("#sheetOk").onclick = fecharSheet;
+$("#sheet").onclick = e => { if (e.target.id === "sheet") fecharSheet(); };
 addEventListener("beforeinstallprompt", e => { e.preventDefault(); pedido = e; estadoInstalar(); });
 addEventListener("appinstalled", () => { pedido = null; toast("AVIX instalada! Procure o ícone na tela inicial."); estadoInstalar(); });
 document.querySelectorAll(".instBtn").forEach(b => b.onclick = async () => {
+  if (drawer.classList.contains("open")) fecharMenu();
   if (pedido) {
-    pedido.prompt();
-    const r = await pedido.userChoice.catch(() => null);
-    pedido = null;
-    if (r && r.outcome === "accepted") return;
-    toast("Tudo bem. Você pode instalar depois em Ajustes.");
-    return;
+    try {
+      await pedido.prompt();
+      const r = await pedido.userChoice.catch(() => null);
+      pedido = null;
+      if (!r || r.outcome !== "accepted") toast("Tudo bem. Você pode instalar depois pelo menu.");
+      return;
+    } catch { pedido = null; }
   }
-  $("#tCfg").click();
-  ajudaInstalar();
+  setTimeout(instrucoes, drawer.classList.contains("open") ? 300 : 0);
 });
 $("#instX").onclick = () => { try { localStorage.setItem("avix.instX", "1"); } catch {} $("#instBar").hidden = true; };
-estadoInstalar();
+
+/* ---------- início ---------- */
+hero(); render(); listaChats(); titulo(); estadoInstalar();
+navigator.storage?.persist?.().catch(() => {});
+if ("serviceWorker" in navigator) addEventListener("load", () => navigator.serviceWorker.register("sw.js").catch(() => {}));
 </script>
 </body>
 </html>
