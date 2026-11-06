@@ -11,7 +11,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="format-detection" content="telephone=no">
 <!-- Segurança: o app só pode falar com a Wikipédia, o DuckDuckGo e as fontes do Google. Nenhum outro site. -->
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self' https://pt.wikipedia.org https://en.wikipedia.org https://api.duckduckgo.com; manifest-src 'self'; worker-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://www.gstatic.com https://apis.google.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self' https://pt.wikipedia.org https://en.wikipedia.org https://api.duckduckgo.com https://firestore.googleapis.com https://identitytoolkit.googleapis.com https://securetoken.googleapis.com https://www.googleapis.com https://apis.google.com https://www.gstatic.com; frame-src https://avix-ia-cf.firebaseapp.com https://accounts.google.com; manifest-src 'self'; worker-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="no-referrer">
 <title>AVIX IA</title>
 <link rel="manifest" href="manifest.webmanifest">
@@ -85,6 +85,9 @@ header.top{display:flex;align-items:center;gap:6px;padding:8px calc(var(--sr) - 
 .lv .n{font-family:var(--display);font-size:13px;font-weight:600;line-height:1.2}
 .lv .n i{display:block;font-style:normal;font-family:var(--sans);font-weight:500;color:var(--muted);font-size:11.5px}
 .track{display:none}
+.nvDraw{border:none;background:none;text-align:left;color:var(--muted);font-size:12.5px;font-weight:600;padding:6px 10px}
+.nvDraw.on{color:var(--good)}
+.nvDraw.erro{color:var(--bad)}
 
 /* conversa */
 .log{padding:6px var(--sr) 24px var(--sl);display:flex;flex-direction:column;gap:26px}
@@ -231,6 +234,7 @@ form.ask textarea:focus-visible{outline:none}
   </nav>
   <div class="chats" id="chats"></div>
   <div class="dfoot">
+    <button type="button" class="nvDraw" id="dNuvem">☁ <span id="dNuvemTxt">Memória só neste aparelho</span></button>
     <button type="button" class="instBtn" id="dInst">⬇ Instalar app</button>
     <div class="lv" title="Nível de conhecimento">
       <div class="ring" id="ring"></div>
@@ -283,6 +287,11 @@ form.ask textarea:focus-visible{outline:none}
         <div class="row" id="instRow"><button type="button" class="solid instBtn">Instalar app</button></div>
       </div>
       <div class="box">
+        <h3>☁ Memória na nuvem</h3>
+        <p id="nvTxt">Entre com a sua conta Google para a AVIX usar a mesma memória em todos os seus aparelhos. O que ela aprender em um, aprende em todos.</p>
+        <div class="row"><button type="button" class="solid" id="nvBtn">Entrar com Google</button><button type="button" id="nvSync" hidden>Sincronizar agora</button></div>
+      </div>
+      <div class="box">
         <h3>Backup da memória</h3>
         <p>Tudo o que a AVIX aprendeu fica salvo só neste aparelho. Faça um backup para não perder nada ou para passar para outro celular.</p>
         <div class="row"><button id="exp" type="button" class="solid">Salvar backup</button><button id="imp" type="button">Restaurar backup</button><input type="file" id="impFile" accept=".json,application/json" hidden></div>
@@ -299,10 +308,10 @@ form.ask textarea:focus-visible{outline:none}
       </div>
       <div class="box">
         <h3>Começar do zero</h3>
-        <p>Apaga tudo o que foi aprendido neste aparelho.</p>
+        <p>Apaga tudo o que foi aprendido. Se a memória na nuvem estiver ligada, apaga em todos os aparelhos.</p>
         <div class="row"><button id="zerar" type="button" class="danger">Apagar memória</button></div>
       </div>
-      <p class="eyebrow" style="text-align:center">AVIX IA · versão 2.1 · funciona sem IA externa</p>
+      <p class="eyebrow" style="text-align:center">AVIX IA · versão 3.0 · funciona sem IA externa</p>
     </div>
   </section>
 
@@ -400,13 +409,16 @@ function carregar(){
   return { k: [], q: 0, dom: {}, seq: 1, en: true };
 }
 function gravar(){
+  try { detectar(); } catch {}
   try { localStorage.setItem(KEY, JSON.stringify(M)); }
   catch { // cheio: poda os fatos menos úteis
     M.k.sort((a,b) => valor(a) - valor(b)); M.k.splice(0, Math.ceil(M.k.length * .15));
     try { localStorage.setItem(KEY, JSON.stringify(M)); } catch {}
     toast("Memória cheia: esqueci os fatos menos úteis.");
   }
+  enviarLogo();
 }
+function salvarLocal(){ try { localStorage.setItem(KEY, JSON.stringify(M)); } catch {} }
 const valor = i => (i.tipo === "ensino" ? 100 : 0) + (i.w || 1) + (i.u || 0) * .5 + (i.ts || 0) / 1e13;
 function aprender(tipo, texto, extra = {}){
   texto = String(texto).trim().replace(/\s+/g, " ").slice(0, 700);
@@ -932,6 +944,7 @@ function aba(v, semHist){
   for (const [k, s] of Object.entries(mapa)) $(s).hidden = k !== v;
   document.querySelectorAll(".dnav button").forEach(b => b.classList.toggle("on", b.dataset.v === v));
   $("#dock").hidden = v !== "chat";
+  if (v === "cfg") carregarFB().catch(() => {}); // deixa o login pronto para abrir na hora
   if (!semHist && v === "chat" && history.state?.v) voltar();
   titulo(); render(); listaChats();
 }
@@ -989,7 +1002,7 @@ function confirmar2(btn, textoOrig, fazer){
   if (btn.dataset.c !== "1") { btn.dataset.c = "1"; btn.textContent = "Toque de novo para confirmar"; setTimeout(() => { btn.dataset.c = ""; btn.textContent = textoOrig; }, 4000); return; }
   btn.dataset.c = ""; btn.textContent = textoOrig; fazer();
 }
-$("#zerar").onclick = function(){ confirmar2(this, "Apagar memória", () => { M = { k: [], q: 0, dom: {}, seq: 1, en: M.en }; gravar(); render(); toast("Memória apagada."); }); };
+$("#zerar").onclick = function(){ confirmar2(this, "Apagar memória", () => { M = { k: [], q: 0, dom: {}, seq: 1, en: M.en, sync: M.sync }; gravar(); render(); toast("Memória apagada."); }); };
 $("#zChats").onclick = function(){ confirmar2(this, "Apagar conversas", () => { C = { list: [] }; salvarChats(); atual = null; hero(); listaChats(); toast("Conversas apagadas."); }); };
 
 const net = () => $("#offline").hidden = navigator.onLine;
@@ -1049,8 +1062,190 @@ document.querySelectorAll(".instBtn").forEach(b => b.onclick = async () => {
 });
 $("#instX").onclick = () => { try { localStorage.setItem("avix.instX", "1"); } catch {} $("#instBar").hidden = true; };
 
+/* =========================================================
+   MEMÓRIA NA NUVEM (Firebase — grátis, não é IA)
+   - a memória continua no aparelho (funciona sem internet)
+   - cada mudança é enviada para a nuvem; os outros aparelhos
+     recebem na hora. Só a conta do dono tem acesso (regras no Firebase).
+   ========================================================= */
+const NUVEM = { apiKey: "AIzaSyDcgQYxxx00YPWmR7d9F5JLEbK0L3iYA88", authDomain: "avix-ia-cf.firebaseapp.com", projectId: "avix-ia-cf", storageBucket: "avix-ia-cf.firebasestorage.app", messagingSenderId: "704360368920", appId: "1:704360368920:web:8aa1390caf4797d749ec6d" };
+const FBV = "https://www.gstatic.com/firebasejs/10.12.2/";
+const novoGid = () => (crypto.randomUUID ? crypto.randomUUID().replace(/-/g, "") : Date.now().toString(36) + Math.random().toString(36).slice(2, 14));
+M.sync = Object.assign({ ligado: false, uid: "", dirty: {}, n: 0, lastSv: 0, qEnv: 0, meta: 0 }, M.sync || {});
+M.k.forEach(i => { if (!i.gid) i.gid = novoGid(); });
+const assinatura = i => i.tipo + "|" + i.w + "|" + i.u + "|" + String(i.t).length + "|" + (i.url || "") + "|" + (i.fonte || "");
+let SIG = new Map(M.k.map(i => [i.gid, assinatura(i)]));
+let sigMeta = JSON.stringify(M.dom);
+const marcar = (g, del) => { M.sync.dirty[g] = (del ? "d" : "s") + (++M.sync.n); };
+// descobre sozinho o que mudou na memória desde a última vez
+function detectar(){
+  if (!M.sync) return;
+  const agora = new Map(), t = Date.now();
+  for (const i of M.k) { if (!i.gid) i.gid = novoGid(); const s = assinatura(i); agora.set(i.gid, s); if (SIG.get(i.gid) !== s) { i.mt = t; marcar(i.gid); } }
+  for (const g of SIG.keys()) if (!agora.has(g)) marcar(g, true);
+  SIG = agora;
+  const sm = JSON.stringify(M.dom); if (sm !== sigMeta) { M.sync.meta = 1; sigMeta = sm; }
+}
+
+let fb = null, fbCarregando = null;
+const nv = { user: null, unsub: null, unsubMeta: null, enviando: false, timer: 0, ultima: 0, erro: "", ouvindo: false };
+function carregarFB(){
+  if (fb) return Promise.resolve(fb);
+  if (fbCarregando) return fbCarregando;
+  fbCarregando = Promise.all(["firebase-app.js", "firebase-auth.js", "firebase-firestore.js"].map(f => import(FBV + f))).then(([app, auth, fs]) => {
+    const a = app.initializeApp(NUVEM);
+    fb = { auth, fs, A: auth.getAuth(a), D: fs.getFirestore(a) };
+    if (!nv.ouvindo) {
+      nv.ouvindo = true;
+      auth.onAuthStateChanged(fb.A, u => { nv.user = u; if (u && M.sync.ligado) conectar(); else desconectar(); estadoNuvem(); });
+      auth.getRedirectResult(fb.A).then(r => { if (r?.user) { M.sync.ligado = true; salvarLocal(); conectar(); } }).catch(erroNuvem);
+    }
+    return fb;
+  }).catch(e => { fbCarregando = null; throw e; });
+  return fbCarregando;
+}
+function entrar(){
+  if (!fb) { toast("Preparando o login… toque de novo em 2 segundos."); carregarFB().catch(() => toast("Sem internet para entrar agora.")); return; }
+  const p = new fb.auth.GoogleAuthProvider(); p.setCustomParameters({ prompt: "select_account" });
+  M.sync.ligado = true; salvarLocal();
+  fb.auth.signInWithPopup(fb.A, p).then(() => conectar()).catch(e => {
+    if (e.code === "auth/popup-blocked" || e.code === "auth/operation-not-supported-in-this-environment") fb.auth.signInWithRedirect(fb.A, p).catch(erroNuvem);
+    else if (e.code === "auth/popup-closed-by-user" || e.code === "auth/cancelled-popup-request") { if (!nv.user) { M.sync.ligado = false; salvarLocal(); } }
+    else erroNuvem(e);
+  });
+}
+function sair(){
+  M.sync.ligado = false; salvarLocal(); desconectar();
+  if (fb) fb.auth.signOut(fb.A).catch(() => {});
+  nv.user = null; estadoNuvem(); toast("Desconectado. A memória continua neste aparelho.");
+}
+function conectar(){
+  if (!fb || !nv.user || nv.unsub) { estadoNuvem(); return; }
+  const { fs, D } = fb, uid = nv.user.uid;
+  if (M.sync.uid !== uid) { // primeira vez desta conta neste aparelho: envia tudo e baixa tudo
+    M.sync.uid = uid; M.sync.lastSv = 0; M.sync.qEnv = 0; M.sync.meta = 1;
+    M.k.forEach(i => marcar(i.gid));
+    salvarLocal();
+  }
+  nv.erro = "";
+  const qy = fs.query(fs.collection(D, "users", uid, "k"), fs.where("sv", ">", fs.Timestamp.fromMillis(M.sync.lastSv || 0)), fs.orderBy("sv"));
+  nv.unsub = fs.onSnapshot(qy, receber, erroNuvem);
+  nv.unsubMeta = fs.onSnapshot(fs.doc(D, "users", uid), receberMeta, erroNuvem);
+  enviarLogo(500); estadoNuvem();
+}
+function desconectar(){ nv.unsub?.(); nv.unsubMeta?.(); nv.unsub = nv.unsubMeta = null; }
+
+// chegou novidade da nuvem (de outro aparelho)
+let renderT = 0;
+function receber(snap){
+  let mud = 0;
+  for (const ch of snap.docChanges()) {
+    if (ch.type === "removed" || ch.doc.metadata.hasPendingWrites) continue;
+    const d = ch.doc.data(), g = ch.doc.id;
+    const sv = d.sv?.toMillis?.() || 0; if (sv > M.sync.lastSv) M.sync.lastSv = sv;
+    if (M.sync.dirty[g]) continue; // a versão deste aparelho é mais nova e ainda vai subir
+    const idx = M.k.findIndex(i => i.gid === g);
+    if (d.del) { if (idx >= 0) { M.k.splice(idx, 1); mud++; } SIG.delete(g); continue; }
+    if (typeof d.t !== "string" || d.t.length < 3) continue;
+    let it = idx >= 0 ? M.k[idx] : null;
+    if (!it) { // mesmo conhecimento aprendido em dois aparelhos: junta num só
+      const n = norm(d.t), dup = M.k.find(i => norm(i.t) === n);
+      if (dup) { marcar(dup.gid, true); SIG.delete(dup.gid); dup.gid = g; it = dup; }
+    }
+    if (!it) { it = { id: M.seq++, gid: g }; M.k.push(it); }
+    Object.assign(it, { tipo: d.tipo === "ensino" ? "ensino" : "fato", t: d.t.slice(0, 700), w: numero(d.w, 1, .1, 5), u: Math.round(numero(d.u, 0, 0, 1e7)), ts: numero(d.ts, Date.now(), 0, 4e12), mt: numero(d.mt, 0, 0, 4e12), fonte: typeof d.fonte === "string" ? d.fonte : "" });
+    const u = linkSeguro(d.url); if (u) it.url = u; else delete it.url;
+    if (Array.isArray(d.q)) it.q = d.q.filter(x => typeof x === "string").slice(0, 60);
+    if (typeof d.pergunta === "string") it.pergunta = d.pergunta.slice(0, 300);
+    it.tk = toks(it.t); SIG.set(g, assinatura(it)); mud++;
+  }
+  salvarLocal(); nv.ultima = Date.now();
+  if (mud) { clearTimeout(renderT); renderT = setTimeout(render, 250); }
+  estadoNuvem();
+}
+function receberMeta(s){
+  if (s.metadata.hasPendingWrites || !s.exists()) return;
+  const d = s.data();
+  if (typeof d.q === "number") { const pend = Math.max(0, M.q - M.sync.qEnv); M.sync.qEnv = d.q; M.q = d.q + pend; }
+  if (d.dom && typeof d.dom === "object") for (const [k, v] of Object.entries(d.dom)) if (/^[a-z0-9.-]{1,100}$/i.test(k)) M.dom[k] = numero(v, 0, -3, 5);
+  sigMeta = JSON.stringify(M.dom); salvarLocal(); render();
+}
+
+// envia para a nuvem o que mudou neste aparelho
+function enviarLogo(ms = 2000){ if (!M.sync?.ligado) return; clearTimeout(nv.timer); nv.timer = setTimeout(enviar, ms); }
+function docItem(it, st){
+  const d = { tipo: it.tipo === "ensino" ? "ensino" : "fato", t: String(it.t).slice(0, 700), w: numero(it.w, 1, 0, 5), u: Math.round(numero(it.u, 0, 0, 1e7)), ts: numero(it.ts, Date.now(), 0, 4e12), mt: numero(it.mt, Date.now(), 0, 4e12), sv: st };
+  if (it.url && it.url.length <= 1000) d.url = it.url;
+  if (it.fonte) d.fonte = String(it.fonte).slice(0, 200);
+  if (it.pergunta) d.pergunta = String(it.pergunta).slice(0, 300);
+  if (Array.isArray(it.q)) d.q = it.q.slice(0, 60);
+  return d;
+}
+async function enviar(){
+  if (!fb || !nv.user || !nv.unsub || nv.enviando || !navigator.onLine) return;
+  const { fs, D } = fb, uid = nv.user.uid;
+  let delta = M.q - M.sync.qEnv; if (delta < 0) { M.sync.qEnv = M.q; delta = 0; }
+  const gids = Object.keys(M.sync.dirty);
+  if (!gids.length && !M.sync.meta && !delta) return;
+  nv.enviando = true; estadoNuvem();
+  const lote = gids.slice(0, 400), enviados = {}, mapa = new Map(M.k.map(i => [i.gid, i])), st = fs.serverTimestamp();
+  const refDe = g => fs.doc(D, "users", uid, "k", g);
+  const docDe = g => { const it = mapa.get(g); return (M.sync.dirty[g][0] === "d" || !it) ? { tipo: "fato", t: "-", w: 0, u: 0, ts: 0, mt: Date.now(), del: true, sv: st } : docItem(it, st); };
+  const metaAntes = M.sync.meta;
+  try {
+    const b = fs.writeBatch(D);
+    for (const g of lote) { b.set(refDe(g), docDe(g)); enviados[g] = M.sync.dirty[g]; }
+    if (metaAntes || delta) { const m = { mt: Date.now(), dom: M.dom }; if (delta) m.q = fs.increment(delta); b.set(fs.doc(D, "users", uid), m, { merge: true }); }
+    M.sync.qEnv += delta; M.sync.meta = 0;
+    try { await b.commit(); }
+    catch (e) {
+      M.sync.qEnv -= delta; M.sync.meta = metaAntes;
+      if (e.code !== "permission-denied" && e.code !== "invalid-argument") throw e;
+      // a conta tem acesso? se sim, algum item estava com problema: envia um por um e pula o defeituoso
+      const temAcesso = await fs.getDoc(fs.doc(D, "users", uid)).then(() => true, () => false);
+      if (!temAcesso) throw e;
+      for (const g of lote) await fs.setDoc(refDe(g), docDe(g)).catch(() => {});
+      if (metaAntes || delta) { const m = { mt: Date.now(), dom: M.dom }; if (delta) m.q = fs.increment(delta); await fs.setDoc(fs.doc(D, "users", uid), m, { merge: true }).then(() => { M.sync.qEnv += delta; M.sync.meta = 0; }, () => { M.sync.meta = 0; }); }
+    }
+    for (const [g, v] of Object.entries(enviados)) if (M.sync.dirty[g] === v) delete M.sync.dirty[g];
+    nv.ultima = Date.now(); nv.erro = ""; salvarLocal();
+    if (Object.keys(M.sync.dirty).length) enviarLogo(400);
+  } catch (e) { erroNuvem(e); enviarLogo(30000); }
+  finally { nv.enviando = false; estadoNuvem(); }
+}
+function erroNuvem(e){
+  const c = e?.code || "";
+  if (c === "permission-denied") { nv.erro = "Essa conta Google não tem permissão para a memória da AVIX. Entre com a conta do dono."; desconectar(); }
+  else if (c === "auth/unauthorized-domain") nv.erro = "Este endereço do site ainda não foi autorizado no Firebase.";
+  else if (c === "auth/network-request-failed" || c === "unavailable") nv.erro = "Sem internet agora. Guardo aqui e envio quando a conexão voltar.";
+  else nv.erro = "Não consegui falar com a nuvem (" + (c || "erro") + "). Tento de novo sozinha.";
+  estadoNuvem();
+}
+function estadoNuvem(){
+  const pend = Object.keys(M.sync.dirty).length;
+  const on = !!(nv.user && M.sync.ligado && nv.unsub);
+  const hora = nv.ultima ? new Date(nv.ultima).toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" }) : "";
+  let txt;
+  if (on) txt = `Conectada como ${nv.user.email || "você"}. ` + (nv.erro ? nv.erro : nv.enviando ? "Enviando…" : pend ? `${pend} aprendizado(s) para enviar.` : "Tudo sincronizado" + (hora ? " às " + hora : "") + ".") + " A memória é a mesma em todos os seus aparelhos.";
+  else if (nv.erro) txt = nv.erro;
+  else txt = "Entre com a sua conta Google para a AVIX usar a mesma memória em todos os seus aparelhos. O que ela aprender em um, aprende em todos.";
+  $("#nvTxt").textContent = txt;
+  $("#nvBtn").textContent = nv.user && M.sync.ligado ? "Sair" : "Entrar com Google";
+  $("#nvBtn").classList.toggle("solid", !(nv.user && M.sync.ligado));
+  $("#nvSync").hidden = !on;
+  const d = $("#dNuvem"); d.classList.toggle("on", on && !nv.erro); d.classList.toggle("erro", !!nv.erro && M.sync.ligado);
+  $("#dNuvemTxt").textContent = on ? (nv.erro ? "Nuvem: tentando de novo" : pend ? "Nuvem: enviando…" : "Memória na nuvem: em dia") : M.sync.ligado ? "Nuvem: conectando…" : "Memória só neste aparelho";
+}
+$("#nvBtn").onclick = () => (nv.user && M.sync.ligado) ? sair() : entrar();
+$("#nvSync").onclick = () => { enviarLogo(0); toast("Sincronizando…"); };
+$("#dNuvem").onclick = () => document.querySelector('.dnav button[data-v="cfg"]').click();
+addEventListener("online", () => { if (M.sync.ligado) { nv.erro = ""; enviarLogo(800); } });
+document.addEventListener("visibilitychange", () => { if (document.visibilityState === "hidden" && M.sync.ligado) enviar(); });
+
 /* ---------- início ---------- */
-hero(); render(); listaChats(); titulo(); estadoInstalar();
+hero(); render(); listaChats(); titulo(); estadoInstalar(); estadoNuvem();
+if (M.sync.ligado) carregarFB().catch(() => { nv.erro = "Sem internet agora. Guardo aqui e envio quando a conexão voltar."; estadoNuvem(); });
+salvarLocal(); // grava os códigos de sincronização (gid) nos conhecimentos antigos
 navigator.storage?.persist?.().catch(() => {});
 if ("serviceWorker" in navigator) addEventListener("load", () => navigator.serviceWorker.register("sw.js").catch(() => {}));
 </script>

@@ -17,6 +17,14 @@ IPHONE / IPAD (Safari)
  Se você já usou a AVIX no Safari, faça Ajustes > "Salvar backup" no Safari
  e depois "Restaurar backup" dentro do app instalado.
 
+MEMÓRIA EM TODOS OS APARELHOS (nuvem)
+ - Ajustes > "Memória na nuvem" > "Entrar com Google". Faça isso em cada
+   celular ou computador, sempre com a MESMA conta Google.
+ - A partir daí, tudo o que a AVIX aprender em um aparelho aparece nos outros.
+ - Sem internet ela continua funcionando e envia depois, sozinha.
+ - Só a conta do dono tem acesso. A nuvem é o Firebase do Google, plano
+   grátis, e não é IA: só guarda a memória.
+
 COMO USAR (igual ao Claude)
  - ☰ no canto de cima abre o menu: nova conversa, histórico de conversas,
    Memória e Ajustes. Também dá para abrir arrastando da borda esquerda.
