@@ -1,5 +1,5 @@
 // Guarda o app para abrir mesmo sem internet. As pesquisas sempre vão direto para a rede.
-const CACHE = "avix-v7";
+const CACHE = "avix-v8";
 const APP = ["./", "index.html", "manifest.webmanifest", "icon-192.png", "icon-512.png", "icon-maskable-512.png", "apple-touch-icon.png", "logo-mark.png"];
 
 self.addEventListener("install", e => {

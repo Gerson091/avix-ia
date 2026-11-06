@@ -11,7 +11,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="format-detection" content="telephone=no">
 <!-- Segurança: o app só pode falar com a Wikipédia, o DuckDuckGo e as fontes do Google. Nenhum outro site. -->
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://www.gstatic.com https://apis.google.com https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob: https://lh3.googleusercontent.com; connect-src 'self' https://pt.wikipedia.org https://en.wikipedia.org https://api.duckduckgo.com https://firestore.googleapis.com https://identitytoolkit.googleapis.com https://securetoken.googleapis.com https://www.googleapis.com https://apis.google.com https://www.gstatic.com https://southamerica-east1-avix-ia-cf.cloudfunctions.net; frame-src https://avix-ia-cf.firebaseapp.com https://accounts.google.com; manifest-src 'self'; worker-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://www.gstatic.com https://apis.google.com https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob: https://lh3.googleusercontent.com; connect-src 'self' https://pt.wikipedia.org https://en.wikipedia.org https://api.duckduckgo.com https://firestore.googleapis.com https://identitytoolkit.googleapis.com https://securetoken.googleapis.com https://www.googleapis.com https://apis.google.com https://www.gstatic.com https://avix-ia.avix-ia-worker.workers.dev; frame-src https://avix-ia-cf.firebaseapp.com https://accounts.google.com; manifest-src 'self'; worker-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="no-referrer">
 <title>AVIX IA</title>
 <link rel="manifest" href="manifest.webmanifest">
@@ -383,7 +383,7 @@ form.ask textarea:focus-visible{outline:none}
         <p>Apaga tudo o que foi aprendido. Se a memória na nuvem estiver ligada, apaga em todos os aparelhos.</p>
         <div class="row"><button id="zerar" type="button" class="danger">Apagar memória</button></div>
       </div>
-      <p class="eyebrow" style="text-align:center">AVIX IA · versão 4.0 · funciona sem IA externa</p>
+      <p class="eyebrow" style="text-align:center">AVIX IA · versão 4.1 · funciona sem IA externa</p>
     </div>
   </section>
 
@@ -903,7 +903,7 @@ function pararTudo(){ if (ger) { ger.stop = true; ger.ctrl.abort(); } }
      devolve a resposta aos pedaços (streaming)
    - se o servidor não estiver disponível, a AVIX usa o cérebro do aparelho
    ========================================================= */
-const API_IA = (/^(localhost|127\.0\.0\.1)$/.test(location.hostname) && (() => { try { return localStorage.getItem("avix.api"); } catch { return null; } })()) || "https://southamerica-east1-avix-ia-cf.cloudfunctions.net/chat"; // no computador (testes) dá para apontar para um servidor local
+const API_IA = (/^(localhost|127\.0\.0\.1)$/.test(location.hostname) && (() => { try { return localStorage.getItem("avix.api"); } catch { return null; } })()) || "https://avix-ia.avix-ia-worker.workers.dev/chat"; // no computador (testes) dá para apontar para um servidor local
 const ia = { foraAte: 0, motivo: "", hoje: null };
 const iaPronta = () => !!(fb && nv.user && M.sync.ligado && nv.unsub && navigator.onLine && Date.now() > ia.foraAte);
 
