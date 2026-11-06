@@ -11,7 +11,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="format-detection" content="telephone=no">
 <!-- Segurança: o app só pode falar com a Wikipédia, o DuckDuckGo e as fontes do Google. Nenhum outro site. -->
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://www.gstatic.com https://apis.google.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self' https://pt.wikipedia.org https://en.wikipedia.org https://api.duckduckgo.com https://firestore.googleapis.com https://identitytoolkit.googleapis.com https://securetoken.googleapis.com https://www.googleapis.com https://apis.google.com https://www.gstatic.com; frame-src https://avix-ia-cf.firebaseapp.com https://accounts.google.com; manifest-src 'self'; worker-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://www.gstatic.com https://apis.google.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob: https://lh3.googleusercontent.com; connect-src 'self' https://pt.wikipedia.org https://en.wikipedia.org https://api.duckduckgo.com https://firestore.googleapis.com https://identitytoolkit.googleapis.com https://securetoken.googleapis.com https://www.googleapis.com https://apis.google.com https://www.gstatic.com; frame-src https://avix-ia-cf.firebaseapp.com https://accounts.google.com; manifest-src 'self'; worker-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="no-referrer">
 <title>AVIX IA</title>
 <link rel="manifest" href="manifest.webmanifest">
@@ -85,9 +85,32 @@ header.top{display:flex;align-items:center;gap:6px;padding:8px calc(var(--sr) - 
 .lv .n{font-family:var(--display);font-size:13px;font-weight:600;line-height:1.2}
 .lv .n i{display:block;font-style:normal;font-family:var(--sans);font-weight:500;color:var(--muted);font-size:11.5px}
 .track{display:none}
-.nvDraw{border:none;background:none;text-align:left;color:var(--muted);font-size:12.5px;font-weight:600;padding:6px 10px}
-.nvDraw.on{color:var(--good)}
-.nvDraw.erro{color:var(--bad)}
+.conta{display:flex;align-items:center;gap:10px;border:none;background:none;text-align:left;padding:8px 10px;border-radius:12px;width:100%}
+.conta:active{background:var(--raised)}
+.av{width:34px;height:34px;border-radius:50%;flex:none;display:grid;place-items:center;background:var(--grad);color:#fff;font-family:var(--display);font-weight:700;font-size:14px;overflow:hidden}
+.av img{width:100%;height:100%;object-fit:cover}
+.ci{min-width:0;display:flex;flex-direction:column;line-height:1.25}
+.ci b{font-size:13.5px;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ci i{font-style:normal;font-size:11.5px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.conta.on .ci i{color:var(--good)}
+.conta.erro .ci i{color:var(--bad)}
+
+/* painel de login */
+.login{position:fixed;inset:0;z-index:35;background:var(--bg);overflow-y:auto;display:flex;align-items:center;justify-content:center;padding:calc(24px + env(safe-area-inset-top,0px)) 20px calc(24px + env(safe-area-inset-bottom,0px))}
+.login::before{content:"";position:fixed;inset:-20% -30% auto -30%;height:75%;background:radial-gradient(closest-side,rgba(47,107,255,.28),transparent 70%),radial-gradient(closest-side at 80% 40%,rgba(193,92,255,.2),transparent 70%);pointer-events:none}
+.loginBox{position:relative;width:100%;max-width:400px;display:flex;flex-direction:column;align-items:center;text-align:center;gap:14px}
+.loginBox .lgLogo{width:120px;height:auto;filter:drop-shadow(0 18px 40px rgba(47,107,255,.55));animation:float 6s ease-in-out infinite}
+.loginBox h2{font-family:var(--display);font-weight:700;font-size:clamp(26px,7.5vw,32px);line-height:1.15;letter-spacing:-.02em;margin:4px 0 0}
+.loginBox p{margin:0;color:var(--ink-2);font-size:14.5px}
+.lgList{list-style:none;margin:4px 0 6px;padding:0;display:flex;flex-direction:column;gap:8px;width:100%}
+.lgList li{display:flex;gap:10px;align-items:center;text-align:left;padding:11px 14px;border:1px solid var(--line);border-radius:14px;background:rgba(12,17,36,.8);font-size:13.5px;color:var(--ink-2)}
+.lgList li span{font-size:17px;flex:none}
+.gbtn{width:100%;display:flex;align-items:center;justify-content:center;gap:12px;background:#fff;color:#1f1f1f;border:1px solid #dadce0;border-radius:14px;padding:13px 16px;font-size:15.5px;font-weight:700;box-shadow:0 10px 30px -12px rgba(47,107,255,.6)}
+.gbtn svg{width:20px;height:20px;flex:none}
+.gbtn[disabled]{opacity:.7}
+.lgErro{color:var(--bad)!important;font-size:13px!important;background:rgba(255,107,138,.08);border:1px solid rgba(255,107,138,.35);border-radius:12px;padding:8px 12px}
+.lgNota{font-size:12px!important;color:var(--muted)!important}
+@media (prefers-reduced-motion:reduce){.loginBox .lgLogo{animation:none}}
 
 /* conversa */
 .log{padding:6px var(--sr) 24px var(--sl);display:flex;flex-direction:column;gap:26px}
@@ -234,7 +257,7 @@ form.ask textarea:focus-visible{outline:none}
   </nav>
   <div class="chats" id="chats"></div>
   <div class="dfoot">
-    <button type="button" class="nvDraw" id="dNuvem">☁ <span id="dNuvemTxt">Memória só neste aparelho</span></button>
+    <button type="button" class="conta" id="dConta"><span class="av" id="dAv">?</span><span class="ci"><b id="dNome">Entrar com Google</b><i id="dNuvemTxt">Memória só neste aparelho</i></span></button>
     <button type="button" class="instBtn" id="dInst">⬇ Instalar app</button>
     <div class="lv" title="Nível de conhecimento">
       <div class="ring" id="ring"></div>
@@ -311,7 +334,7 @@ form.ask textarea:focus-visible{outline:none}
         <p>Apaga tudo o que foi aprendido. Se a memória na nuvem estiver ligada, apaga em todos os aparelhos.</p>
         <div class="row"><button id="zerar" type="button" class="danger">Apagar memória</button></div>
       </div>
-      <p class="eyebrow" style="text-align:center">AVIX IA · versão 3.0 · funciona sem IA externa</p>
+      <p class="eyebrow" style="text-align:center">AVIX IA · versão 3.1 · funciona sem IA externa</p>
     </div>
   </section>
 
@@ -329,6 +352,22 @@ form.ask textarea:focus-visible{outline:none}
     <h3 id="sheetT"><img src="logo-mark.png" alt="">Instalar a AVIX</h3>
     <div id="sheetBody"></div>
     <button type="button" class="solid" id="sheetOk">Entendi</button>
+  </div>
+</div>
+<div class="login" id="login" hidden>
+  <div class="loginBox" role="dialog" aria-modal="true" aria-labelledby="lgT">
+    <img class="lgLogo" src="logo-mark.png" alt="AVIX IA">
+    <h2 id="lgT">Bem-vindo à <span class="gtext">AVIX IA</span></h2>
+    <p>Entre com o Google para a AVIX lembrar de tudo o que aprende, em qualquer aparelho.</p>
+    <ul class="lgList">
+      <li><span>☁</span>A mesma memória no celular, no tablet e no computador</li>
+      <li><span>🔒</span>Só a sua conta tem acesso ao que ela aprendeu</li>
+      <li><span>📴</span>Continua funcionando sem internet</li>
+    </ul>
+    <button type="button" class="gbtn" id="lgGoogle"><svg viewBox="0 0 48 48" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.5 0 6.6 1.2 9.1 3.6l6.8-6.8C35.8 2.4 30.3 0 24 0 14.6 0 6.6 5.4 2.6 13.3l7.9 6.1C12.4 13.7 17.7 9.5 24 9.5z"/><path fill="#4285F4" d="M46.5 24.5c0-1.6-.1-3.1-.4-4.5H24v9h12.7c-.6 2.9-2.2 5.4-4.7 7.1l7.6 5.9c4.4-4.1 6.9-10.1 6.9-17.5z"/><path fill="#FBBC05" d="M10.5 28.6c-.5-1.4-.8-3-.8-4.6s.3-3.2.8-4.6l-7.9-6.1C.9 16.6 0 20.2 0 24s.9 7.4 2.6 10.7l7.9-6.1z"/><path fill="#34A853" d="M24 48c6.5 0 11.9-2.1 15.9-5.8l-7.6-5.9c-2.1 1.4-4.9 2.3-8.3 2.3-6.3 0-11.6-4.2-13.5-10l-7.9 6.1C6.6 42.6 14.6 48 24 48z"/></svg><span id="lgGoogleTxt">Entrar com Google</span></button>
+    <p class="lgErro" id="lgErro" hidden></p>
+    <button type="button" class="ghost" id="lgPular">Continuar sem conta</button>
+    <p class="lgNota">Sem conta, a memória fica só neste aparelho. Dá para entrar depois pelo menu ☰.</p>
   </div>
 </div>
 <div class="toast" id="toast" role="status"></div>
@@ -1104,16 +1143,44 @@ function carregarFB(){
   }).catch(e => { fbCarregando = null; throw e; });
   return fbCarregando;
 }
+// abre a janela do Google. Devolve true se entrou.
 function entrar(){
-  if (!fb) { toast("Preparando o login… toque de novo em 2 segundos."); carregarFB().catch(() => toast("Sem internet para entrar agora.")); return; }
+  if (!fb) { toast("Preparando o login… toque de novo em 2 segundos."); carregarFB().catch(() => toast("Sem internet para entrar agora.")); return Promise.resolve(false); }
   const p = new fb.auth.GoogleAuthProvider(); p.setCustomParameters({ prompt: "select_account" });
-  M.sync.ligado = true; salvarLocal();
-  fb.auth.signInWithPopup(fb.A, p).then(() => conectar()).catch(e => {
-    if (e.code === "auth/popup-blocked" || e.code === "auth/operation-not-supported-in-this-environment") fb.auth.signInWithRedirect(fb.A, p).catch(erroNuvem);
-    else if (e.code === "auth/popup-closed-by-user" || e.code === "auth/cancelled-popup-request") { if (!nv.user) { M.sync.ligado = false; salvarLocal(); } }
-    else erroNuvem(e);
+  M.sync.ligado = true; nv.erro = ""; salvarLocal();
+  return fb.auth.signInWithPopup(fb.A, p).then(r => { nv.user = r.user; conectar(); return true; }).catch(e => {
+    if (e.code === "auth/popup-blocked" || e.code === "auth/operation-not-supported-in-this-environment") { fb.auth.signInWithRedirect(fb.A, p).catch(erroNuvem); return false; }
+    if (!nv.user) { M.sync.ligado = false; salvarLocal(); }
+    if (e.code !== "auth/popup-closed-by-user" && e.code !== "auth/cancelled-popup-request") erroNuvem(e);
+    return false;
   });
 }
+
+/* --- painel de login --- */
+const semConta = () => { try { return localStorage.getItem("avix.semConta") === "1"; } catch { return false; } };
+function mostrarLogin(msg){
+  $("#login").hidden = false;
+  $("#lgErro").hidden = !msg; $("#lgErro").textContent = msg || "";
+  const pronto = () => { $("#lgGoogle").disabled = false; $("#lgGoogleTxt").textContent = "Entrar com Google"; };
+  if (fb) pronto();
+  else { $("#lgGoogle").disabled = true; $("#lgGoogleTxt").textContent = "Preparando…"; carregarFB().then(pronto, () => { pronto(); $("#lgErro").hidden = false; $("#lgErro").textContent = "Sem internet agora. Você pode continuar sem conta e entrar depois."; }); }
+}
+function fecharLogin(){ $("#login").hidden = true; }
+$("#lgGoogle").onclick = () => {
+  $("#lgErro").hidden = true;
+  entrar().then(ok => {
+    if (!ok) return;
+    try { localStorage.removeItem("avix.semConta"); } catch {}
+    fecharLogin();
+    const nome = (nv.user?.displayName || "").split(" ")[0];
+    toast(nome ? `Bem-vindo, ${nome}! A memória agora vale em todos os seus aparelhos.` : "Pronto! A memória agora vale em todos os seus aparelhos.");
+  });
+};
+$("#lgPular").onclick = () => { try { localStorage.setItem("avix.semConta", "1"); } catch {} fecharLogin(); };
+$("#dConta").onclick = () => {
+  if (nv.user && M.sync.ligado) document.querySelector('.dnav button[data-v="cfg"]').click();
+  else { fecharMenu(); setTimeout(() => mostrarLogin(), 200); }
+};
 function sair(){
   M.sync.ligado = false; salvarLocal(); desconectar();
   if (fb) fb.auth.signOut(fb.A).catch(() => {});
@@ -1215,7 +1282,12 @@ async function enviar(){
 }
 function erroNuvem(e){
   const c = e?.code || "";
-  if (c === "permission-denied") { nv.erro = "Essa conta Google não tem permissão para a memória da AVIX. Entre com a conta do dono."; desconectar(); }
+  if (c === "permission-denied") {
+    const msg = "Essa conta Google não tem acesso à memória da AVIX. Entre com a conta do dono ou continue sem conta.";
+    desconectar(); M.sync.ligado = false; salvarLocal();
+    if (fb) fb.auth.signOut(fb.A).catch(() => {});
+    nv.user = null; nv.erro = ""; estadoNuvem(); mostrarLogin(msg); return;
+  }
   else if (c === "auth/unauthorized-domain") nv.erro = "Este endereço do site ainda não foi autorizado no Firebase.";
   else if (c === "auth/network-request-failed" || c === "unavailable") nv.erro = "Sem internet agora. Guardo aqui e envio quando a conexão voltar.";
   else nv.erro = "Não consegui falar com a nuvem (" + (c || "erro") + "). Tento de novo sozinha.";
@@ -1233,18 +1305,24 @@ function estadoNuvem(){
   $("#nvBtn").textContent = nv.user && M.sync.ligado ? "Sair" : "Entrar com Google";
   $("#nvBtn").classList.toggle("solid", !(nv.user && M.sync.ligado));
   $("#nvSync").hidden = !on;
-  const d = $("#dNuvem"); d.classList.toggle("on", on && !nv.erro); d.classList.toggle("erro", !!nv.erro && M.sync.ligado);
-  $("#dNuvemTxt").textContent = on ? (nv.erro ? "Nuvem: tentando de novo" : pend ? "Nuvem: enviando…" : "Memória na nuvem: em dia") : M.sync.ligado ? "Nuvem: conectando…" : "Memória só neste aparelho";
+  const d = $("#dConta"); d.classList.toggle("on", on && !nv.erro); d.classList.toggle("erro", !!nv.erro && M.sync.ligado);
+  $("#dNuvemTxt").textContent = on ? (nv.erro ? "☁ Nuvem: tentando de novo" : pend ? "☁ Enviando…" : "☁ Memória na nuvem: em dia") : M.sync.ligado ? "☁ Conectando…" : "Memória só neste aparelho";
+  const u = nv.user && M.sync.ligado ? nv.user : null;
+  $("#dNome").textContent = u ? (u.displayName || u.email || "Você") : "Entrar com Google";
+  const av = $("#dAv"); av.textContent = "";
+  const foto = u && linkSeguro(u.photoURL);
+  if (foto && /^https:\/\/lh3\.googleusercontent\.com\//.test(foto)) { const im = document.createElement("img"); im.src = foto; im.alt = ""; im.referrerPolicy = "no-referrer"; im.onerror = () => { av.textContent = (u.displayName || "?")[0].toUpperCase(); }; av.append(im); }
+  else av.textContent = u ? (u.displayName || u.email || "?")[0].toUpperCase() : "G";
 }
-$("#nvBtn").onclick = () => (nv.user && M.sync.ligado) ? sair() : entrar();
+$("#nvBtn").onclick = () => (nv.user && M.sync.ligado) ? sair() : mostrarLogin();
 $("#nvSync").onclick = () => { enviarLogo(0); toast("Sincronizando…"); };
-$("#dNuvem").onclick = () => document.querySelector('.dnav button[data-v="cfg"]').click();
 addEventListener("online", () => { if (M.sync.ligado) { nv.erro = ""; enviarLogo(800); } });
 document.addEventListener("visibilitychange", () => { if (document.visibilityState === "hidden" && M.sync.ligado) enviar(); });
 
 /* ---------- início ---------- */
 hero(); render(); listaChats(); titulo(); estadoInstalar(); estadoNuvem();
 if (M.sync.ligado) carregarFB().catch(() => { nv.erro = "Sem internet agora. Guardo aqui e envio quando a conexão voltar."; estadoNuvem(); });
+else if (!semConta()) mostrarLogin(); // primeira vez: painel de boas-vindas com login
 salvarLocal(); // grava os códigos de sincronização (gid) nos conhecimentos antigos
 navigator.storage?.persist?.().catch(() => {});
 if ("serviceWorker" in navigator) addEventListener("load", () => navigator.serviceWorker.register("sw.js").catch(() => {}));
