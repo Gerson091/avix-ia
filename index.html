@@ -11,7 +11,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="format-detection" content="telephone=no">
 <!-- Segurança: o app só pode falar com a Wikipédia, o DuckDuckGo e as fontes do Google. Nenhum outro site. -->
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://www.gstatic.com https://apis.google.com https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob: https://lh3.googleusercontent.com; connect-src 'self' https://pt.wikipedia.org https://en.wikipedia.org https://api.duckduckgo.com https://firestore.googleapis.com https://identitytoolkit.googleapis.com https://securetoken.googleapis.com https://www.googleapis.com https://apis.google.com https://www.gstatic.com https://avix-ia.avix-ia-worker.workers.dev; frame-src https://avix-ia-cf.firebaseapp.com https://accounts.google.com; manifest-src 'self'; worker-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://www.gstatic.com https://apis.google.com https://cdnjs.cloudflare.com https://challenges.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob: https://lh3.googleusercontent.com; connect-src 'self' https://pt.wikipedia.org https://en.wikipedia.org https://api.duckduckgo.com https://firestore.googleapis.com https://identitytoolkit.googleapis.com https://securetoken.googleapis.com https://www.googleapis.com https://apis.google.com https://www.gstatic.com https://avix-ia.avix-ia-worker.workers.dev https://challenges.cloudflare.com; frame-src https://avix-ia-cf.firebaseapp.com https://accounts.google.com https://challenges.cloudflare.com; manifest-src 'self'; worker-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="no-referrer">
 <title>AVIX IA</title>
 <link rel="manifest" href="manifest.webmanifest">
@@ -114,6 +114,45 @@ header.top{display:flex;align-items:center;gap:6px;padding:8px calc(var(--sr) - 
 .lgErro{color:var(--bad)!important;font-size:13px!important;background:rgba(255,107,138,.08);border:1px solid rgba(255,107,138,.35);border-radius:12px;padding:8px 12px}
 .lgNota{font-size:12px!important;color:var(--muted)!important}
 @media (prefers-reduced-motion:reduce){.loginBox .lgLogo{animation:none}}
+.abas{display:flex;width:100%;padding:3px;border:1px solid var(--line-2);border-radius:14px;background:var(--sheet);gap:3px}
+.abas button{flex:1;border:none;background:none;color:var(--muted);border-radius:11px;padding:9px}
+.abas button.on{background:var(--grad);color:#fff}
+.lgForm{width:100%;display:flex;flex-direction:column;gap:10px;text-align:left}
+.lgForm p{text-align:left}
+.campo{display:flex;flex-direction:column;gap:4px;font-size:12.5px;color:var(--ink-2);text-align:left}
+.campo span{font-weight:600}
+button.big{padding:13px 16px;font-size:15px;border-radius:14px}
+.chk{display:flex;gap:8px;align-items:flex-start;font-size:13px;color:var(--ink-2);text-align:left;line-height:1.45}
+.chk input{width:18px;height:18px;flex:none;margin-top:1px;accent-color:var(--violet)}
+.chk a,.lgNota a,.mini a{color:var(--cyan)}
+.ts{min-height:65px;display:flex;justify-content:center;align-items:center;font-size:12.5px;color:var(--muted)}
+.ou{display:flex;align-items:center;gap:10px;width:100%;color:var(--muted);font-size:12px}
+.ou::before,.ou::after{content:"";flex:1;height:1px;background:var(--line-2)}
+.lgOk{color:var(--good)!important;font-size:13px!important;background:rgba(53,214,166,.08);border:1px solid rgba(53,214,166,.35);border-radius:12px;padding:8px 12px}
+.mini{font-size:12px!important;color:var(--muted)!important;margin:0}
+.box h4{font-family:var(--display);font-size:14px;margin:6px 0 0;color:var(--ink)}
+.box code,.lista code{font-family:var(--mono);font-size:11.5px;background:var(--raised);padding:1px 5px;border-radius:5px}
+.kpis{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+@media (min-width:600px){.kpis{grid-template-columns:repeat(4,minmax(0,1fr))}}
+.kpi{border:1px solid var(--line);border-radius:16px;background:var(--sheet);padding:12px 14px;display:flex;flex-direction:column;gap:2px}
+.kpi b{font-family:var(--display);font-size:22px;line-height:1.1;font-variant-numeric:tabular-nums}
+.kpi b small{font-size:12px;color:var(--muted);font-weight:500}
+.kpi span{font-size:11.5px;color:var(--muted)}
+.barras{display:flex;align-items:flex-end;gap:4px;height:110px;padding-top:6px}
+.bar{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;gap:4px;min-width:0}
+.bar i{display:block;width:100%;max-width:22px;min-height:2px;border-radius:6px 6px 2px 2px;background:var(--grad)}
+.bar span{font-family:var(--mono);font-size:9.5px;color:var(--muted)}
+.lista{display:flex;flex-direction:column;gap:6px}
+.linha{display:flex;justify-content:space-between;gap:10px;font-size:12.5px;color:var(--ink-2);border-bottom:1px solid var(--line);padding:6px 0;flex-wrap:wrap}
+.linha span:last-child{color:var(--muted);text-align:right}
+.linha.erro span:first-child{color:var(--bad)}
+.usr,.prov{border:1px solid var(--line);border-radius:14px;background:var(--bg-2);padding:10px 12px;display:flex;flex-direction:column;gap:6px}
+.pt{display:flex;justify-content:space-between;gap:8px;align-items:center}
+.pt b{font-size:14px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.prov .row input{flex:1;min-width:120px;padding:7px 10px;font-size:13px}
+.grade{display:grid;grid-template-columns:1fr;gap:8px}
+@media (min-width:600px){.grade{grid-template-columns:1fr 1fr}}
+.grade input{padding:8px 10px}
 
 /* conversa */
 .log{padding:6px var(--sr) 24px var(--sl);display:flex;flex-direction:column;gap:26px}
@@ -292,6 +331,7 @@ form.ask textarea:focus-visible{outline:none}
   <nav class="dnav">
     <button type="button" data-v="chat" class="on"><svg viewBox="0 0 24 24"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12Z"/></svg>Conversa</button>
     <button type="button" data-v="mem"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="2.5"/><circle cx="5" cy="6" r="1.6"/><circle cx="19" cy="7" r="1.6"/><circle cx="6" cy="18" r="1.6"/><circle cx="18" cy="18" r="1.6"/><path d="M6.3 7l4 3.6M17.6 8l-3.7 2.6M7.4 17l2.9-3.3M16.6 17l-2.9-3.3"/></svg>Memória</button>
+    <button type="button" data-v="adm" id="dnAdm" hidden><svg viewBox="0 0 24 24"><path d="M12 3l8 3v6c0 4.5-3.4 8.3-8 9-4.6-.7-8-4.5-8-9V6z"/><path d="M9 12l2 2 4-4"/></svg>Administração</button>
     <button type="button" data-v="cfg"><svg viewBox="0 0 24 24"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2"/><circle cx="10" cy="17" r="2"/></svg>Ajustes</button>
   </nav>
   <div class="chats" id="chats"></div>
@@ -313,6 +353,7 @@ form.ask textarea:focus-visible{outline:none}
     <button class="ic" id="bNew" type="button" aria-label="Nova conversa"><svg viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg></button>
   </header>
   <div class="offline" id="offline" hidden>Sem internet. Respondendo só com o que já aprendi.</div>
+  <div class="offline" id="emergBar" hidden>⛔ Parada de emergência: a IA e a internet da AVIX estão desligadas. Respondo só com a memória deste aparelho.</div>
   <div class="inst" id="instBar" hidden><span>Instale a AVIX como app no celular.</span><button type="button" class="solid instBtn">Instalar</button><button type="button" class="x" id="instX" aria-label="Fechar">✕</button></div>
 
   <section class="view" id="vChat">
@@ -354,12 +395,26 @@ form.ask textarea:focus-visible{outline:none}
         <p id="instTxt">Coloque a AVIX na tela inicial para abrir como um app, até sem internet. Funciona no Android e no iPhone.</p>
         <div class="row" id="instRow"><button type="button" class="solid instBtn">Instalar app</button></div>
       </div>
+      <div class="box emerg" id="emergBox" hidden>
+        <h3>🛑 Parada de emergência</h3>
+        <p id="emergTxt">Corta na hora toda a comunicação da IA para todos os usuários: conversas, pesquisas na internet, memória na nuvem e chamadas aos provedores de IA. Só o painel do administrador continua acessível, para religar.</p>
+        <div class="row"><button type="button" class="danger big" id="emergParar">🛑 PARAR / ENCERRAR IA</button><button type="button" class="solid" id="emergReligar" hidden>Religar a IA</button></div>
+      </div>
+      <div class="box" id="contaBox" hidden>
+        <h3>Minha conta <span class="badge" id="contaPapel"></span></h3>
+        <p><span id="contaEmail"></span> · <span id="contaVerif"></span></p>
+        <p id="contaUso"></p>
+        <label class="campo"><span>Nome</span><input id="contaNome" maxlength="80" autocomplete="name"></label>
+        <div class="row"><button type="button" class="solid" id="contaSalvar">Salvar nome</button><button type="button" id="contaSenha">Trocar senha</button><button type="button" id="contaSair">Sair</button></div>
+        <div class="row"><button type="button" class="danger" id="contaExcluir">Excluir minha conta</button></div>
+        <p class="mini">Excluir apaga suas conversas, memórias e registros da AVIX. Não dá para desfazer. <a href="privacidade" target="_blank" rel="noopener">Política de Privacidade</a> · <a href="termos" target="_blank" rel="noopener">Termos</a></p>
+      </div>
       <div class="box">
         <h3>✦ Inteligência artificial</h3>
         <p id="iaTxt">Entre com o Google para conversar com a IA. Sem login ou sem internet, a AVIX responde com a memória do aparelho.</p>
       </div>
       <div class="box">
-        <h3>☁ Memória na nuvem</h3>
+        <h3>☁ Sincronização</h3>
         <p id="nvTxt">Entre com a sua conta Google para a AVIX usar a mesma memória em todos os seus aparelhos. O que ela aprender em um, aprende em todos.</p>
         <div class="row"><button type="button" class="solid" id="nvBtn">Entrar com Google</button><button type="button" id="nvSync" hidden>Sincronizar agora</button></div>
       </div>
@@ -383,8 +438,12 @@ form.ask textarea:focus-visible{outline:none}
         <p>Apaga tudo o que foi aprendido. Se a memória na nuvem estiver ligada, apaga em todos os aparelhos.</p>
         <div class="row"><button id="zerar" type="button" class="danger">Apagar memória</button></div>
       </div>
-      <p class="eyebrow" style="text-align:center">AVIX IA · versão 4.1 · funciona sem IA externa</p>
+      <p class="eyebrow" style="text-align:center">AVIX IA · versão 5.0 · funciona sem IA externa</p>
     </div>
+  </section>
+
+  <section class="view" id="vAdm" hidden>
+    <div class="pad" id="admConteudo"></div>
   </section>
 
   <div class="dock" id="dock">
@@ -407,16 +466,45 @@ form.ask textarea:focus-visible{outline:none}
   <div class="loginBox" role="dialog" aria-modal="true" aria-labelledby="lgT">
     <img class="lgLogo" src="logo-mark.png" alt="AVIX IA">
     <h2 id="lgT">Bem-vindo à <span class="gtext">AVIX IA</span></h2>
-    <p>Entre com o Google para a AVIX lembrar de tudo o que aprende, em qualquer aparelho.</p>
-    <ul class="lgList">
-      <li><span>☁</span>A mesma memória no celular, no tablet e no computador</li>
-      <li><span>🔒</span>Só a sua conta tem acesso ao que ela aprendeu</li>
-      <li><span>📴</span>Continua funcionando sem internet</li>
-    </ul>
-    <button type="button" class="gbtn" id="lgGoogle"><svg viewBox="0 0 48 48" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.5 0 6.6 1.2 9.1 3.6l6.8-6.8C35.8 2.4 30.3 0 24 0 14.6 0 6.6 5.4 2.6 13.3l7.9 6.1C12.4 13.7 17.7 9.5 24 9.5z"/><path fill="#4285F4" d="M46.5 24.5c0-1.6-.1-3.1-.4-4.5H24v9h12.7c-.6 2.9-2.2 5.4-4.7 7.1l7.6 5.9c4.4-4.1 6.9-10.1 6.9-17.5z"/><path fill="#FBBC05" d="M10.5 28.6c-.5-1.4-.8-3-.8-4.6s.3-3.2.8-4.6l-7.9-6.1C.9 16.6 0 20.2 0 24s.9 7.4 2.6 10.7l7.9-6.1z"/><path fill="#34A853" d="M24 48c6.5 0 11.9-2.1 15.9-5.8l-7.6-5.9c-2.1 1.4-4.9 2.3-8.3 2.3-6.3 0-11.6-4.2-13.5-10l-7.9 6.1C6.6 42.6 14.6 48 24 48z"/></svg><span id="lgGoogleTxt">Entrar com Google</span></button>
+    <p>Sua assistente de inteligência artificial. Entre ou crie a sua conta grátis.</p>
+    <div class="abas" id="lgAbas" role="tablist"><button type="button" data-modo="entrar" class="on">Entrar</button><button type="button" data-modo="cadastro">Criar conta</button></div>
+
+    <form class="lgForm" id="fEntrar" novalidate>
+      <label class="campo"><span>E-mail</span><input id="eEmail" type="email" autocomplete="email" inputmode="email" required></label>
+      <label class="campo"><span>Senha</span><input id="eSenha" type="password" autocomplete="current-password" required></label>
+      <button type="submit" class="solid big" id="eEntrar">Entrar</button>
+      <button type="button" class="ghost" id="lgEsqueci">Esqueci minha senha</button>
+    </form>
+
+    <form class="lgForm" id="fCadastro" novalidate hidden>
+      <label class="campo"><span>Nome completo</span><input id="cNome" autocomplete="name" maxlength="80" required></label>
+      <label class="campo"><span>E-mail</span><input id="cEmail" type="email" autocomplete="email" inputmode="email" required></label>
+      <label class="campo"><span>Senha (mínimo 8, com letras e números)</span><input id="cSenha" type="password" autocomplete="new-password" required></label>
+      <label class="campo"><span>Confirmar senha</span><input id="cSenha2" type="password" autocomplete="new-password" required></label>
+      <div id="tsCadastro" class="ts"></div>
+      <label class="chk"><input type="checkbox" id="cTermos"><span>Li e aceito os <a href="termos" target="_blank" rel="noopener">Termos de Uso</a> e a <a href="privacidade" target="_blank" rel="noopener">Política de Privacidade</a>.</span></label>
+      <button type="submit" class="solid big" id="cCriar">Criar conta grátis</button>
+    </form>
+
+    <form class="lgForm" id="fRecuperar" novalidate hidden>
+      <p>Digite o e-mail da sua conta. Enviaremos um link para criar uma senha nova.</p>
+      <label class="campo"><span>E-mail</span><input id="rEmail" type="email" autocomplete="email" inputmode="email"></label>
+      <button type="submit" class="solid big">Enviar link</button>
+      <button type="button" class="ghost" id="rVoltar">Voltar</button>
+    </form>
+
+    <div class="lgForm" id="fVerificar" hidden>
+      <p>📧 Enviamos um link de confirmação para <b id="vEmail"></b>. Abra o e-mail (veja também o spam), toque no link e volte aqui.</p>
+      <button type="button" class="solid big" id="vJa">Já confirmei</button>
+      <div class="row"><button type="button" id="vReenviar">Reenviar e-mail</button><button type="button" class="ghost" id="vSair">Usar outra conta</button></div>
+    </div>
+
+    <div class="ou" id="lgOu"><span>ou</span></div>
+    <button type="button" class="gbtn" id="lgGoogle"><svg viewBox="0 0 48 48" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.5 0 6.6 1.2 9.1 3.6l6.8-6.8C35.8 2.4 30.3 0 24 0 14.6 0 6.6 5.4 2.6 13.3l7.9 6.1C12.4 13.7 17.7 9.5 24 9.5z"/><path fill="#4285F4" d="M46.5 24.5c0-1.6-.1-3.1-.4-4.5H24v9h12.7c-.6 2.9-2.2 5.4-4.7 7.1l7.6 5.9c4.4-4.1 6.9-10.1 6.9-17.5z"/><path fill="#FBBC05" d="M10.5 28.6c-.5-1.4-.8-3-.8-4.6s.3-3.2.8-4.6l-7.9-6.1C.9 16.6 0 20.2 0 24s.9 7.4 2.6 10.7l7.9-6.1z"/><path fill="#34A853" d="M24 48c6.5 0 11.9-2.1 15.9-5.8l-7.6-5.9c-2.1 1.4-4.9 2.3-8.3 2.3-6.3 0-11.6-4.2-13.5-10l-7.9 6.1C6.6 42.6 14.6 48 24 48z"/></svg><span id="lgGoogleTxt">Continuar com Google</span></button>
     <p class="lgErro" id="lgErro" hidden></p>
+    <p class="lgOk" id="lgOk" hidden></p>
     <button type="button" class="ghost" id="lgPular">Continuar sem conta</button>
-    <p class="lgNota">Sem conta, a memória fica só neste aparelho. Dá para entrar depois pelo menu ☰.</p>
+    <p class="lgNota">Grátis, com limite diário de uso. Sem conta, a AVIX responde só com a memória deste aparelho. <a href="termos" target="_blank" rel="noopener">Termos</a> · <a href="privacidade" target="_blank" rel="noopener">Privacidade</a></p>
   </div>
 </div>
 <div class="toast" id="toast" role="status"></div>
@@ -632,7 +720,7 @@ async function responder(pergunta, passo, op = {}){
     }
   }
   // 2) internet
-  if (!navigator.onLine) throw { code: "offline" };
+  if (!navigator.onLine || ia.emergencia) throw { code: "offline" }; // em emergência, nem a pesquisa do aparelho sai para a internet
   const consulta = assunto(pergunta);
   const [w, d] = await Promise.all([wiki("pt", consulta, passo).catch(e => { if (sinal?.aborted) throw e; return []; }), ddg(consulta, passo)]);
   let pags = d.concat(w);
@@ -877,6 +965,7 @@ function perguntar(texto){
   const lembre = /^\s*(lembre|lembra|anote|anota|aprenda|aprende|guarde|guarda)\s*(-|:|que)?\s*(.+)$/is.exec(texto);
   if (lembre && nv.user && M.sync.ligado) salvarMemoria(lembre[3], "usuario");
   // Com login e internet, a IA responde. Sem isso, o cérebro do aparelho (como antes).
+  if (nv.user && M.sync.ligado && !nv.user.emailVerified && (nv.user.providerData || []).some(p => p.providerId === "password")) { mostrarLogin("Confirme o seu e-mail para usar a IA.", "verificar"); return; }
   if (!lembre && iaPronta() && (!atual || atual.nuvem)) return perguntarIA(texto);
   if (atual?.nuvem) { // "lembre:" no meio de uma conversa da IA: mostra aqui, sem mandar para o servidor
     const m = { p: texto, a: null }; atual.m.push(m);
@@ -903,9 +992,44 @@ function pararTudo(){ if (ger) { ger.stop = true; ger.ctrl.abort(); } }
      devolve a resposta aos pedaços (streaming)
    - se o servidor não estiver disponível, a AVIX usa o cérebro do aparelho
    ========================================================= */
-const API_IA = (/^(localhost|127\.0\.0\.1)$/.test(location.hostname) && (() => { try { return localStorage.getItem("avix.api"); } catch { return null; } })()) || "https://avix-ia.avix-ia-worker.workers.dev/chat"; // no computador (testes) dá para apontar para um servidor local
-const ia = { foraAte: 0, motivo: "", hoje: null };
-const iaPronta = () => !!(fb && nv.user && M.sync.ligado && nv.unsub && navigator.onLine && Date.now() > ia.foraAte);
+const API_BASE = (/^(localhost|127\.0\.0\.1)$/.test(location.hostname) && (() => { try { return localStorage.getItem("avix.apiBase"); } catch { return null; } })()) ?? "https://avix-ia.avix-ia-worker.workers.dev"; // no computador (testes) dá para apontar para outro servidor
+const API_IA = API_BASE + "/v1/chat/completions";
+const ia = { foraAte: 0, motivo: "", hoje: null, emergencia: false };
+const iaPronta = () => !!(fb && nv.user && M.sync.ligado && nv.user.emailVerified && navigator.onLine && !ia.emergencia && Date.now() > ia.foraAte);
+
+/* --- PARADA DE EMERGÊNCIA: quando ligada, o app para de falar com a IA, com a nuvem e com a internet --- */
+function marcarEmergencia(on){
+  if (ia.emergencia === on) return;
+  ia.emergencia = on;
+  $("#emergBar").hidden = !on;
+  if (on) { pararTudo(); nv.unsub?.(); nv.unsubMeta?.(); nv.unsub = nv.unsubMeta = null; }
+  else if (nv.user && M.sync.ligado) conectar();
+  desenharEmergencia(); atualizarIA();
+}
+async function verificarEmergencia(){
+  if (!navigator.onLine) return;
+  try { const r = await fetch(API_BASE + "/health", { cache: "no-store" }); const j = await r.json(); marcarEmergencia(!!j.emergencia); } catch {}
+}
+function desenharEmergencia(){
+  const adm = perfil?.papel === "admin";
+  $("#emergBox").hidden = !adm;
+  if (!adm) return;
+  $("#emergParar").hidden = ia.emergencia; $("#emergReligar").hidden = !ia.emergencia;
+  $("#emergTxt").textContent = ia.emergencia
+    ? "⛔ A parada de emergência está LIGADA. Ninguém consegue usar a IA, pesquisar ou acessar a nuvem. Toque em Religar quando for seguro."
+    : "Corta na hora toda a comunicação da IA para todos os usuários: conversas, pesquisas na internet, memória na nuvem e chamadas aos provedores de IA. Só o painel do administrador continua acessível, para religar.";
+}
+$("#emergParar").onclick = function(){
+  confirmar2(this, "🛑 PARAR / ENCERRAR IA", async () => {
+    try { await api("POST", "/v1/admin/emergencia", { ativa: true }); marcarEmergencia(true); toast("Parada de emergência LIGADA. Tudo foi cortado."); }
+    catch (e) { toast("Não consegui acionar: " + e.message); }
+  });
+};
+$("#emergReligar").onclick = async () => {
+  try { await api("POST", "/v1/admin/emergencia", { ativa: false }); marcarEmergencia(false); toast("IA religada."); }
+  catch (e) { toast("Não consegui religar: " + e.message); }
+};
+setInterval(verificarEmergencia, 60000);
 
 // Markdown seguro: o texto da IA vira HTML, e o DOMPurify tira qualquer coisa perigosa
 let purifyOk = false;
@@ -987,7 +1111,7 @@ async function lerEventos(resp, aoEvento){
 
 async function perguntarIA(texto, op = {}){
   let el = op.el, m = op.m;
-  if (!op.regenerar) {
+  if (!op.regenerar && !op.reenviar) {
     if (!atual) { atual = { id: null, t: texto.replace(/\s+/g, " ").slice(0, 60), ts: Date.now(), nuvem: true, m: [], temp: true }; log.innerHTML = ""; titulo(); }
     m = { p: texto, a: null }; atual.m.push(m);
     el = msgEl(m, true); log.append(el); rolar(true);
@@ -1008,13 +1132,20 @@ async function perguntarIA(texto, op = {}){
   let falhaRede = false;
   try {
     const token = await nv.user.getIdToken();
-    const resp = await fetch(API_IA, { method: "POST", headers: { "Content-Type": "application/json", Authorization: "Bearer " + token }, body: JSON.stringify({ chatId: chat.id, texto: op.regenerar ? undefined : texto, regenerar: !!op.regenerar }), signal: g.ctrl.signal });
+    const resp = await fetch(API_IA, { method: "POST", headers: { "Content-Type": "application/json", Authorization: "Bearer " + token }, body: JSON.stringify({ conversation_id: chat.id || undefined, texto: op.regenerar ? undefined : texto, regenerate: !!op.regenerar }), signal: g.ctrl.signal });
     const tipo = resp.headers.get("content-type") || "";
     if (!resp.ok || !tipo.includes("event-stream")) {
       const j = tipo.includes("json") ? await resp.json().catch(() => ({})) : {};
-      if (resp.status === 404 || (!j.erro && resp.status >= 500)) { ia.foraAte = Date.now() + 10 * 60000; ia.motivo = "A IA ainda não está instalada no servidor."; falhaRede = true; }
-      else a.erro = j.erro || `A IA não respondeu (erro ${resp.status}).`;
-      if (resp.status === 503) { ia.foraAte = Date.now() + 5 * 60000; ia.motivo = j.erro || "IA indisponível."; }
+      const cod = j.erro?.codigo || "", msg = j.erro?.mensagem || (typeof j.erro === "string" ? j.erro : "");
+      if (cod === "verificacao_humana") {
+        if (ger === g) { ger = null; ocupado(false); }
+        if (await garantirHumano()) return perguntarIA(texto, { ...op, reenviar: !op.regenerar, el, m });
+        a.erro = "Sem a verificação anti-robô não consigo usar a IA.";
+      } else if (cod === "emergencia") { a.erro = msg; marcarEmergencia(true); }
+      else if (cod === "email_nao_verificado") { a.erro = msg; mostrarLogin(msg, "verificar"); }
+      else if ((resp.status === 404 && cod !== "conversa_nao_encontrada") || (!msg && resp.status >= 500)) { ia.foraAte = Date.now() + 5 * 60000; ia.motivo = "A IA está fora do ar agora."; falhaRede = true; }
+      else a.erro = msg || `A IA não respondeu (erro ${resp.status}).`;
+      if (resp.status === 503) { ia.foraAte = Date.now() + 5 * 60000; ia.motivo = msg || "IA indisponível."; }
     } else {
       await lerEventos(resp, ev => {
         if (ev.t === "status") st.innerHTML = `<div class="live">${esc(ROTULO[ev.s] || "Pensando…")}</div>`;
@@ -1036,7 +1167,8 @@ async function perguntarIA(texto, op = {}){
   if (!el.isConnected) return;
   st.innerHTML = "";
   corpoFixo(el, a); preencherIA(el, a); rolar();
-  atualizarIA();
+  if (!a.erro && !a.parou && perfil?.uso) perfil.uso.hoje++;
+  atualizarIA(); desenharConta(); carregarConversas();
 }
 
 // Sem IA: responde com o cérebro antigo do aparelho e guarda como conversa local
@@ -1048,27 +1180,89 @@ function usarCerebroLocal(el, m, aviso){
   gerar(el, m);
 }
 
-/* --- conversas da IA na nuvem: abrir, renomear, apagar --- */
+/* =========================================================
+   AVIX API (cliente): conversas, memória, conta, anti-robô e administração
+   ========================================================= */
+class ErroApi extends Error { constructor(status, codigo, msg){ super(msg); this.status = status; this.codigo = codigo; } }
+async function api(metodo, caminho, corpo){
+  if (!nv.user) throw new ErroApi(401, "sem_login", "Entre na sua conta.");
+  const token = await nv.user.getIdToken();
+  let r;
+  try { r = await fetch(API_BASE + caminho, { method: metodo, headers: { Authorization: "Bearer " + token, ...(corpo ? { "Content-Type": "application/json" } : {}) }, body: corpo ? JSON.stringify(corpo) : undefined }); }
+  catch { throw new ErroApi(0, "rede", "Sem conexão com a AVIX agora."); }
+  const j = await r.json().catch(() => ({}));
+  if (j.erro?.codigo === "emergencia") marcarEmergencia(true);
+  if (!r.ok) throw new ErroApi(r.status, j.erro?.codigo || "erro", j.erro?.mensagem || (typeof j.erro === "string" ? j.erro : "Erro " + r.status));
+  return j;
+}
+
+/* --- perfil (papel e situação vêm SEMPRE do servidor) --- */
+let perfil = null;
+const mesmaConta = uid => nv.user?.uid === uid; // descarta respostas atrasadas de outra conta (troca de conta no mesmo aparelho)
+async function carregarPerfil(){
+  const uid = nv.user?.uid;
+  try { const p = await api("GET", "/v1/me"); if (!mesmaConta(uid)) return perfil; perfil = p; }
+  catch (e) { if (!mesmaConta(uid)) return perfil; perfil = null; if (e.codigo === "conta_suspensa") toast(e.message); }
+  $("#dnAdm").hidden = perfil?.papel !== "admin";
+  desenharConta(); atualizarIA();
+  return perfil;
+}
+
+/* --- anti-robô (Cloudflare Turnstile, grátis) --- */
+const TURNSTILE_SITE_KEY = "0x4AAAAAAF1oFJKZuOp_RsZw";
+let turnstileCarregando = null;
+function carregarTurnstile(){
+  if (window.turnstile) return Promise.resolve();
+  return turnstileCarregando ||= new Promise((ok, falhou) => { const s = document.createElement("script"); s.src = "https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit"; s.async = true; s.onload = ok; s.onerror = () => { turnstileCarregando = null; falhou(); }; document.head.append(s); });
+}
+async function widgetTurnstile(caixa){
+  await carregarTurnstile();
+  caixa.innerHTML = "";
+  return new Promise(ok => window.turnstile.render(caixa, { sitekey: perfil?.turnstileSiteKey || TURNSTILE_SITE_KEY, theme: "dark", language: "pt-br", callback: ok }));
+}
+// Para quem entrou com Google (ou ainda não passou na verificação): abre uma janelinha
+function garantirHumano(){
+  return new Promise(async (fim) => {
+    $("#sheetT").innerHTML = '<img src="logo-mark.png" alt="">Só mais um passo';
+    $("#sheetBody").innerHTML = '<p>Confirme que você não é um robô. Isso protege a AVIX grátis contra abusos.</p><div id="tsHumano" style="min-height:70px"></div><p class="nota" id="tsMsg">Carregando…</p>';
+    $("#sheet").hidden = false;
+    try {
+      const token = await widgetTurnstile($("#tsHumano"));
+      $("#tsMsg").textContent = "Conferindo…";
+      await api("POST", "/v1/me/humano", { token });
+      if (perfil) perfil.humano = true;
+      $("#sheet").hidden = true; fim(true);
+    } catch (e) { $("#tsMsg").textContent = e?.message || "Não consegui carregar a verificação. Verifique a internet."; fim(false); }
+  });
+}
+
+/* --- conversas da IA (na AVIX API) --- */
+async function carregarConversas(){
+  if (!(nv.user && M.sync.ligado)) { C.nuvem = []; listaChats(); return; }
+  const uid = nv.user.uid;
+  try {
+    const { data } = await api("GET", "/v1/conversations");
+    if (!mesmaConta(uid)) return;
+    const antes = new Map(C.nuvem.map(c => [c.id, c]));
+    C.nuvem = data.map(x => Object.assign(antes.get(x.id) || (atual?.id === x.id ? atual : { nuvem: true, m: [] }), { id: x.id, t: x.titulo, ts: x.atualizado, nuvem: true }));
+    listaChats(); titulo();
+  } catch {}
+}
 async function abrirChatNuvem(c){
   pararTudo();
   atual = c; aba("chat"); titulo(); listaChats();
   log.innerHTML = '<div class="hero"><p>Carregando a conversa…</p></div>';
   try {
-    const { fs, D } = fb;
-    const s = await fs.getDocs(fs.query(fs.collection(D, "users", nv.user.uid, "chats", c.id, "msgs"), fs.orderBy("ts")));
+    const conv = await api("GET", "/v1/conversations/" + encodeURIComponent(c.id));
     if (atual !== c) return;
     c.m = [];
-    for (const d of s.docs) {
-      const x = d.data();
+    for (const x of conv.mensagens) {
       if (x.papel === "user") c.m.push({ p: x.texto, a: null });
-      else if (c.m.length) c.m[c.m.length - 1].a = { k: "ia", md: x.texto || "", fontes: x.fontes || [], id: d.id, parou: !!x.parou, fim: x.fim || "ok", sugestao: x.sugestao || "", sugFeita: true };
+      else if (c.m.length) c.m[c.m.length - 1].a = { k: "ia", md: x.texto || "", fontes: x.fontes || [], id: x.id, parou: !!x.parou, fim: x.fim || "ok", sugestao: x.sugestao || "", sugFeita: true };
     }
-  } catch { log.innerHTML = '<div class="hero"><p>Não consegui abrir essa conversa agora. Verifique a internet.</p></div>'; return; }
+  } catch (e) { log.innerHTML = `<div class="hero"><p>${esc(e.status === 404 ? "Essa conversa não existe mais." : "Não consegui abrir essa conversa agora. Verifique a internet.")}</p></div>`; return; }
   log.innerHTML = "";
-  for (const m of c.m) {
-    const el = msgEl(m, false); log.append(el);
-    if (!m.a) m.a = { k: "ia", md: "", erro: "Essa pergunta ficou sem resposta." };
-  }
+  for (const m of c.m) { const el = msgEl(m, false); log.append(el); if (!m.a) m.a = { k: "ia", md: "", erro: "Essa pergunta ficou sem resposta." }; }
   [...log.querySelectorAll(".msg")].forEach(el => { corpoFixo(el, el._m.a); preencher(el, el._m.a); });
   rolar(true);
 }
@@ -1076,33 +1270,32 @@ function renomearChat(c){
   const novo = prompt("Novo nome da conversa:", c.t);
   if (!novo || !novo.trim()) return;
   c.t = novo.trim().slice(0, 100);
-  if (c.nuvem && fb && nv.user) fb.fs.updateDoc(fb.fs.doc(fb.D, "users", nv.user.uid, "chats", c.id), { titulo: c.t }).catch(() => toast("Não consegui renomear agora."));
+  if (c.nuvem) api("PATCH", "/v1/conversations/" + encodeURIComponent(c.id), { titulo: c.t }).catch(() => toast("Não consegui renomear agora."));
   else salvarChats();
   listaChats(); titulo();
 }
 async function apagarChatNuvem(id){
   C.nuvem = C.nuvem.filter(c => c.id !== id);
-  if (!fb || !nv.user) return;
-  const { fs, D } = fb, uid = nv.user.uid;
-  try {
-    const msgs = await fs.getDocs(fs.collection(D, "users", uid, "chats", id, "msgs"));
-    for (let i = 0; i < msgs.docs.length; i += 400) { const b = fs.writeBatch(D); msgs.docs.slice(i, i + 400).forEach(d => b.delete(d.ref)); await b.commit(); }
-    await fs.deleteDoc(fs.doc(D, "users", uid, "chats", id));
-  } catch { toast("Não consegui apagar a conversa na nuvem agora."); }
+  try { await api("DELETE", "/v1/conversations/" + encodeURIComponent(id)); } catch { toast("Não consegui apagar a conversa agora."); }
 }
 
-/* --- memória do usuário (preferências autorizadas) --- */
+/* --- memória de longo prazo do usuário --- */
 let memUser = [];
+async function carregarMemorias(){
+  if (!(nv.user && M.sync.ligado)) { memUser = []; desenharMemUser(); return; }
+  const uid = nv.user.uid;
+  try { const d = (await api("GET", "/v1/memory")).data; if (!mesmaConta(uid)) return; memUser = d; } catch {}
+  desenharMemUser();
+}
 function salvarMemoria(texto, origem){
   texto = String(texto).trim().replace(/\s+/g, " ").slice(0, 500);
-  if (!texto || !fb || !nv.user) return;
-  const agora = Date.now();
-  fb.fs.setDoc(fb.fs.doc(fb.fs.collection(fb.D, "users", nv.user.uid, "memorias")), { texto, criado: agora, atualizado: agora, origem }).catch(() => toast("Não consegui guardar na memória agora."));
+  if (!texto || !nv.user) return;
+  api("POST", "/v1/memory", { texto, origem }).then(carregarMemorias, e => toast(e.message || "Não consegui guardar na memória agora."));
 }
 function desenharMemUser(){
   const on = !!(nv.user && M.sync.ligado);
   $("#memAddRow").hidden = !on;
-  $("#memUserTxt").textContent = on ? "Preferências e informações que você autorizou guardar. A IA usa isso nas conversas, em qualquer aparelho." : "Entre com o Google para a AVIX guardar suas preferências e usar em qualquer aparelho.";
+  $("#memUserTxt").textContent = on ? "Preferências e informações que você autorizou guardar. A IA usa isso nas conversas, em qualquer aparelho." : "Entre na sua conta para a AVIX guardar suas preferências e usar em qualquer aparelho.";
   const el = $("#memUser");
   if (!on) { el.innerHTML = ""; return; }
   el.innerHTML = memUser.length ? memUser.map(m => `<div class="it" data-mid="${esc(m.id)}"><span></span><button type="button" data-op="ed" aria-label="Editar">✎</button><button type="button" data-op="rm" aria-label="Apagar">✕</button></div>`).join("") : '<div class="vazio">Nada guardado ainda. Diga "lembre: …" na conversa ou escreva abaixo.</div>';
@@ -1111,47 +1304,171 @@ function desenharMemUser(){
 $("#memUser").addEventListener("click", e => {
   const b = e.target.closest("button[data-op]"); if (!b) return;
   const it = b.closest(".it"), id = it.dataset.mid, m = memUser.find(x => x.id === id); if (!m) return;
-  const ref = fb.fs.doc(fb.D, "users", nv.user.uid, "memorias", id);
   if (b.dataset.op === "rm") {
     if (b.dataset.c !== "1") { b.dataset.c = "1"; b.textContent = "apagar?"; setTimeout(() => { if (b.isConnected) { b.dataset.c = ""; b.textContent = "✕"; } }, 3000); return; }
-    fb.fs.deleteDoc(ref).catch(() => toast("Não consegui apagar agora."));
+    api("DELETE", "/v1/memory/" + encodeURIComponent(id)).then(carregarMemorias, () => toast("Não consegui apagar agora."));
   } else {
     it.innerHTML = '<textarea maxlength="500"></textarea><button type="button" data-ok>Salvar</button>';
     const ta = it.querySelector("textarea"); ta.value = m.texto; ta.focus();
-    it.querySelector("[data-ok]").onclick = () => { const v = ta.value.trim().slice(0, 500); if (!v) return; fb.fs.updateDoc(ref, { texto: v, atualizado: Date.now() }).catch(() => toast("Não consegui salvar agora.")); };
+    it.querySelector("[data-ok]").onclick = () => { const v = ta.value.trim().slice(0, 500); if (!v) return; api("PATCH", "/v1/memory/" + encodeURIComponent(id), { texto: v }).then(carregarMemorias, () => toast("Não consegui salvar agora.")); };
   }
 });
 $("#memAdd").onclick = () => { const v = $("#memNova").value.trim(); if (!v) return; salvarMemoria(v, "usuario"); $("#memNova").value = ""; toast("Guardado na memória."); };
 
-/* --- ouvir a nuvem: lista de conversas e memórias --- */
-const nvIA = { unsubChats: null, unsubMem: null };
-function ouvirIA(){
-  if (!fb || !nv.user || nvIA.unsubChats) return;
-  const { fs, D } = fb, uid = nv.user.uid;
-  nvIA.unsubChats = fs.onSnapshot(fs.query(fs.collection(D, "users", uid, "chats"), fs.orderBy("atualizado", "desc"), fs.limit(100)), s => {
-    const antes = new Map(C.nuvem.map(c => [c.id, c]));
-    C.nuvem = s.docs.map(d => { const x = d.data(); const c = antes.get(d.id) || (atual?.id === d.id ? atual : { nuvem: true, m: [] }); return Object.assign(c, { id: d.id, t: x.titulo || "Conversa", ts: x.atualizado || 0, nuvem: true }); });
-    if (atual?.nuvem && atual.id && !C.nuvem.includes(atual) && !s.metadata.hasPendingWrites && !ger) { /* apagada em outro aparelho */ }
-    listaChats(); titulo();
-  }, () => {});
-  nvIA.unsubMem = fs.onSnapshot(fs.query(fs.collection(D, "users", uid, "memorias"), fs.orderBy("atualizado", "desc"), fs.limit(300)), s => {
-    memUser = s.docs.map(d => ({ id: d.id, ...d.data() })); desenharMemUser();
-  }, () => {});
+/* --- minha conta (perfil) --- */
+function desenharConta(){
+  desenharEmergencia();
+  const on = !!(nv.user && M.sync.ligado);
+  $("#contaBox").hidden = !on;
+  if (!on) return;
+  const u = nv.user;
+  $("#contaEmail").textContent = u.email || "";
+  if (document.activeElement !== $("#contaNome")) $("#contaNome").value = perfil?.nome || u.displayName || "";
+  $("#contaPapel").textContent = perfil?.papel === "admin" ? "Administrador" : "Cliente";
+  $("#contaPapel").className = "badge " + (perfil?.papel === "admin" ? "mem" : "web");
+  const senha = (u.providerData || []).some(p => p.providerId === "password");
+  $("#contaSenha").hidden = !senha;
+  $("#contaVerif").textContent = u.emailVerified ? "E-mail confirmado ✔" : "E-mail ainda não confirmado";
+  $("#contaUso").textContent = perfil ? `Hoje: ${perfil.uso.hoje} pergunta(s)` + (perfil.uso.limiteDia ? ` de ${perfil.uso.limiteDia}` : "") + "." : "";
 }
-function pararOuvirIA(){ nvIA.unsubChats?.(); nvIA.unsubMem?.(); nvIA.unsubChats = nvIA.unsubMem = null; C.nuvem = []; memUser = []; listaChats(); desenharMemUser(); }
+$("#contaSalvar").onclick = async () => {
+  const nome = $("#contaNome").value.trim().slice(0, 80); if (!nome) return toast("Escreva o seu nome.");
+  try { await api("PATCH", "/v1/me", { nome }); await fb.auth.updateProfile(nv.user, { displayName: nome }).catch(() => {}); if (perfil) perfil.nome = nome; estadoNuvem(); toast("Nome salvo."); } catch (e) { toast(e.message); }
+};
+$("#contaSenha").onclick = async () => {
+  try { await fb.auth.sendPasswordResetEmail(fb.A, nv.user.email); toast("Enviamos um link para trocar a senha no seu e-mail."); } catch (e) { toast(msgAuth(e)); }
+};
+$("#contaSair").onclick = () => sair();
+$("#contaExcluir").onclick = function(){
+  confirmar2(this, "Excluir minha conta", async () => {
+    try {
+      await api("DELETE", "/v1/me"); // apaga conversas, memórias e registros da AVIX
+      try { await fb.auth.deleteUser(nv.user); }
+      catch (e) { if (e.code === "auth/requires-recent-login") { toast("Seus dados foram apagados. Para remover também o login, entre de novo e repita."); sair(); return; } throw e; }
+      M.sync.ligado = false; M.sync.uid = ""; salvarLocal(); C.nuvem = []; memUser = []; perfil = null;
+      nv.user = null; estadoNuvem(); novaConversa(); toast("Conta excluída. Seus dados foram apagados.");
+    } catch (e) { toast(e.message || "Não consegui excluir agora."); }
+  });
+};
 
 // status da IA e consumo do dia (em Ajustes)
-async function atualizarIA(){
+function atualizarIA(){
   const el = $("#iaTxt");
-  if (!(nv.user && M.sync.ligado)) { el.textContent = "Entre com o Google para conversar com a IA. Sem login ou sem internet, a AVIX responde com a memória do aparelho."; return; }
+  if (!(nv.user && M.sync.ligado)) { el.textContent = "Entre na sua conta para conversar com a IA. Sem login ou sem internet, a AVIX responde com a memória do aparelho."; return; }
   if (Date.now() < ia.foraAte) { el.textContent = (ia.motivo || "A IA está indisponível agora.") + " Enquanto isso, respondo com a memória do aparelho."; return; }
-  let txt = "Conectada. As perguntas vão para a IA, que pesquisa na internet quando precisa.";
+  if (!nv.user.emailVerified) { el.textContent = "Confirme o seu e-mail (pelo link que enviamos) para usar a IA."; return; }
+  el.textContent = "Conectada. A IA é grátis e tem limite diário" + (perfil?.uso?.limiteDia ? ` (${perfil.uso.limiteDia} perguntas por dia; hoje: ${perfil.uso.hoje})` : "") + ". Ela pesquisa na internet quando precisa.";
+}
+
+/* =========================================================
+   AVIX ADMIN — painel (só aparece para administrador; o servidor confere de novo em cada pedido)
+   Mostra números e cadastros. Nunca mostra conteúdo de conversas, memórias ou senhas.
+   ========================================================= */
+const adm = { cfg: null, busca: "", offset: 0 };
+const num = n => Number(n || 0).toLocaleString("pt-BR");
+const dataHora = ts => ts ? new Date(ts).toLocaleString("pt-BR", { day: "2-digit", month: "2-digit", year: "2-digit", hour: "2-digit", minute: "2-digit" }) : "—";
+const ROT_LIM = { porMinuto: "Perguntas por minuto (por pessoa)", porDia: "Perguntas por dia (por pessoa)", globalPorDia: "Perguntas por dia (plataforma toda)", maxPergunta: "Tamanho máximo da mensagem (caracteres)", maxTokens: "Tamanho máximo da resposta (tokens)", maxBuscas: "Pesquisas por resposta", maxMemorias: "Memórias por pessoa", concorrencia: "Respostas ao mesmo tempo (por pessoa)" };
+const ROT_GER = { iaLigada: "IA ligada", cadastrosAbertos: "Novos cadastros abertos", exigirEmailVerificado: "Exigir e-mail confirmado", exigirHumano: "Exigir verificação anti-robô" };
+const ROT_FER = { pesquisar_web: "Pesquisa na internet", cotacao: "Cotação de moedas" };
+
+async function abrirAdmin(){
+  const el = $("#admConteudo");
+  if (perfil?.papel !== "admin") { el.innerHTML = '<div class="empty">Área só para administradores.</div>'; return; }
+  el.innerHTML = '<div class="empty">Carregando…</div>';
   try {
-    const dia = new Date().toLocaleDateString("sv-SE", { timeZone: "America/Sao_Paulo" });
-    const s = await fb.fs.getDoc(fb.fs.doc(fb.D, "users", nv.user.uid, "uso", dia));
-    if (s.exists()) { const u = s.data(); txt += ` Hoje: ${u.pedidos || 0} pergunta(s), custo estimado US$ ${(u.custo || 0).toFixed(3).replace(".", ",")}.`; }
-  } catch {}
-  el.textContent = txt;
+    const [st, cfg, uso, err, infra] = await Promise.all([api("GET", "/v1/admin/stats"), api("GET", "/v1/admin/config"), api("GET", "/v1/admin/usage"), api("GET", "/v1/admin/errors"), api("GET", "/v1/admin/infra")]);
+    adm.cfg = cfg;
+    const max = Math.max(1, ...st.ultimos14dias.map(d => d.pedidos));
+    el.innerHTML = `
+      <div class="kpis">
+        <div class="kpi"><b>${num(st.usuarios.total)}</b><span>usuários</span></div>
+        <div class="kpi"><b>${num(st.usuarios.clientes)}</b><span>clientes</span></div>
+        <div class="kpi"><b>${num(st.usuarios.novos7d)}</b><span>novos em 7 dias</span></div>
+        <div class="kpi"><b>${num(st.usuarios.ativosHoje)}</b><span>ativos hoje</span></div>
+        <div class="kpi"><b>${num(st.hoje.pedidos)}<small> / ${num(st.hoje.limitePlataforma)}</small></b><span>perguntas hoje</span></div>
+        <div class="kpi"><b>${num((st.hoje.entrada || 0) + (st.hoje.saida || 0))}</b><span>tokens hoje</span></div>
+        <div class="kpi"><b>${num(st.conversas)}</b><span>conversas</span></div>
+        <div class="kpi"><b>${num(st.usuarios.suspensos)}</b><span>suspensos</span></div>
+      </div>
+      <div class="box"><h3>Perguntas por dia (14 dias)</h3>
+        <div class="barras">${st.ultimos14dias.map(d => `<div class="bar" title="${esc(d.dia)}: ${d.pedidos}"><i style="height:${Math.round(d.pedidos / max * 100)}%"></i><span>${esc(d.dia.slice(8))}</span></div>`).join("") || '<p class="mini">Ainda sem uso.</p>'}</div>
+      </div>
+      <div class="box"><h3>Usuários</h3>
+        <div class="row"><input id="admBusca" placeholder="Buscar por e-mail ou nome" value="${esc(adm.busca)}"><button type="button" id="admBuscar">Buscar</button></div>
+        <div id="admUsers" class="lista"></div>
+      </div>
+      <div class="box"><h3>Limites de uso</h3><p class="mini">Valem na hora para todos. Os provedores grátis também têm limites próprios (veja abaixo).</p>
+        <div class="grade">${Object.entries(ROT_LIM).map(([k, r]) => `<label class="campo"><span>${r}</span><input type="number" data-lim="${k}" value="${cfg.limites[k]}"></label>`).join("")}</div>
+        <h4>Opções gerais</h4>${Object.entries(ROT_GER).map(([k, r]) => `<label class="chk"><input type="checkbox" data-ger="${k}" ${cfg.geral[k] ? "checked" : ""}> ${r}</label>`).join("")}
+        <h4>Ferramentas da IA</h4>${Object.entries(ROT_FER).map(([k, r]) => `<label class="chk"><input type="checkbox" data-fer="${k}" ${cfg.ferramentas[k] ? "checked" : ""}> ${r}</label>`).join("")}
+        <div class="row"><button type="button" class="solid" id="admSalvar">Salvar configurações</button></div>
+      </div>
+      <div class="box"><h3>Provedores de IA (em ordem de uso)</h3><p class="mini">A AVIX usa o primeiro pronto; se a cota acabar, passa para o próximo. Para ativar um provedor novo, cadastre a chave grátis dele (veja a documentação).</p>
+        <div class="lista">${cfg.provedores.map((p, i) => `<div class="prov" data-pid="${esc(p.id)}">
+          <div class="pt"><b>${esc(p.nome)}</b><span class="badge ${p.pronto ? "web" : ""}">${p.pronto ? "em uso" : p.configurado ? "desligado" : "sem chave"}</span></div>
+          <div class="mini">${esc(p.limiteGratis)}${p.segredo && !p.configurado ? ` · chave: <code>${esc(p.segredo)}</code>` : ""}</div>
+          <div class="row"><label class="chk"><input type="checkbox" data-pativo ${p.ativo ? "checked" : ""}> ativo</label><input data-pmodelo value="${esc(p.modelo)}" aria-label="Modelo"><button type="button" data-psubir ${i === 0 ? "disabled" : ""}>↑</button><button type="button" data-pdescer ${i === cfg.provedores.length - 1 ? "disabled" : ""}>↓</button></div>
+        </div>`).join("")}</div>
+        <div class="row"><button type="button" class="solid" id="admSalvarProv">Salvar provedores</button></div>
+      </div>
+      <div class="box"><h3>Consumo</h3>
+        <h4>Quem mais usou hoje</h4><div class="lista">${uso.topHoje.map(u => `<div class="linha"><span>${esc(u.email || u.uid)}</span><span>${num(u.pedidos)} perguntas · ${num((u.entrada || 0) + (u.saida || 0))} tokens</span></div>`).join("") || '<p class="mini">Ninguém usou hoje.</p>'}</div>
+        <h4>Modelos nas últimas 24 h</h4><div class="lista">${uso.modelos24h.map(m => `<div class="linha"><span>${esc(m.modelo || "—")}</span><span>${num(m.pedidos)} respostas · ${num(Math.round(m.msMedio || 0))} ms em média${m.reservas ? ` · ${num(m.reservas)} pela reserva` : ""}</span></div>`).join("") || '<p class="mini">Sem respostas nas últimas 24 h.</p>'}</div>
+      </div>
+      <div class="box"><h3>Erros recentes</h3><div class="lista">${err.data.slice(0, 30).map(x => `<div class="linha erro"><span>${dataHora(x.ts)} · ${esc(x.rota || "")} · ${esc(x.codigo || x.status)}</span><span>${esc((x.mensagem || "").slice(0, 160))}</span></div>`).join("") || '<p class="mini">Nenhum erro registrado. 🎉</p>'}</div></div>
+      <div class="box"><h3>Infraestrutura</h3><div class="lista">
+        <div class="linha"><span>Servidor (API)</span><span>versão ${esc(infra.versao)}</span></div>
+        <div class="linha"><span>Banco D1</span><span>${esc(infra.banco.status)} · ${infra.banco.ms} ms</span></div>
+        <div class="linha"><span>Anti-robô (Turnstile)</span><span>${infra.turnstile ? "configurado" : "não configurado"}</span></div>
+        ${Object.entries(infra.segredos).map(([k, v]) => `<div class="linha"><span><code>${esc(k)}</code></span><span>${v ? "cadastrada ✔" : "—"}</span></div>`).join("")}
+        ${Object.entries(infra.planoGratis).map(([k, v]) => `<div class="linha"><span>Limite grátis · ${esc(k)}</span><span>${esc(v)}</span></div>`).join("")}
+      </div><p class="mini">Documentação da API: <a href="${esc(API_BASE)}/docs" target="_blank" rel="noopener noreferrer">${esc(API_BASE)}/docs</a></p></div>`;
+    $("#admBuscar").onclick = () => { adm.busca = $("#admBusca").value.trim(); adm.offset = 0; carregarUsuariosAdm(); };
+    $("#admBusca").onkeydown = e => { if (e.key === "Enter") $("#admBuscar").click(); };
+    $("#admSalvar").onclick = salvarConfigAdm;
+    $("#admSalvarProv").onclick = salvarProvedoresAdm;
+    el.querySelectorAll(".prov").forEach(d => {
+      d.querySelector("[data-psubir]").onclick = () => moverProv(d, -1);
+      d.querySelector("[data-pdescer]").onclick = () => moverProv(d, 1);
+    });
+    carregarUsuariosAdm();
+  } catch (e) { el.innerHTML = `<div class="empty">${esc(e.message || "Não consegui carregar o painel.")}</div>`; }
+}
+async function carregarUsuariosAdm(){
+  const el = $("#admUsers"); if (!el) return;
+  el.innerHTML = '<p class="mini">Carregando…</p>';
+  try {
+    const r = await api("GET", `/v1/admin/users?limit=30&offset=${adm.offset}&q=${encodeURIComponent(adm.busca)}`);
+    el.innerHTML = r.data.map(u => `<div class="usr" data-uid="${esc(u.uid)}">
+      <div class="pt"><b></b><span class="badge ${u.papel === "admin" ? "mem" : u.status === "suspenso" ? "" : "web"}">${u.papel === "admin" ? "admin" : esc(u.status)}</span></div>
+      <div class="mini"><span class="em"></span> · cadastro ${dataHora(u.criado)} · último acesso ${dataHora(u.ultimo_acesso)} · ${num(u.conversas)} conversas · ${num(u.pedidosHoje)} perguntas hoje · ${esc(u.provedor_login === "google.com" ? "Google" : "e-mail")}</div>
+      ${u.papel === "admin" ? "" : `<div class="row"><button type="button" data-st="${u.status === "suspenso" ? "ativo" : "suspenso"}" class="${u.status === "suspenso" ? "" : "danger"}">${u.status === "suspenso" ? "Reativar conta" : "Suspender conta"}</button></div>`}
+    </div>`).join("") + `<div class="row">${adm.offset ? '<button type="button" id="admAnt">← anteriores</button>' : ""}<span class="mini">${num(r.total)} usuário(s)</span>${adm.offset + 30 < r.total ? '<button type="button" id="admProx">próximos →</button>' : ""}</div>`;
+    el.querySelectorAll(".usr").forEach((d, i) => { d.querySelector(".pt b").textContent = r.data[i].nome || "(sem nome)"; d.querySelector(".em").textContent = r.data[i].email || ""; });
+    el.querySelectorAll("[data-st]").forEach(b => b.onclick = async () => {
+      const uid = b.closest(".usr").dataset.uid;
+      try { await api("PATCH", "/v1/admin/users/" + encodeURIComponent(uid), { status: b.dataset.st }); toast(b.dataset.st === "suspenso" ? "Conta suspensa." : "Conta reativada."); carregarUsuariosAdm(); } catch (e) { toast(e.message); }
+    });
+    $("#admAnt") && ($("#admAnt").onclick = () => { adm.offset = Math.max(0, adm.offset - 30); carregarUsuariosAdm(); });
+    $("#admProx") && ($("#admProx").onclick = () => { adm.offset += 30; carregarUsuariosAdm(); });
+  } catch (e) { el.innerHTML = `<p class="mini">${esc(e.message)}</p>`; }
+}
+async function salvarConfigAdm(){
+  const limites = {}, geral = {}, ferramentas = {};
+  document.querySelectorAll("[data-lim]").forEach(i => limites[i.dataset.lim] = Number(i.value));
+  document.querySelectorAll("[data-ger]").forEach(i => geral[i.dataset.ger] = i.checked);
+  document.querySelectorAll("[data-fer]").forEach(i => ferramentas[i.dataset.fer] = i.checked);
+  try { await api("PUT", "/v1/admin/config", { limites, geral, ferramentas }); toast("Configurações salvas."); abrirAdmin(); } catch (e) { toast(e.message); }
+}
+function moverProv(d, dir){
+  const alvo = dir < 0 ? d.previousElementSibling : d.nextElementSibling; if (!alvo) return;
+  dir < 0 ? alvo.before(d) : alvo.after(d);
+  const todos = [...document.querySelectorAll(".prov")];
+  todos.forEach((x, i) => { x.querySelector("[data-psubir]").disabled = i === 0; x.querySelector("[data-pdescer]").disabled = i === todos.length - 1; });
+}
+async function salvarProvedoresAdm(){
+  const provedores = [...document.querySelectorAll(".prov")].map((d, i) => ({ id: d.dataset.pid, ordem: i, ativo: d.querySelector("[data-pativo]").checked, modelo: d.querySelector("[data-pmodelo]").value.trim() }));
+  try { await api("PUT", "/v1/admin/config", { provedores }); toast("Provedores salvos."); abrirAdmin(); } catch (e) { toast(e.message); }
 }
 
 /* --- abrir, criar e listar conversas --- */
@@ -1175,7 +1492,7 @@ function novaConversa(){
   q.value = ""; grow();
 }
 function titulo(){
-  $("#ttlTxt").textContent = view === "mem" ? "Memória" : view === "cfg" ? "Ajustes" : atual ? atual.t : "AVIX IA";
+  $("#ttlTxt").textContent = view === "mem" ? "Memória" : view === "cfg" ? "Ajustes" : view === "adm" ? "Administração" : atual ? atual.t : "AVIX IA";
 }
 function grupo(ts){
   const d0 = new Date(); d0.setHours(0,0,0,0); const t = d0.getTime(), dia = 864e5;
@@ -1310,12 +1627,14 @@ addEventListener("resize", desenhar);
 let view = "chat";
 function aba(v, semHist){
   view = v;
-  const mapa = { chat: "#vChat", mem: "#vMem", cfg: "#vCfg" };
+  const mapa = { chat: "#vChat", mem: "#vMem", cfg: "#vCfg", adm: "#vAdm" };
   for (const [k, s] of Object.entries(mapa)) $(s).hidden = k !== v;
   document.querySelectorAll(".dnav button").forEach(b => b.classList.toggle("on", b.dataset.v === v));
   $("#dock").hidden = v !== "chat";
   if (v === "cfg") { carregarFB().catch(() => {}); atualizarIA(); } // deixa o login pronto para abrir na hora
   if (v === "mem") desenharMemUser();
+  if (v === "cfg") desenharConta();
+  if (v === "adm") abrirAdmin();
   if (!semHist && v === "chat" && history.state?.v) voltar();
   titulo(); render(); listaChats();
 }
@@ -1394,6 +1713,7 @@ function estadoInstalar(){
   $("#instTxt").textContent = ok ? "A AVIX já está instalada e aberta como app. ✔" : "Coloque a AVIX na tela inicial para abrir como um app, até sem internet. Funciona no Android e no iPhone.";
 }
 function instrucoes(){
+  $("#sheetT").innerHTML = '<img src="logo-mark.png" alt="">Instalar a AVIX';
   const dentroDeApp = /FBAN|FBAV|FB_IAB|Instagram|WhatsApp|Line\/|GitHub|; wv\)/i.test(UA);
   let h;
   if (IOS) {
@@ -1466,6 +1786,7 @@ function carregarFB(){
   fbCarregando = Promise.all(["firebase-app.js", "firebase-auth.js", "firebase-firestore.js"].map(f => import(FBV + f))).then(([app, auth, fs]) => {
     const a = app.initializeApp(NUVEM);
     fb = { auth, fs, A: auth.getAuth(a), D: fs.getFirestore(a) };
+    fb.A.languageCode = "pt"; // e-mails de verificação e de senha em português
     if (!nv.ouvindo) {
       nv.ouvindo = true;
       auth.onAuthStateChanged(fb.A, u => { nv.user = u; if (u && M.sync.ligado) conectar(); else desconectar(); estadoNuvem(); });
@@ -1483,30 +1804,115 @@ function entrar(){
   return fb.auth.signInWithPopup(fb.A, p).then(r => { nv.user = r.user; conectar(); return true; }).catch(e => {
     if (e.code === "auth/popup-blocked" || e.code === "auth/operation-not-supported-in-this-environment") { fb.auth.signInWithRedirect(fb.A, p).catch(erroNuvem); return false; }
     if (!nv.user) { M.sync.ligado = false; salvarLocal(); }
-    if (e.code !== "auth/popup-closed-by-user" && e.code !== "auth/cancelled-popup-request") erroNuvem(e);
+    if (e.code !== "auth/popup-closed-by-user" && e.code !== "auth/cancelled-popup-request") $("#lgErro").hidden = false, $("#lgErro").textContent = msgAuth(e);
     return false;
   });
 }
+// mensagens de erro do login em português simples
+function msgAuth(e){
+  return ({
+    "auth/email-already-in-use": "Já existe uma conta com esse e-mail. Toque em Entrar.",
+    "auth/invalid-email": "Esse e-mail não parece válido.",
+    "auth/weak-password": "Senha fraca. Use pelo menos 8 caracteres, com letras e números.",
+    "auth/invalid-credential": "E-mail ou senha incorretos.",
+    "auth/wrong-password": "E-mail ou senha incorretos.",
+    "auth/user-not-found": "E-mail ou senha incorretos.",
+    "auth/missing-password": "Digite a senha.",
+    "auth/too-many-requests": "Muitas tentativas. Espere alguns minutos e tente de novo.",
+    "auth/network-request-failed": "Sem internet agora.",
+    "auth/user-disabled": "Esta conta foi desativada.",
+    "auth/unauthorized-domain": "Este endereço do site ainda não foi autorizado no Firebase.",
+    "auth/quota-exceeded": "O limite grátis de e-mails do dia acabou. Tente amanhã.",
+  })[e?.code] || "Não deu certo (" + (e?.code || e?.message || "erro") + ").";
+}
 
-/* --- painel de login --- */
+/* --- painel de login, cadastro, verificação e recuperação --- */
 const semConta = () => { try { return localStorage.getItem("avix.semConta") === "1"; } catch { return false; } };
-function mostrarLogin(msg){
+let tsCadastro = "";
+function modoLogin(modo){
+  for (const [m, id] of [["entrar", "#fEntrar"], ["cadastro", "#fCadastro"], ["recuperar", "#fRecuperar"], ["verificar", "#fVerificar"]]) $(id).hidden = m !== modo;
+  document.querySelectorAll("#lgAbas button").forEach(b => b.classList.toggle("on", b.dataset.modo === modo));
+  $("#lgAbas").hidden = modo === "verificar" || modo === "recuperar";
+  $("#lgOu").hidden = $("#lgGoogle").hidden = modo === "verificar" || modo === "recuperar";
+  $("#lgPular").hidden = modo === "verificar";
+  $("#lgErro").hidden = true; $("#lgOk").hidden = true;
+  if (modo === "verificar") $("#vEmail").textContent = nv.user?.email || "";
+  if (modo === "cadastro" && !tsCadastro) widgetTurnstile($("#tsCadastro")).then(t => { tsCadastro = t; }).catch(() => { $("#tsCadastro").textContent = "Não consegui carregar a verificação anti-robô. Verifique a internet."; });
+}
+function mostrarLogin(msg, modo = "entrar"){
   $("#login").hidden = false;
-  $("#lgErro").hidden = !msg; $("#lgErro").textContent = msg || "";
-  const pronto = () => { $("#lgGoogle").disabled = false; $("#lgGoogleTxt").textContent = "Entrar com Google"; };
+  modoLogin(modo);
+  if (msg) { $("#lgErro").hidden = false; $("#lgErro").textContent = msg; }
+  const pronto = () => { $("#lgGoogle").disabled = false; $("#lgGoogleTxt").textContent = "Continuar com Google"; };
   if (fb) pronto();
   else { $("#lgGoogle").disabled = true; $("#lgGoogleTxt").textContent = "Preparando…"; carregarFB().then(pronto, () => { pronto(); $("#lgErro").hidden = false; $("#lgErro").textContent = "Sem internet agora. Você pode continuar sem conta e entrar depois."; }); }
 }
 function fecharLogin(){ $("#login").hidden = true; }
+const lgErro = t => { $("#lgOk").hidden = true; $("#lgErro").hidden = false; $("#lgErro").textContent = t; };
+const lgOk = t => { $("#lgErro").hidden = true; $("#lgOk").hidden = false; $("#lgOk").textContent = t; };
+const ocupadoBtn = (b, on, txt) => { b.disabled = on; if (txt) b.textContent = txt; };
+document.querySelectorAll("#lgAbas button").forEach(b => b.onclick = () => modoLogin(b.dataset.modo));
+$("#lgEsqueci").onclick = () => { $("#rEmail").value = $("#eEmail").value; modoLogin("recuperar"); };
+$("#rVoltar").onclick = () => modoLogin("entrar");
+
+function aposLogin(user){
+  nv.user = user; M.sync.ligado = true; salvarLocal();
+  try { localStorage.removeItem("avix.semConta"); } catch {}
+  const senha = (user.providerData || []).some(p => p.providerId === "password");
+  if (senha && !user.emailVerified) { modoLogin("verificar"); conectar(); return; }
+  fecharLogin(); conectar();
+  const nome = (user.displayName || "").split(" ")[0];
+  toast(nome ? `Bem-vindo, ${nome}!` : "Pronto, você entrou!");
+}
+$("#fEntrar").onsubmit = async e => {
+  e.preventDefault(); if (!fb) return mostrarLogin();
+  const b = $("#eEntrar"); ocupadoBtn(b, true, "Entrando…");
+  try { const r = await fb.auth.signInWithEmailAndPassword(fb.A, $("#eEmail").value.trim(), $("#eSenha").value); aposLogin(r.user); }
+  catch (er) { lgErro(msgAuth(er)); }
+  finally { ocupadoBtn(b, false, "Entrar"); }
+};
+$("#fCadastro").onsubmit = async e => {
+  e.preventDefault(); if (!fb) return mostrarLogin();
+  const nome = $("#cNome").value.trim().replace(/\s+/g, " "), email = $("#cEmail").value.trim(), s1 = $("#cSenha").value, s2 = $("#cSenha2").value;
+  if (nome.length < 3) return lgErro("Escreva o seu nome completo.");
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return lgErro("Esse e-mail não parece válido.");
+  if (s1.length < 8 || !/[A-Za-z]/.test(s1) || !/\d/.test(s1)) return lgErro("A senha precisa ter pelo menos 8 caracteres, com letras e números.");
+  if (s1 !== s2) return lgErro("As duas senhas não são iguais.");
+  if (!$("#cTermos").checked) return lgErro("Para criar a conta, aceite os Termos de Uso e a Política de Privacidade.");
+  if (!tsCadastro) return lgErro("Espere a verificação anti-robô terminar (o quadrinho acima).");
+  const b = $("#cCriar"); ocupadoBtn(b, true, "Criando…");
+  try {
+    const r = await fb.auth.createUserWithEmailAndPassword(fb.A, email, s1);
+    await fb.auth.updateProfile(r.user, { displayName: nome }).catch(() => {});
+    nv.user = r.user;
+    await api("POST", "/v1/me/humano", { token: tsCadastro }).catch(() => {}); // se falhar, pede de novo no primeiro uso
+    await api("PATCH", "/v1/me", { nome }).catch(() => {});
+    await fb.auth.sendEmailVerification(r.user).catch(() => {});
+    tsCadastro = "";
+    aposLogin(r.user);
+  } catch (er) { lgErro(msgAuth(er)); tsCadastro = ""; if (window.turnstile) widgetTurnstile($("#tsCadastro")).then(t => tsCadastro = t).catch(() => {}); }
+  finally { ocupadoBtn(b, false, "Criar conta grátis"); }
+};
+$("#fRecuperar").onsubmit = async e => {
+  e.preventDefault(); if (!fb) return mostrarLogin();
+  const email = $("#rEmail").value.trim(); if (!email) return lgErro("Digite o seu e-mail.");
+  try { await fb.auth.sendPasswordResetEmail(fb.A, email); lgOk("Se existir uma conta com esse e-mail, enviamos um link para criar uma senha nova. Veja também a caixa de spam."); }
+  catch (er) { if (er.code === "auth/user-not-found") lgOk("Se existir uma conta com esse e-mail, enviamos um link para criar uma senha nova."); else lgErro(msgAuth(er)); }
+};
+$("#vJa").onclick = async () => {
+  if (!nv.user) return modoLogin("entrar");
+  await nv.user.reload().catch(() => {});
+  if (fb.A.currentUser?.emailVerified) { await nv.user.getIdToken(true).catch(() => {}); aposLogin(fb.A.currentUser); }
+  else lgErro("Ainda não aparece como confirmado. Abra o link no e-mail (veja também o spam) e toque aqui de novo.");
+};
+$("#vReenviar").onclick = async () => {
+  if (!nv.user) return;
+  try { await fb.auth.sendEmailVerification(nv.user); lgOk("Enviamos de novo. Pode levar alguns minutos."); } catch (er) { lgErro(msgAuth(er)); }
+};
+$("#vSair").onclick = () => { sair(); modoLogin("entrar"); };
 $("#lgGoogle").onclick = () => {
   $("#lgErro").hidden = true;
-  entrar().then(ok => {
-    if (!ok) return;
-    try { localStorage.removeItem("avix.semConta"); } catch {}
-    fecharLogin();
-    const nome = (nv.user?.displayName || "").split(" ")[0];
-    toast(nome ? `Bem-vindo, ${nome}! A memória agora vale em todos os seus aparelhos.` : "Pronto! A memória agora vale em todos os seus aparelhos.");
-  });
+  entrar().then(ok => { if (ok) aposLogin(nv.user); });
 };
 $("#lgPular").onclick = () => { try { localStorage.setItem("avix.semConta", "1"); } catch {} fecharLogin(); };
 $("#dConta").onclick = () => {
@@ -1516,24 +1922,26 @@ $("#dConta").onclick = () => {
 function sair(){
   M.sync.ligado = false; salvarLocal(); desconectar();
   if (fb) fb.auth.signOut(fb.A).catch(() => {});
-  nv.user = null; estadoNuvem(); toast("Desconectado. A memória continua neste aparelho.");
+  nv.user = null; perfil = null; $("#dnAdm").hidden = true; if (view === "adm") aba("chat");
+  estadoNuvem(); desenharConta(); atualizarIA(); toast("Você saiu da conta. A memória do aparelho continua aqui.");
 }
 function conectar(){
-  if (!fb || !nv.user || nv.unsub) { estadoNuvem(); return; }
+  if (!fb || !nv.user) { estadoNuvem(); return; }
   const { fs, D } = fb, uid = nv.user.uid;
-  if (M.sync.uid !== uid) { // primeira vez desta conta neste aparelho: envia tudo e baixa tudo
-    M.sync.uid = uid; M.sync.lastSv = 0; M.sync.qEnv = 0; M.sync.meta = 1;
-    M.k.forEach(i => marcar(i.gid));
-    salvarLocal();
+  const senha = (nv.user.providerData || []).some(p => p.providerId === "password");
+  if (senha && !nv.user.emailVerified) { mostrarLogin(null, "verificar"); estadoNuvem(); return; }
+  if (!nv.unsub && !nv.semSync) { // memória do cérebro antigo (Firestore): só para contas liberadas nas regras
+    if (M.sync.uid !== uid) { M.sync.uid = uid; M.sync.lastSv = 0; M.sync.qEnv = 0; M.sync.meta = 1; M.k.forEach(i => marcar(i.gid)); salvarLocal(); }
+    nv.erro = "";
+    const qy = fs.query(fs.collection(D, "users", uid, "k"), fs.where("sv", ">", fs.Timestamp.fromMillis(M.sync.lastSv || 0)), fs.orderBy("sv"));
+    nv.unsub = fs.onSnapshot(qy, receber, erroNuvem);
+    nv.unsubMeta = fs.onSnapshot(fs.doc(D, "users", uid), receberMeta, erroNuvem);
+    enviarLogo(500);
   }
-  nv.erro = "";
-  const qy = fs.query(fs.collection(D, "users", uid, "k"), fs.where("sv", ">", fs.Timestamp.fromMillis(M.sync.lastSv || 0)), fs.orderBy("sv"));
-  nv.unsub = fs.onSnapshot(qy, receber, erroNuvem);
-  nv.unsubMeta = fs.onSnapshot(fs.doc(D, "users", uid), receberMeta, erroNuvem);
-  ouvirIA();
-  enviarLogo(500); estadoNuvem(); desenharMemUser(); atualizarIA();
+  carregarPerfil().then(() => { carregarConversas(); carregarMemorias(); });
+  estadoNuvem(); desenharMemUser(); atualizarIA();
 }
-function desconectar(){ nv.unsub?.(); nv.unsubMeta?.(); nv.unsub = nv.unsubMeta = null; if (typeof pararOuvirIA === "function" && nvIA.unsubChats) pararOuvirIA(); }
+function desconectar(){ nv.unsub?.(); nv.unsubMeta?.(); nv.unsub = nv.unsubMeta = null; nv.semSync = false; C.nuvem = []; memUser = []; listaChats(); desenharMemUser(); }
 
 // chegou novidade da nuvem (de outro aparelho)
 let renderT = 0;
@@ -1582,7 +1990,7 @@ function docItem(it, st){
   return d;
 }
 async function enviar(){
-  if (!fb || !nv.user || !nv.unsub || nv.enviando || !navigator.onLine) return;
+  if (!fb || !nv.user || !nv.unsub || nv.enviando || !navigator.onLine || ia.emergencia) return;
   const { fs, D } = fb, uid = nv.user.uid;
   let delta = M.q - M.sync.qEnv; if (delta < 0) { M.sync.qEnv = M.q; delta = 0; }
   const gids = Object.keys(M.sync.dirty);
@@ -1615,11 +2023,8 @@ async function enviar(){
 }
 function erroNuvem(e){
   const c = e?.code || "";
-  if (c === "permission-denied") {
-    const msg = "Essa conta Google não tem acesso à memória da AVIX. Entre com a conta do dono ou continue sem conta.";
-    desconectar(); M.sync.ligado = false; salvarLocal();
-    if (fb) fb.auth.signOut(fb.A).catch(() => {});
-    nv.user = null; nv.erro = ""; estadoNuvem(); mostrarLogin(msg); return;
+  if (c === "permission-denied") { // conta sem a sincronização antiga: tudo bem, conversas e memórias ficam na API
+    nv.semSync = true; nv.unsub?.(); nv.unsubMeta?.(); nv.unsub = nv.unsubMeta = null; nv.erro = ""; estadoNuvem(); return;
   }
   else if (c === "auth/unauthorized-domain") nv.erro = "Este endereço do site ainda não foi autorizado no Firebase.";
   else if (c === "auth/network-request-failed" || c === "unavailable") nv.erro = "Sem internet agora. Guardo aqui e envio quando a conexão voltar.";
@@ -1628,20 +2033,21 @@ function erroNuvem(e){
 }
 function estadoNuvem(){
   const pend = Object.keys(M.sync.dirty).length;
-  const on = !!(nv.user && M.sync.ligado && nv.unsub);
+  const on = !!(nv.user && M.sync.ligado && (nv.unsub || nv.semSync));
   const hora = nv.ultima ? new Date(nv.ultima).toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" }) : "";
   let txt;
-  if (on) txt = `Conectada como ${nv.user.email || "você"}. ` + (nv.erro ? nv.erro : nv.enviando ? "Enviando…" : pend ? `${pend} aprendizado(s) para enviar.` : "Tudo sincronizado" + (hora ? " às " + hora : "") + ".") + " A memória é a mesma em todos os seus aparelhos.";
+  if (on && nv.semSync) txt = `Conectada como ${nv.user.email || "você"}. Suas conversas e memórias ficam na sua conta AVIX. A memória do cérebro antigo (Wikipédia) fica neste aparelho.`;
+  else if (on) txt = `Conectada como ${nv.user.email || "você"}. ` + (nv.erro ? nv.erro : nv.enviando ? "Enviando…" : pend ? `${pend} aprendizado(s) para enviar.` : "Tudo sincronizado" + (hora ? " às " + hora : "") + ".") + " A memória é a mesma em todos os seus aparelhos.";
   else if (nv.erro) txt = nv.erro;
-  else txt = "Entre com a sua conta Google para a AVIX usar a mesma memória em todos os seus aparelhos. O que ela aprender em um, aprende em todos.";
+  else txt = "Entre na sua conta para a AVIX usar a mesma memória em todos os seus aparelhos.";
   $("#nvTxt").textContent = txt;
-  $("#nvBtn").textContent = nv.user && M.sync.ligado ? "Sair" : "Entrar com Google";
+  $("#nvBtn").textContent = nv.user && M.sync.ligado ? "Sair" : "Entrar ou criar conta";
   $("#nvBtn").classList.toggle("solid", !(nv.user && M.sync.ligado));
-  $("#nvSync").hidden = !on;
+  $("#nvSync").hidden = !on || !!nv.semSync;
   const d = $("#dConta"); d.classList.toggle("on", on && !nv.erro); d.classList.toggle("erro", !!nv.erro && M.sync.ligado);
-  $("#dNuvemTxt").textContent = on ? (nv.erro ? "☁ Nuvem: tentando de novo" : pend ? "☁ Enviando…" : "☁ Memória na nuvem: em dia") : M.sync.ligado ? "☁ Conectando…" : "Memória só neste aparelho";
+  $("#dNuvemTxt").textContent = on ? (perfil?.papel === "admin" ? "Administrador" : "☁ Conta AVIX") + (nv.erro ? " · tentando de novo" : "") : M.sync.ligado ? "☁ Conectando…" : "Entrar ou criar conta";
   const u = nv.user && M.sync.ligado ? nv.user : null;
-  $("#dNome").textContent = u ? (u.displayName || u.email || "Você") : "Entrar com Google";
+  $("#dNome").textContent = u ? (perfil?.nome || u.displayName || u.email || "Você") : "Visitante";
   const av = $("#dAv"); av.textContent = "";
   const foto = u && linkSeguro(u.photoURL);
   if (foto && /^https:\/\/lh3\.googleusercontent\.com\//.test(foto)) { const im = document.createElement("img"); im.src = foto; im.alt = ""; im.referrerPolicy = "no-referrer"; im.onerror = () => { av.textContent = (u.displayName || "?")[0].toUpperCase(); }; av.append(im); }
@@ -1653,7 +2059,7 @@ addEventListener("online", () => { if (M.sync.ligado) { nv.erro = ""; enviarLogo
 document.addEventListener("visibilitychange", () => { if (document.visibilityState === "hidden" && M.sync.ligado) enviar(); });
 
 /* ---------- início ---------- */
-hero(); render(); listaChats(); titulo(); estadoInstalar(); estadoNuvem(); desenharMemUser();
+hero(); render(); listaChats(); titulo(); estadoInstalar(); estadoNuvem(); desenharMemUser(); verificarEmergencia();
 if (M.sync.ligado) carregarFB().catch(() => { nv.erro = "Sem internet agora. Guardo aqui e envio quando a conexão voltar."; estadoNuvem(); });
 else if (!semConta()) mostrarLogin(); // primeira vez: painel de boas-vindas com login
 salvarLocal(); // grava os códigos de sincronização (gid) nos conhecimentos antigos

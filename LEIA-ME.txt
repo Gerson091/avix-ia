@@ -1,46 +1,12 @@
-AVIX IA — como instalar no celular (Android e iPhone)
-=====================================================
+AVIX IA
+=======
 
-Endereço do app:  https://gerson091.github.io/avix-ia/
+App: https://avix-ia-app.avix-ia-worker.workers.dev  (também em https://gerson091.github.io/avix-ia/)
 
-ANDROID (Chrome)
- 1. Abra o endereço no Chrome (não abra pelo WhatsApp ou outro app).
- 2. Toque em "Instalar" na faixa do topo do app,
-    ou toque em ⋮ (três pontinhos) > "Instalar app".
- Pronto: o ícone da AVIX IA aparece junto com os outros aplicativos.
+- Crie sua conta grátis (e-mail e senha, ou Google) e confirme o e-mail.
+- Converse com a IA; ela pesquisa na internet quando precisa e mostra as fontes.
+- Memória: a AVIX sugere o que guardar e você decide. Veja/edite em Memória.
+- Sem conta ou sem internet, ela responde com a memória do aparelho.
 
-IPHONE / IPAD (Safari)
- 1. Abra o endereço no Safari.
- 2. Toque em Compartilhar (o quadrado com a seta para cima ⬆️).
- 3. Toque em "Adicionar à Tela de Início" > "Adicionar".
- Atenção: no iPhone, o app instalado tem uma memória separada da do Safari.
- Se você já usou a AVIX no Safari, faça Ajustes > "Salvar backup" no Safari
- e depois "Restaurar backup" dentro do app instalado.
-
-MEMÓRIA EM TODOS OS APARELHOS (nuvem)
- - Ajustes > "Memória na nuvem" > "Entrar com Google". Faça isso em cada
-   celular ou computador, sempre com a MESMA conta Google.
- - A partir daí, tudo o que a AVIX aprender em um aparelho aparece nos outros.
- - Sem internet ela continua funcionando e envia depois, sozinha.
- - Só a conta do dono tem acesso. A nuvem é o Firebase do Google, plano
-   grátis, e não é IA: só guarda a memória.
-
-COMO USAR (igual ao Claude)
- - ☰ no canto de cima abre o menu: nova conversa, histórico de conversas,
-   Memória e Ajustes. Também dá para abrir arrastando da borda esquerda.
- - O lápis no canto de cima começa uma conversa nova.
- - A resposta aparece sendo "digitada". O botão ■ para a resposta.
- - Embaixo de cada resposta: copiar, 👍, 👎, tentar de novo e Ensinar.
- - Perguntas de continuação funcionam: "Quem inventou o avião?" e depois
-   "e quando ele morreu?".
-
-COMO ELA FUNCIONA
- - Não usa Claude, ChatGPT nem nenhuma IA paga. O "cérebro" roda no celular.
- - Pesquisa na Wikipédia e no DuckDuckGo, escolhe os trechos que respondem
-   e guarda na Memória. Na próxima vez responde sem precisar pesquisar.
- - 👍 deixa a resposta mais forte; 👎 enfraquece e pede a resposta certa.
- - "Ensinar" ou começar a frase com "lembre:" grava algo que você sabe.
-   O que você ensina tem prioridade sobre qualquer site.
- - Tudo fica salvo só no aparelho. Em Ajustes > "Salvar backup" você guarda
-   uma cópia do cérebro (arquivo .json) e pode restaurar em outro aparelho.
- - Sem internet ela abre normalmente e responde com o que já aprendeu.
+Instalar no Android: Chrome > Instalar. No iPhone: Safari > Compartilhar > Adicionar à Tela de Início.
+Uso grátis com limite diário. Termos: termos  |  Privacidade: privacidade

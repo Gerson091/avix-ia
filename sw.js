@@ -1,6 +1,6 @@
-// Guarda o app para abrir mesmo sem internet. As pesquisas sempre vão direto para a rede.
-const CACHE = "avix-v8";
-const APP = ["./", "index.html", "manifest.webmanifest", "icon-192.png", "icon-512.png", "icon-maskable-512.png", "apple-touch-icon.png", "logo-mark.png"];
+// Guarda o app para abrir mesmo sem internet. A API e as pesquisas sempre vão direto para a rede.
+const CACHE = "avix-v9";
+const APP = ["./", "index.html", "manifest.webmanifest", "icon-192.png", "icon-512.png", "icon-maskable-512.png", "apple-touch-icon.png", "logo-mark.png", "privacidade", "termos"];
 
 self.addEventListener("install", e => {
   e.waitUntil(caches.open(CACHE).then(c => c.addAll(APP)).then(() => self.skipWaiting()));
@@ -15,13 +15,15 @@ self.addEventListener("activate", e => {
 self.addEventListener("fetch", e => {
   if (e.request.method !== "GET") return;
   const u = new URL(e.request.url);
+  // nunca guardar respostas da API (dados de conta e conversas)
+  if (u.pathname.startsWith("/v1/") || u.pathname === "/health" || u.pathname === "/chat") return;
 
-  // Abrir o app: tenta a versão nova da internet; sem internet, usa a guardada.
+  // Abrir uma página: tenta a versão nova da internet; sem internet, usa a guardada.
   if (e.request.mode === "navigate" && u.origin === location.origin) {
     e.respondWith(
       fetch(e.request)
-        .then(r => { if (r.ok) { const cp = r.clone(); caches.open(CACHE).then(c => c.put("index.html", cp)); } return r; })
-        .catch(() => caches.match("index.html").then(r => r || caches.match("./")))
+        .then(r => { if (r.ok) { const cp = r.clone(); caches.open(CACHE).then(c => c.put(e.request, cp)); } return r; })
+        .catch(() => caches.match(e.request, { ignoreSearch: true }).then(r => r || caches.match("index.html")))
     );
     return;
   }
